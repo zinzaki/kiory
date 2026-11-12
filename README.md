@@ -33,11 +33,14 @@
 
 ## Подключение
 
-### npm
+### Пакет
 
 ```sh
-npm i github:zinzaki/kiory
+bun add github:zinzaki/kiory
+pnpm add github:zinzaki/kiory
 ```
+
+npm 12 по умолчанию не ставит пакеты из GitHub — нужен флаг `--allow-git=all`.
 
 ```jsx
 import { KioryIcon } from 'kiory/react';

@@ -768,8 +768,8 @@ addEventListener('scroll', markFam, { passive: true });
 const CDN = `https://cdn.jsdelivr.net/gh/${REPO}@main/dist`;
 const esc = s => s.replace(/&/g, '&amp;').replace(/</g, '&lt;');
 const USE = [
-  ['npm', 'пакет', 'Пакет ставится прямо из GitHub: SVG, спрайт, CSS, модуль JS с типами и компонент для React.',
-    [`npm i github:${REPO}`, `pnpm add github:${REPO}`]],
+  ['Пакет', 'bun · pnpm', 'Пакет ставится прямо из GitHub: SVG, спрайт, CSS, модуль JS с типами и компонент для React. npm 12 по умолчанию не берёт пакеты из GitHub — добавьте <code>--allow-git=all</code>.',
+    [`bun add github:${REPO}`, `pnpm add github:${REPO}`]],
   ['React', 'компонент', 'Компонент берёт цвет текста, размер задаётся через <code>size</code>. Имена подсказывает TypeScript.',
     [`import { KioryIcon } from 'kiory/react';\n\n<KioryIcon name="search" size={20} />\n<KioryIcon name="heart" title="В избранное" />`]],
   ['CSS', 'классы', 'Без сборки и JavaScript: одна таблица стилей, иконка — элемент с двумя классами. Размер задаёт <code>font-size</code>, цвет — <code>color</code>.',
