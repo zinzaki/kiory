@@ -1,13 +1,23 @@
 #!/usr/bin/env python3
-"""Сборка Kiory: проверка SVG, manifest.json, спрайт, офлайн-каталог и превью.
+"""Сборка Kiory.
 
-    python3 scripts/build.py            # всё
-    python3 scripts/build.py --check    # только проверка, ничего не пишет
+    python3 scripts/build.py            # привести иконки к единому виду и собрать всё
+    python3 scripts/build.py --check    # только проверить, ничего не пишет
 
-Нужен только Python 3.11+; превью рендерит `rsvg-convert` (librsvg), если он есть.
+Источник правды — папка `icons/`:
+
+    icons/<семейство>/family.json       {"title": "...", "order": [...]}  — order необязателен
+    icons/<семейство>/<имя>.svg         сама иконка (экспорт из Figma подойдёт)
+    icons/<семейство>/<имя>.json        паспорт, необязателен: {"tags": ["лупа", "найти"]}
+
+Положил или заменил файл — запустил сборку (или просто запушил: соберёт GitHub Actions).
+Сборка приведёт SVG к единому виду, отметит новые и обновлённые иконки, пересоберёт dist/,
+каталог index.html и превью. Нужен Python 3.11+; превью рисует `rsvg-convert` (librsvg).
 """
 from __future__ import annotations
 
+import datetime as dt
+import hashlib
 import json
 import re
 import shutil
@@ -16,127 +26,229 @@ import sys
 import tempfile
 import xml.etree.ElementTree as ET
 from pathlib import Path
+from urllib.parse import quote
 
 ROOT = Path(__file__).resolve().parents[1]
 ICONS = ROOT / "icons"
+DIST = ROOT / "dist"
 NS = "{http://www.w3.org/2000/svg}"
-VERSION = "7.0.0"
+NAME = re.compile(r"[a-z0-9]+(-[a-z0-9]+)*")
+CHECK = "--check" in sys.argv
+TODAY = dt.date.today().isoformat()
 
-FAMILY_TITLES = {
-    "navigation": "Навигация",
-    "actions-controls": "Действия",
-    "charts-data": "Графики и данные",
-    "commerce": "Коммерция",
-    "design-editing": "Дизайн и графика",
-    "windows-layout": "Окна и сетки",
-    "files-documents": "Файлы и папки",
-    "system-devices": "Система и устройства",
-    "communication-status": "Общение и статус",
-    "reactions-feedback": "Реакции",
-    "development-ai": "Разработка и ИИ",
-    "media-audio": "Медиа и звук",
-    "general-utilities": "Общее",
-}
+errors: list[str] = []
+notes: list[str] = []
 
 
-def load_families() -> dict[str, list[str]]:
-    return json.loads((ROOT / "families.json").read_text())
+# ── чтение и нормализация ──────────────────────────────────────────────────────
+
+def body_of(paths: list[tuple[str, str]]) -> str:
+    return "".join(f'<path fill="currentColor" fill-rule="{r}" d="{d}"/>' for r, d in paths)
 
 
-def check(families: dict[str, list[str]]) -> tuple[list[str], dict[str, str]]:
-    """Возвращает (ошибки, {имя: тело svg})."""
-    errors: list[str] = []
-    bodies: dict[str, str] = {}
-    files = {p.stem: p for p in ICONS.glob("*.svg")}
-    listed = [n for ns in families.values() for n in ns]
-    if unknown := set(families) - set(FAMILY_TITLES):
-        errors.append(f"families.json: неизвестные семейства {sorted(unknown)}")
-    dup = {n for n in listed if listed.count(n) > 1}
-    if dup:
-        errors.append(f"families.json: дубли {sorted(dup)}")
-    for n in sorted(set(listed) - set(files)):
-        errors.append(f"{n}: есть в families.json, нет файла")
-    for n in sorted(set(files) - set(listed)):
-        errors.append(f"{n}.svg: файла нет в families.json")
-    for name, p in sorted(files.items()):
-        if not re.fullmatch(r"[a-z0-9]+(-[a-z0-9]+)*", name):
-            errors.append(f"{name}.svg: имя не в kebab-case")
-        text = p.read_text()
-        try:
-            root = ET.fromstring(text)
-        except ET.ParseError as e:
-            errors.append(f"{name}.svg: битый XML ({e})")
-            continue
-        if root.get("viewBox") != "0 0 24 24":
-            errors.append(f"{name}.svg: viewBox не 0 0 24 24")
-        if re.search(r"<(image|text|filter|linearGradient|radialGradient|use|style)\b", text):
-            errors.append(f"{name}.svg: недопустимый элемент")
-        if re.search(r'stroke="(?!none)', text):
-            errors.append(f"{name}.svg: обводка вместо контура")
-        paths = list(root.iter(NS + "path"))
-        if not paths:
-            errors.append(f"{name}.svg: нет path")
-        body = ""
-        for el in paths:
-            if el.get("transform"):
-                errors.append(f"{name}.svg: transform у path")
-            if el.get("fill") not in ("currentColor", None):
-                errors.append(f"{name}.svg: цвет не currentColor")
-            rule = el.get("fill-rule") or "nonzero"
-            body += f'<path fill="currentColor" fill-rule="{rule}" d="{el.get("d")}"/>'
-        bodies[name] = body
-    return errors, bodies
+def read_icon(p: Path) -> tuple[str, str] | None:
+    """(тело из path, канонический текст файла) или None, если иконку не разобрать."""
+    rel = p.relative_to(ROOT)
+    try:
+        root = ET.fromstring(p.read_text())
+    except ET.ParseError as e:
+        errors.append(f"{rel}: битый XML ({e})")
+        return None
+    vb = root.get("viewBox")
+    if vb is None and root.get("width") in ("24", "24px") and root.get("height") in ("24", "24px"):
+        vb = "0 0 24 24"
+    try:
+        ok = vb is not None and [float(v) for v in vb.replace(",", " ").split()] == [0, 0, 24, 24]
+    except ValueError:
+        ok = False
+    if not ok:
+        errors.append(f"{rel}: нужен холст 24 × 24 (viewBox «0 0 24 24»), а тут «{vb}»")
+        return None
+    paths: list[tuple[str, str]] = []
+
+    def walk(el: ET.Element, rule: str | None) -> None:
+        tag = el.tag.replace(NS, "")
+        if tag in ("title", "desc", "metadata"):
+            return
+        if tag == "defs":
+            if len(el):
+                errors.append(f"{rel}: <defs> с содержимым (маски, градиенты) не поддерживаются")
+            return
+        if tag not in ("svg", "g", "path"):
+            errors.append(f"{rel}: <{tag}> не поддерживается — переведи фигуры в контуры (Outline stroke, Flatten)")
+            return
+        if el.get("transform"):
+            errors.append(f"{rel}: transform у <{tag}> — сделай Flatten перед экспортом")
+        if el.get("stroke") not in (None, "none"):
+            errors.append(f"{rel}: обводка — переведи её в контур (Outline stroke)")
+        if el.get("clip-path") or el.get("mask") or el.get("opacity") or el.get("fill-opacity"):
+            errors.append(f"{rel}: маски и прозрачность не поддерживаются")
+        rule = el.get("fill-rule") or el.get("clip-rule") or rule
+        if tag == "path" and el.get("fill") != "none":
+            d = " ".join((el.get("d") or "").split())
+            if d:
+                paths.append((rule or "nonzero", d))
+        for ch in el:
+            walk(ch, rule)
+
+    walk(root, None)
+    if not paths:
+        errors.append(f"{rel}: внутри нет ни одного залитого контура")
+        return None
+    body = body_of(paths)
+    return body, f'<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">{body}</svg>\n'
 
 
-def svg_icon(body: str) -> str:
-    return f'<svg viewBox="0 0 24 24" fill="none" aria-hidden="true">{body}</svg>'
+def load() -> tuple[dict, list[dict], dict[str, dict]]:
+    cfg = json.loads((ROOT / "kiory.json").read_text())
+    for p in ICONS.glob("*.svg"):
+        errors.append(f"{p.relative_to(ROOT)}: иконка вне семейства — перенеси в icons/<семейство>/")
+    dirs = {d.name: d for d in ICONS.iterdir() if d.is_dir()}
+    order = [f for f in cfg["families"] if f in dirs] + sorted(set(dirs) - set(cfg["families"]))
+    families: list[dict] = []
+    icons: dict[str, dict] = {}
+    seen: dict[str, str] = {}
+    for f in order:
+        d = dirs[f]
+        meta = json.loads((d / "family.json").read_text()) if (d / "family.json").exists() else {}
+        files = {p.stem: p for p in d.glob("*.svg")}
+        names = [n for n in meta.get("order", []) if n in files] + sorted(set(files) - set(meta.get("order", [])))
+        for n in names:
+            if not NAME.fullmatch(n):
+                errors.append(f"icons/{f}/{n}.svg: имя — латиницей в kebab-case, например arrow-left")
+                continue
+            if n in seen:
+                errors.append(f"{n}: одно имя в двух семействах ({seen[n]} и {f})")
+                continue
+            seen[n] = f
+            got = read_icon(files[n])
+            if not got:
+                continue
+            passport = d / f"{n}.json"
+            tags = json.loads(passport.read_text()).get("tags", []) if passport.exists() else []
+            icons[n] = {"name": n, "family": f, "body": got[0], "text": got[1], "file": files[n],
+                        "tags": list(dict.fromkeys(n.split("-") + tags))}
+        count = sum(1 for n in names if n in icons)
+        if count:
+            families.append({"id": f, "title": meta.get("title", f), "count": count})
+    return cfg, families, icons
 
 
-def write_outputs(families: dict[str, list[str]], bodies: dict[str, str]) -> None:
-    icons = [
-        {"name": n, "family": f, "file": f"icons/{n}.svg", "tags": n.split("-")}
-        for f, ns in families.items() for n in ns
-    ]
+# ── выходные файлы ─────────────────────────────────────────────────────────────
+
+def stamp(icons: dict[str, dict], released: str) -> None:
+    """Даты появления и обновления берутся из прошлой сборки; новое и изменённое — сегодняшним днём."""
+    prev = DIST / "kiory.json"
+    old = {i["name"]: i for i in json.loads(prev.read_text())["icons"]} if prev.exists() else {}
+    for n, i in icons.items():
+        h = hashlib.sha1(i["body"].encode()).hexdigest()[:12]
+        o = old.get(n)
+        i["hash"] = h
+        i["added"] = o["added"] if o else (TODAY if old else released)
+        i["updated"] = (o["updated"] if o["hash"] == h else TODAY) if o else i["added"]
+    if gone := sorted(set(old) - set(icons)):
+        notes.append(f"убраны: {', '.join(gone)}")
+
+
+def write(cfg: dict, families: list[dict], icons: dict[str, dict]) -> list[str]:
+    order = [n for f in families for n in icons if icons[n]["family"] == f["id"]]
+    shutil.rmtree(DIST / "svg", ignore_errors=True)
+    (DIST / "svg").mkdir(parents=True)
+    for n in order:
+        (DIST / "svg" / f"{n}.svg").write_text(icons[n]["text"])
+
     manifest = {
-        "name": "Kiory", "version": VERSION, "grid": 24, "count": len(icons),
-        "families": [{"id": f, "title": FAMILY_TITLES[f], "count": len(ns)} for f, ns in families.items()],
-        "icons": icons,
+        "name": cfg["name"], "version": cfg["version"], "released": cfg["released"], "count": len(order),
+        "families": families,
+        "icons": [{k: icons[n][k] for k in ("name", "family", "tags", "added", "updated", "hash", "body")} for n in order],
     }
-    (ROOT / "manifest.json").write_text(json.dumps(manifest, ensure_ascii=False, indent=2) + "\n")
+    (DIST / "kiory.json").write_text(json.dumps(manifest, ensure_ascii=False, indent=1) + "\n")
 
-    sprite = "".join(
-        f'<symbol id="kiory-{n}" viewBox="0 0 24 24">{bodies[n]}</symbol>' for n in sorted(bodies)
-    )
-    (ROOT / "kiory.sprite.svg").write_text(f'<svg xmlns="http://www.w3.org/2000/svg">{sprite}</svg>\n')
+    sprite = "".join(f'<symbol id="kiory-{n}" viewBox="0 0 24 24">{icons[n]["body"]}</symbol>' for n in order)
+    (DIST / "kiory.sprite.svg").write_text(f'<svg xmlns="http://www.w3.org/2000/svg">{sprite}</svg>\n')
+
+    def uri(n: str) -> str:
+        return "data:image/svg+xml," + quote(icons[n]["text"].strip().replace("currentColor", "#000"), safe=":/=\" ")
+    css = [f"/* Kiory {cfg['version']}: <i class=\"ki ki-search\"></i> — размер задаёт font-size, цвет — color */",
+           ".ki{display:inline-block;width:1em;height:1em;flex:none;vertical-align:-.125em;background:currentColor;"
+           "-webkit-mask:var(--ki) center/contain no-repeat;mask:var(--ki) center/contain no-repeat}"]
+    css += [f'.ki-{n}{{--ki:url("{uri(n)}")}}' for n in order]
+    (DIST / "kiory.css").write_text("\n".join(css) + "\n")
+
+    js_icons = ",\n".join(f"  {json.dumps(n)}: {json.dumps(icons[n]['body'])}" for n in order)
+    (DIST / "kiory.js").write_text(
+        f"// Kiory {cfg['version']}: тела иконок и svg(name, {{ size }})\n"
+        f"export const version = {json.dumps(cfg['version'])};\n"
+        f"export const icons = {{\n{js_icons}\n}};\n"
+        "export const names = Object.keys(icons);\n"
+        "export function svg(name, { size = 24, ...attrs } = {}) {\n"
+        "  const body = icons[name];\n"
+        "  if (!body) throw new Error(`Kiory: нет иконки «${name}»`);\n"
+        "  const a = Object.entries(attrs).map(([k, v]) => ` ${k}=\"${v}\"`).join('');\n"
+        "  return `<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"${size}\" height=\"${size}\" viewBox=\"0 0 24 24\" fill=\"none\"${a}>${body}</svg>`;\n"
+        "}\n"
+        "export default icons;\n")
+    union = "\n  | ".join(json.dumps(n) for n in order)
+    (DIST / "kiory.d.ts").write_text(
+        f"export type KioryName =\n  | {union};\n"
+        "export declare const version: string;\n"
+        "export declare const icons: Record<KioryName, string>;\n"
+        "export declare const names: KioryName[];\n"
+        "export declare function svg(name: KioryName, opts?: { size?: number | string } & Record<string, string | number>): string;\n"
+        "export default icons;\n")
+    (DIST / "react.js").write_text(
+        "// <KioryIcon name=\"search\" size={20} /> — берёт цвет текста\n"
+        "import { createElement } from 'react';\n"
+        "import { icons } from './kiory.js';\n"
+        "export function KioryIcon({ name, size = 24, title, ...rest }) {\n"
+        "  const body = (title ? `<title>${title}</title>` : '') + (icons[name] || '');\n"
+        "  return createElement('svg', { xmlns: 'http://www.w3.org/2000/svg', width: size, height: size, viewBox: '0 0 24 24', fill: 'none',\n"
+        "    role: title ? 'img' : undefined, 'aria-hidden': title ? undefined : true, ...rest, dangerouslySetInnerHTML: { __html: body } });\n"
+        "}\n"
+        "export default KioryIcon;\n")
+    (DIST / "react.d.ts").write_text(
+        "import type { SVGProps, ReactElement } from 'react';\n"
+        "import type { KioryName } from './kiory.js';\n"
+        "export interface KioryIconProps extends Omit<SVGProps<SVGSVGElement>, 'name'> { name: KioryName; size?: number | string; title?: string }\n"
+        "export declare function KioryIcon(props: KioryIconProps): ReactElement;\n"
+        "export default KioryIcon;\n")
+
+    pkg_path = ROOT / "package.json"
+    pkg = json.loads(pkg_path.read_text())
+    if pkg.get("version") != cfg["version"]:
+        pkg["version"] = cfg["version"]
+        pkg_path.write_text(json.dumps(pkg, ensure_ascii=False, indent=2) + "\n")
 
     data = {
-        "families": manifest["families"],
-        "icons": [{"n": i["name"], "f": i["family"], "b": bodies[i["name"]]} for i in icons],
+        "families": families, "version": cfg["version"], "released": cfg["released"], "repo": cfg["repository"],
+        "icons": [{"n": n, "f": icons[n]["family"], "b": icons[n]["body"],
+                   "t": [t for t in icons[n]["tags"] if t not in n.split("-")],
+                   "a": icons[n]["added"], "u": icons[n]["updated"]} for n in order],
         "logo": (ROOT / "brand/kiory.svg").read_text(),
-        "version": VERSION,
     }
     tpl = (ROOT / "scripts/gallery.html").read_text()
-    html = tpl.replace("/*__DATA__*/null", json.dumps(data, ensure_ascii=False)).replace("__COUNT__", str(len(icons)))
+    html = tpl.replace("/*__DATA__*/null", json.dumps(data, ensure_ascii=False)).replace("__COUNT__", str(len(order)))
     (ROOT / "index.html").write_text(html)
+    return order
 
 
-def sheet(names: list[str], cols: int, cell: int, icon: int, fg: str, bg: str, pad: int = 48,
-          labels: bool = False) -> str:
+# ── превью для README ──────────────────────────────────────────────────────────
+
+def sheet(icons, names, cols, cell, icon, fg, bg, line=None, pad=48, labels=False) -> str:
     rows = -(-len(names) // cols)
-    lh = 22 if labels else 0
+    lh = 24 if labels else 0
     w, h = pad * 2 + cols * cell, pad * 2 + rows * (cell + lh)
     out = [f'<svg xmlns="http://www.w3.org/2000/svg" width="{w}" height="{h}" viewBox="0 0 {w} {h}">',
            f'<rect width="100%" height="100%" fill="{bg}"/>']
     for i, n in enumerate(names):
-        x = pad + (i % cols) * cell + (cell - icon) / 2
-        y = pad + (i // cols) * (cell + lh) + (cell - icon) / 2
-        s = icon / 24
-        out.append(f'<g transform="translate({x:.2f} {y:.2f}) scale({s:.4f})" color="{fg}" fill="{fg}">'
-                   + BODIES[n].replace("currentColor", fg) + "</g>")
+        cx, cy = pad + (i % cols) * cell, pad + (i // cols) * (cell + lh)
+        if line:
+            out.append(f'<rect x="{cx + .5}" y="{cy + .5}" width="{cell}" height="{cell + lh}" fill="none" stroke="{line}"/>')
+        x, y = cx + (cell - icon) / 2, cy + (cell - icon) / 2
+        out.append(f'<g transform="translate({x:.2f} {y:.2f}) scale({icon / 24:.4f})">'
+                   + icons[n]["body"].replace("currentColor", fg) + "</g>")
         if labels:
-            tx = pad + (i % cols) * cell + cell / 2
-            ty = pad + (i // cols) * (cell + lh) + cell + 6
-            out.append(f'<text x="{tx}" y="{ty}" font-family="Geologica, DejaVu Sans, sans-serif" font-size="12" '
+            out.append(f'<text x="{cx + cell / 2}" y="{cy + cell + 8}" font-family="DejaVu Sans Mono, monospace" font-size="11" '
                        f'fill="{fg}" fill-opacity=".5" text-anchor="middle">{n}</text>')
     out.append("</svg>")
     return "".join(out)
@@ -146,27 +258,19 @@ COVER = ["search", "home", "folder", "bell", "heart", "chat", "settings", "mail"
          "microphone", "camera", "cloud", "edit", "ai-spark", "webhook", "mention", "face-id"]
 
 
-def cover() -> str:
-    """Обложка README: логотип слева, 16 узнаваемых иконок справа."""
-    w, h, fg, bg, plate, lily = 1600, 640, "#f4f4f2", "#000000", "#000000", "#f4f4f2"
+def cover(icons) -> str:
+    w, h, fg, bg = 1600, 640, "#f4f4f2", "#000000"
     logo = (ROOT / "brand/kiory.svg").read_text()
     vb = [float(v) for v in re.search(r'viewBox="([^"]+)"', logo)[1].split()]
     inner = re.sub(r"^.*?<svg[^>]*>|</svg>\s*$", "", logo, flags=re.S).replace("currentColor", fg)
-    lw = 560
-    s = lw / vb[2]
+    s = 560 / vb[2]
     out = [f'<svg xmlns="http://www.w3.org/2000/svg" width="{w}" height="{h}" viewBox="0 0 {w} {h}">',
            f'<rect width="100%" height="100%" fill="{bg}"/>',
-           f'<g transform="translate(96 150) scale({s:.4f})" fill="{fg}">{inner}</g>',
-           f'<text x="98" y="420" font-family="Geologica, DejaVu Sans, sans-serif" font-size="30" fill="{fg}">'
-           f'{len(BODIES)} иконок · сетка 24 × 24 · залитые SVG</text>',
-           f'<text x="98" y="466" font-family="Geologica, DejaVu Sans, sans-serif" font-size="22" fill="{fg}" '
-           f'fill-opacity=".55">Мягкая плотная линия. Разрыв с каплей там, где он нужен.</text>']
-    for i, n in enumerate(COVER):
-        cx, cy = 840 + (i % 4) * 172, 64 + (i // 4) * 134
-        col = lily if n == "search" else fg
-        out.append(f'<rect x="{cx}.5" y="{cy}.5" width="171" height="133" fill="{plate}" stroke="#2a2a2a"/>')
-        out.append(f'<g transform="translate({cx + 62} {cy + 43}) scale({48 / 24})">'
-                   + BODIES[n].replace("currentColor", col) + "</g>")
+           f'<g transform="translate(96 {(h - vb[3] * s) / 2:.1f}) scale({s:.4f})" fill="{fg}">{inner}</g>']
+    for i, n in enumerate([c for c in COVER if c in icons][:16]):
+        cx, cy = 840 + (i % 4) * 172, 52 + (i // 4) * 134
+        out.append(f'<rect x="{cx}.5" y="{cy}.5" width="171" height="133" fill="{bg}" stroke="#2a2a2a"/>')
+        out.append(f'<g transform="translate({cx + 62} {cy + 43}) scale(2)">' + icons[n]["body"].replace("currentColor", fg) + "</g>")
     out.append("</svg>")
     return "".join(out)
 
@@ -178,34 +282,55 @@ def render(svg: str, out: Path) -> None:
     Path(t.name).unlink()
 
 
-def previews(families: dict[str, list[str]]) -> None:
+def previews(families, icons, order) -> None:
     if not shutil.which("rsvg-convert"):
-        print("rsvg-convert не найден — превью пропущены")
+        notes.append("rsvg-convert не найден — превью не обновлены")
         return
     d = ROOT / "docs/previews"
     d.mkdir(parents=True, exist_ok=True)
-    allnames = [n for ns in families.values() for n in ns]
-    render(sheet(allnames, 22, 56, 24, "#f4f4f2", "#000000"), d / "all-24-dark.png")
-    render(sheet(allnames, 22, 56, 24, "#000000", "#ffffff"), d / "all-24-light.png")
-    render(sheet(allnames, 32, 32, 16, "#f4f4f2", "#000000", pad=24), d / "all-16-dark.png")
-    render(cover(), d / "cover.png")
-    for f, ns in families.items():
-        render(sheet(ns, 8, 112, 48, "#f4f4f2", "#000000", labels=True), d / f"{f}.png")
+    # перерисовываем только когда поменялись иконки: PNG от разных версий librsvg отличаются байтами
+    key = hashlib.sha1(json.dumps([families, [(n, icons[n]["body"]) for n in order],
+                                   Path(__file__).read_text()]).encode()).hexdigest()
+    stamp_file = d / ".source"
+    if stamp_file.exists() and stamp_file.read_text().strip() == key and (d / "cover.png").exists():
+        return
+    stamp_file.write_text(key + "\n")
+    for old in d.glob("*.png"):
+        old.unlink()
+    render(cover(icons), d / "cover.png")
+    render(sheet(icons, order, 22, 56, 24, "#f4f4f2", "#000000"), d / "all-dark.png")
+    render(sheet(icons, order, 22, 56, 24, "#000000", "#ffffff"), d / "all-light.png")
+    for f in families:
+        ns = [n for n in order if icons[n]["family"] == f["id"]]
+        render(sheet(icons, ns, 8, 112, 40, "#f4f4f2", "#000000", "#222222", labels=True), d / f"{f['id']}.png")
 
 
-BODIES: dict[str, str] = {}
+# ── запуск ─────────────────────────────────────────────────────────────────────
+
+def main() -> None:
+    cfg, families, icons = load()
+    if errors:
+        for e in errors:
+            print("✗", e)
+        sys.exit(f"{len(errors)} ошибок — исправь и запусти снова")
+    unnormal = [i for i in icons.values() if i["file"].read_text() != i["text"]]
+    if CHECK:
+        if unnormal:
+            print("• будут приведены к единому виду при сборке:", ", ".join(i["name"] for i in unnormal))
+        print(f"✓ {len(icons)} иконок, {len(families)} семейств — проверка пройдена")
+        return
+    for i in unnormal:
+        i["file"].write_text(i["text"])
+        notes.append(f"приведена к единому виду: {i['file'].relative_to(ROOT)}")
+    stamp(icons, cfg["released"])
+    order = write(cfg, families, icons)
+    previews(families, icons, order)
+    for n in notes:
+        print("•", n)
+    fresh = sum(1 for i in icons.values() if i["updated"] > cfg["released"])
+    print(f"✓ {len(icons)} иконок, {len(families)} семейств" + (f", новых и обновлённых после {cfg['version']}: {fresh}" if fresh else ""))
+    print("✓ dist/, index.html, docs/previews/")
+
 
 if __name__ == "__main__":
-    fam = load_families()
-    errs, BODIES = check(fam)
-    for e in errs:
-        print("✗", e)
-    total = sum(len(v) for v in fam.values())
-    if errs:
-        sys.exit(f"{len(errs)} ошибок")
-    print(f"✓ {total} иконок, {len(fam)} семейств — проверка пройдена")
-    if "--check" in sys.argv:
-        sys.exit(0)
-    write_outputs(fam, BODIES)
-    previews(fam)
-    print("✓ manifest.json, kiory.sprite.svg, index.html, docs/previews/")
+    main()

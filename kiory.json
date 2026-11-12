@@ -1,0 +1,21 @@
+{
+  "name": "Kiory",
+  "version": "7.0.0",
+  "released": "2026-11-10",
+  "repository": "zinzaki/kiory",
+  "families": [
+    "navigation",
+    "actions-controls",
+    "charts-data",
+    "commerce",
+    "design-editing",
+    "windows-layout",
+    "files-documents",
+    "system-devices",
+    "communication-status",
+    "reactions-feedback",
+    "development-ai",
+    "media-audio",
+    "general-utilities"
+  ]
+}

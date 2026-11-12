@@ -1,0 +1,29 @@
+{
+  "title": "Окна и сетки",
+  "order": [
+    "window",
+    "windows",
+    "floating-window",
+    "desktop",
+    "workspace",
+    "dock",
+    "modal",
+    "minimize",
+    "maximize",
+    "fullscreen",
+    "exit-fullscreen",
+    "grid",
+    "bento",
+    "masonry",
+    "columns",
+    "list",
+    "kanban",
+    "split-h",
+    "split-v",
+    "picture-in-picture",
+    "panel",
+    "left-panel",
+    "right-panel",
+    "panel-bottom"
+  ]
+}

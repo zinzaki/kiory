@@ -1,0 +1,29 @@
+{
+  "title": "Медиа и звук",
+  "order": [
+    "play",
+    "pause",
+    "stop",
+    "previous",
+    "next",
+    "rewind",
+    "fast-forward",
+    "repeat",
+    "shuffle",
+    "queue",
+    "playlist",
+    "music",
+    "waveform",
+    "headphones",
+    "microphone",
+    "microphone-off",
+    "record",
+    "video",
+    "screenshot",
+    "screen-record",
+    "captions",
+    "cast",
+    "podcast",
+    "equalizer"
+  ]
+}

@@ -1,0 +1,21 @@
+{
+  "title": "Реакции",
+  "order": [
+    "heart",
+    "heart-filled",
+    "thumbs-up",
+    "thumbs-up-filled",
+    "thumbs-down",
+    "thumbs-down-filled",
+    "star",
+    "star-filled",
+    "smile",
+    "frown",
+    "laugh",
+    "surprised",
+    "feedback",
+    "report",
+    "fire",
+    "clap"
+  ]
+}

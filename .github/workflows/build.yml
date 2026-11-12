@@ -1,0 +1,61 @@
+name: Сборка и каталог
+# Положили или заменили иконку в icons/<семейство>/ и запушили в main —
+# здесь всё пересобирается, результат коммитится обратно и выкладывается на Pages.
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+permissions:
+  contents: write
+  pages: write
+  id-token: write
+concurrency:
+  group: build-${{ github.ref }}
+  cancel-in-progress: true
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Проверка
+        run: python scripts/build.py --check
+      - name: Сборка
+        if: github.event_name != 'pull_request'
+        run: |
+          sudo apt-get install -y -qq librsvg2-bin >/dev/null
+          python scripts/build.py
+      - name: Сохранить пересобранное
+        if: github.event_name != 'pull_request'
+        run: |
+          if [ -n "$(git status --porcelain)" ]; then
+            git config user.name "github-actions[bot]"
+            git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+            git add -A
+            git commit -m "Пересборка"
+            git push
+          fi
+      - name: Собрать сайт
+        if: github.event_name != 'pull_request'
+        run: |
+          mkdir _site
+          cp -r index.html dist fonts LICENSE _site/
+      - uses: actions/configure-pages@v5
+        if: github.event_name != 'pull_request'
+      - uses: actions/upload-pages-artifact@v3
+        if: github.event_name != 'pull_request'
+        with:
+          path: _site
+  deploy:
+    needs: build
+    if: github.event_name != 'pull_request'
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deploy.outputs.page_url }}
+    steps:
+      - id: deploy
+        uses: actions/deploy-pages@v4

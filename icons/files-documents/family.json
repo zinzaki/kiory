@@ -1,0 +1,29 @@
+{
+  "title": "Файлы и папки",
+  "order": [
+    "file",
+    "new-file",
+    "file-check",
+    "file-text",
+    "code-file",
+    "image-file",
+    "video-file",
+    "audio-file",
+    "pdf-file",
+    "spreadsheet-file",
+    "file-ai",
+    "file-lock",
+    "folder",
+    "new-folder",
+    "open-folder",
+    "folder-check",
+    "folder-search",
+    "folder-lock",
+    "folder-ai",
+    "file-tree",
+    "project",
+    "archive",
+    "attachment",
+    "note"
+  ]
+}

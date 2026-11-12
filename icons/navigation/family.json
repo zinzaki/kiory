@@ -1,0 +1,29 @@
+{
+  "title": "Навигация",
+  "order": [
+    "home",
+    "search",
+    "back",
+    "forward",
+    "arrow-left",
+    "arrow-right",
+    "up",
+    "down",
+    "chevron-left",
+    "chevron-right",
+    "chevron-up",
+    "chevron-down",
+    "chevrons-left",
+    "chevrons-right",
+    "arrow-up-left",
+    "arrow-up-right",
+    "arrow-down-left",
+    "arrow-down-right",
+    "menu",
+    "more-h",
+    "more-v",
+    "external-link",
+    "locate",
+    "unfold"
+  ]
+}
