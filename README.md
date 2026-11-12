@@ -9,10 +9,24 @@
 
 **352 SVG · 13 семейств · сетка 24 × 24 · `currentColor` · без зависимостей**
 
-## Посмотреть
+<p align="center">
+<img alt="352 иконки" src="https://img.shields.io/badge/иконок-352-f4f4f2?style=flat-square&labelColor=000000">
+<img alt="сетка 24×24" src="https://img.shields.io/badge/сетка-24×24-f4f4f2?style=flat-square&labelColor=000000">
+<img alt="версия" src="https://img.shields.io/badge/версия-7.0.0-f4f4f2?style=flat-square&labelColor=000000">
+<img alt="лицензия" src="https://img.shields.io/badge/лицензия-PolyForm_SB-f4f4f2?style=flat-square&labelColor=000000">
+</p>
 
-Открой [`index.html`](index.html): поиск (клавиша `/`), размеры 16–32 px, светлая и тёмная тема,
-по клику — превью 16–48 px, копирование и скачивание SVG. Работает без сервера.
+## Каталог
+
+Открой [`index.html`](index.html) — он работает без сервера и без сборки, а на GitHub Pages
+публикуется сам при каждом пуше в `main`.
+
+- **клик** по иконке копирует её SVG (или имя, или `<use>` для спрайта — переключатель в панели);
+- **Ctrl/⌘ + клик**, галочка на плитке или режим выбора — собрать несколько иконок, затем
+  скопировать их разом или скачать ZIP; **Shift + клик** выбирает диапазон, «выбрать семейство» — всё семейство;
+- **«Весь пак, ZIP»** — все SVG, спрайт и файл с уведомлением о лицензии;
+- поиск по `/` понимает и русские слова: «папка», «колокольчик», «нейросеть»;
+- размеры 16–40 px, цвет превью, светлая и тёмная тема, карточка иконки со всеми размерами и кодом.
 
 [Все иконки на тёмном](docs/previews/all-24-dark.png) · [на светлом](docs/previews/all-24-light.png) ·
 [16 px](docs/previews/all-16-dark.png) · превью по семействам — в [`docs/previews/`](docs/previews)
@@ -45,8 +59,9 @@
 | `groups.json` | рабочие группы по смыслу (рисование, файлы, ИИ…) |
 | `manifest.json` | машиночитаемый индекс: имя, семейство, файл, теги |
 | `kiory.sprite.svg` | все иконки символами `kiory-<имя>` |
-| `index.html` | автономный каталог, собирается из `scripts/gallery.html` |
+| `index.html` | автономный каталог, собирается из `scripts/gallery.html`, публикуется на Pages |
 | `brand/` | логотип Kiory |
+| `fonts/` | шрифты каталога Geologica и JetBrains Mono (OFL) |
 | `docs/` | превью, история пака, аудит v7 |
 | `reference/` | эталоны автора, пак v6, файл отбора v7 |
 | `scripts/` | сборка и проверка |

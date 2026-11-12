@@ -136,7 +136,7 @@ def sheet(names: list[str], cols: int, cell: int, icon: int, fg: str, bg: str, p
         if labels:
             tx = pad + (i % cols) * cell + cell / 2
             ty = pad + (i // cols) * (cell + lh) + cell + 6
-            out.append(f'<text x="{tx}" y="{ty}" font-family="Onest, DejaVu Sans, sans-serif" font-size="12" '
+            out.append(f'<text x="{tx}" y="{ty}" font-family="Geologica, DejaVu Sans, sans-serif" font-size="12" '
                        f'fill="{fg}" fill-opacity=".5" text-anchor="middle">{n}</text>')
     out.append("</svg>")
     return "".join(out)
@@ -148,7 +148,7 @@ COVER = ["search", "home", "folder", "bell", "heart", "chat", "settings", "mail"
 
 def cover() -> str:
     """Обложка README: логотип слева, 16 узнаваемых иконок справа."""
-    w, h, fg, bg, plate, lily = 1600, 640, "#f3ecf0", "#1a1419", "#231b21", "#e8758f"
+    w, h, fg, bg, plate, lily = 1600, 640, "#f4f4f2", "#000000", "#000000", "#f4f4f2"
     logo = (ROOT / "brand/kiory.svg").read_text()
     vb = [float(v) for v in re.search(r'viewBox="([^"]+)"', logo)[1].split()]
     inner = re.sub(r"^.*?<svg[^>]*>|</svg>\s*$", "", logo, flags=re.S).replace("currentColor", fg)
@@ -157,15 +157,15 @@ def cover() -> str:
     out = [f'<svg xmlns="http://www.w3.org/2000/svg" width="{w}" height="{h}" viewBox="0 0 {w} {h}">',
            f'<rect width="100%" height="100%" fill="{bg}"/>',
            f'<g transform="translate(96 150) scale({s:.4f})" fill="{fg}">{inner}</g>',
-           f'<text x="98" y="420" font-family="Onest, DejaVu Sans, sans-serif" font-size="30" fill="{fg}">'
+           f'<text x="98" y="420" font-family="Geologica, DejaVu Sans, sans-serif" font-size="30" fill="{fg}">'
            f'{len(BODIES)} иконок · сетка 24 × 24 · залитые SVG</text>',
-           f'<text x="98" y="466" font-family="Onest, DejaVu Sans, sans-serif" font-size="22" fill="{fg}" '
+           f'<text x="98" y="466" font-family="Geologica, DejaVu Sans, sans-serif" font-size="22" fill="{fg}" '
            f'fill-opacity=".55">Мягкая плотная линия. Разрыв с каплей там, где он нужен.</text>']
     for i, n in enumerate(COVER):
         cx, cy = 840 + (i % 4) * 172, 64 + (i // 4) * 134
         col = lily if n == "search" else fg
-        out.append(f'<rect x="{cx}" y="{cy}" width="152" height="116" rx="28" fill="{plate}"/>')
-        out.append(f'<g transform="translate({cx + 52} {cy + 34}) scale({48 / 24})">'
+        out.append(f'<rect x="{cx}.5" y="{cy}.5" width="171" height="133" fill="{plate}" stroke="#2a2a2a"/>')
+        out.append(f'<g transform="translate({cx + 62} {cy + 43}) scale({48 / 24})">'
                    + BODIES[n].replace("currentColor", col) + "</g>")
     out.append("</svg>")
     return "".join(out)
@@ -185,12 +185,12 @@ def previews(families: dict[str, list[str]]) -> None:
     d = ROOT / "docs/previews"
     d.mkdir(parents=True, exist_ok=True)
     allnames = [n for ns in families.values() for n in ns]
-    render(sheet(allnames, 22, 56, 24, "#f3ecf0", "#1a1419"), d / "all-24-dark.png")
-    render(sheet(allnames, 22, 56, 24, "#2a1f27", "#f7f2f4"), d / "all-24-light.png")
-    render(sheet(allnames, 32, 32, 16, "#f3ecf0", "#1a1419", pad=24), d / "all-16-dark.png")
+    render(sheet(allnames, 22, 56, 24, "#f4f4f2", "#000000"), d / "all-24-dark.png")
+    render(sheet(allnames, 22, 56, 24, "#000000", "#ffffff"), d / "all-24-light.png")
+    render(sheet(allnames, 32, 32, 16, "#f4f4f2", "#000000", pad=24), d / "all-16-dark.png")
     render(cover(), d / "cover.png")
     for f, ns in families.items():
-        render(sheet(ns, 8, 112, 48, "#f3ecf0", "#1a1419", labels=True), d / f"{f}.png")
+        render(sheet(ns, 8, 112, 48, "#f4f4f2", "#000000", labels=True), d / f"{f}.png")
 
 
 BODIES: dict[str, str] = {}
