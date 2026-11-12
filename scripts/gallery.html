@@ -1,0 +1,225 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Kiory — каталог иконок</title>
+<meta name="description" content="Kiory: __COUNT__ интерфейсных иконок на сетке 24 × 24. Поиск, размеры, копирование SVG.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Onest:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --ink:#1a1419; --plate:#231b21; --plate-2:#2c222a; --line:#3a2d36;
+  --paper:#f3ecf0; --mute:#a3929d; --lily:#e8758f; --lily-ink:#2a0f17;
+  --icon:var(--paper); --cell:64px; --glyph:24px;
+  color-scheme:dark;
+}
+:root[data-theme="light"]{
+  --ink:#f7f2f4; --plate:#fffafc; --plate-2:#f0e7eb; --line:#e3d6dc;
+  --paper:#2a1f27; --mute:#7d6b76; --lily:#c2405f; --lily-ink:#fff;
+  color-scheme:light;
+}
+@media (prefers-color-scheme: light){
+  :root:not([data-theme="dark"]){
+    --ink:#f7f2f4; --plate:#fffafc; --plate-2:#f0e7eb; --line:#e3d6dc;
+    --paper:#2a1f27; --mute:#7d6b76; --lily:#c2405f; --lily-ink:#fff;
+    color-scheme:light;
+  }
+}
+*{box-sizing:border-box}
+html{background:var(--ink)}
+body{margin:0;background:var(--ink);color:var(--paper);font:400 15px/1.5 Onest,system-ui,sans-serif;-webkit-font-smoothing:antialiased}
+button,input{font:inherit;color:inherit}
+:focus-visible{outline:2px solid var(--lily);outline-offset:2px}
+
+/* шапка: логотип и лупа-первоисточник */
+.hero{max-width:1240px;margin:0 auto;padding:56px 32px 40px;display:grid;grid-template-columns:1fr auto;gap:40px;align-items:end}
+.mark{color:var(--paper);width:min(420px,70vw)}
+.mark svg{width:100%;height:auto;display:block}
+.lede{margin:28px 0 0;max-width:44ch;color:var(--mute);font-size:17px;line-height:1.55}
+.lede b{color:var(--paper);font-weight:500}
+.origin{display:grid;justify-items:center;gap:12px;color:var(--mute);font-size:13px}
+.origin svg{width:184px;height:184px;color:var(--lily);display:block}
+.origin svg path{transform-origin:12px 12px;animation:settle 1.4s cubic-bezier(.2,.8,.2,1) both}
+@keyframes settle{from{transform:scale(.86) rotate(-14deg);opacity:0}to{transform:none;opacity:1}}
+
+/* панель инструментов */
+.bar{position:sticky;top:0;z-index:5;background:color-mix(in srgb,var(--ink) 88%,transparent);backdrop-filter:blur(10px);border-bottom:1px solid var(--line)}
+.bar-in{max-width:1240px;margin:0 auto;padding:12px 32px;display:flex;gap:12px;align-items:center;flex-wrap:wrap}
+.find{flex:1 1 240px;display:flex;align-items:center;gap:10px;background:var(--plate);border:1px solid var(--line);border-radius:14px;padding:0 14px;height:44px}
+.find svg{width:20px;height:20px;color:var(--mute);flex:none}
+.find input{flex:1;background:none;border:0;outline:0;min-width:0;height:100%}
+.find input::placeholder{color:var(--mute)}
+.seg{display:flex;background:var(--plate);border:1px solid var(--line);border-radius:14px;padding:3px;height:44px}
+.seg button{border:0;background:none;border-radius:10px;padding:0 12px;cursor:pointer;color:var(--mute);font-variant-numeric:tabular-nums}
+.seg button[aria-pressed="true"]{background:var(--plate-2);color:var(--paper)}
+.theme{width:44px;height:44px;border-radius:14px;border:1px solid var(--line);background:var(--plate);cursor:pointer;display:grid;place-items:center}
+.theme svg{width:20px;height:20px}
+.count{color:var(--mute);font-size:13px;font-variant-numeric:tabular-nums;min-width:7ch;text-align:right}
+
+/* семейства */
+main{max-width:1240px;margin:0 auto;padding:12px 32px 96px}
+.fam{margin-top:40px}
+.fam h2{font-size:15px;font-weight:600;margin:0 0 14px;display:flex;gap:10px;align-items:baseline}
+.fam h2 span{color:var(--mute);font-weight:400;font-variant-numeric:tabular-nums}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(var(--cell),1fr));gap:6px}
+.ic{aspect-ratio:1;border:0;background:var(--plate);border-radius:16px;cursor:pointer;display:grid;place-items:center;color:var(--icon);position:relative}
+.ic svg{width:var(--glyph);height:var(--glyph)}
+.ic:hover{background:var(--plate-2)}
+.ic[aria-current="true"]{background:var(--lily);color:var(--lily-ink)}
+.empty{color:var(--mute);padding:48px 0;text-align:center}
+
+/* панель иконки */
+.sheet{position:fixed;right:24px;bottom:24px;width:340px;background:var(--plate);border:1px solid var(--line);border-radius:24px;padding:20px;z-index:10;
+  box-shadow:0 24px 60px -20px rgb(0 0 0 / .55);transform:translateY(16px);opacity:0;pointer-events:none;transition:transform .22s cubic-bezier(.2,.8,.2,1),opacity .18s}
+.sheet.on{transform:none;opacity:1;pointer-events:auto}
+.sheet-top{display:flex;justify-content:space-between;align-items:center;gap:8px}
+.sheet h3{margin:0;font-size:17px;font-weight:600;word-break:break-all}
+.sheet .fam-name{color:var(--mute);font-size:13px}
+.x{border:0;background:none;width:36px;height:36px;border-radius:10px;cursor:pointer;color:var(--mute);display:grid;place-items:center;flex:none}
+.x:hover{background:var(--plate-2);color:var(--paper)}
+.x svg{width:20px;height:20px}
+.big{margin:16px 0;height:150px;border-radius:16px;background:var(--ink);display:grid;place-items:center}
+.big svg{width:112px;height:112px}
+.sizes{display:flex;justify-content:space-between;align-items:end;padding:0 6px 16px;color:var(--mute);font-size:12px}
+.sizes div{display:grid;justify-items:center;gap:6px}
+.sizes svg{color:var(--paper)}
+.acts{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.acts button{height:42px;border-radius:12px;border:1px solid var(--line);background:var(--plate-2);cursor:pointer;font-weight:500}
+.acts .main{background:var(--lily);border-color:var(--lily);color:var(--lily-ink)}
+.toast{margin-top:10px;color:var(--mute);font-size:13px;min-height:1.5em}
+
+footer{max-width:1240px;margin:0 auto;padding:0 32px 48px;color:var(--mute);font-size:13px}
+
+@media (max-width:720px){
+  .hero{grid-template-columns:1fr;padding:32px 16px 24px;gap:24px}
+  .origin{justify-items:start;grid-auto-flow:column;align-items:center;justify-content:start}
+  .origin svg{width:88px;height:88px}
+  .bar-in,main,footer{padding-left:16px;padding-right:16px}
+  .seg{order:3}.count{order:4;margin-left:auto}
+  .sheet{left:12px;right:12px;bottom:12px;width:auto;padding:16px}
+  .big{height:104px;margin:12px 0}.big svg{width:72px;height:72px}
+  :root{--cell:56px}
+}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+</style>
+</head>
+<body>
+<header class="hero">
+  <div>
+    <div class="mark" aria-label="Kiory" role="img" id="mark"></div>
+    <p class="lede"><b>__COUNT__ иконок</b> на сетке 24 × 24, одной толщиной и одним материалом: мягкая плотная линия, разрыв с каплей там, где он нужен. Нажми на иконку, чтобы скопировать или скачать SVG.</p>
+  </div>
+  <figure class="origin" style="margin:0">
+    <svg id="origin" viewBox="0 0 24 24" aria-hidden="true"></svg>
+    <figcaption>С этой лупы начался пак</figcaption>
+  </figure>
+</header>
+
+<div class="bar"><div class="bar-in">
+  <label class="find"><svg id="find-ic" viewBox="0 0 24 24" aria-hidden="true"></svg>
+    <input id="q" type="search" placeholder="Найти: folder, ai, arrow…" autocomplete="off" aria-label="Поиск иконки"></label>
+  <div class="seg" role="group" aria-label="Размер">
+    <button data-s="16">16</button><button data-s="20">20</button><button data-s="24" aria-pressed="true">24</button><button data-s="32">32</button>
+  </div>
+  <button class="theme" id="theme" aria-label="Сменить тему"><svg viewBox="0 0 24 24" aria-hidden="true"></svg></button>
+  <span class="count" id="count"></span>
+</div></div>
+
+<main id="main"></main>
+
+<aside class="sheet" id="sheet" aria-live="polite">
+  <div class="sheet-top"><div><h3 id="s-name"></h3><div class="fam-name" id="s-fam"></div></div>
+    <button class="x" id="s-close" aria-label="Закрыть"><svg viewBox="0 0 24 24" aria-hidden="true"></svg></button></div>
+  <div class="big" id="s-big"></div>
+  <div class="sizes" id="s-sizes"></div>
+  <div class="acts"><button class="main" id="s-copy">Скопировать SVG</button><button id="s-dl">Скачать</button></div>
+  <div class="toast" id="s-toast"></div>
+</aside>
+
+<footer>Kiory, редакция <span id="ver"></span>. Файлы — в папке <code>icons/</code>, спрайт — <code>kiory.sprite.svg</code>.</footer>
+
+<script>
+const DATA = /*__DATA__*/null;
+const by = Object.fromEntries(DATA.icons.map(i => [i.n, i]));
+const famTitle = Object.fromEntries(DATA.families.map(f => [f.id, f.title]));
+const svg = (b, attrs = '') => `<svg viewBox="0 0 24 24" fill="none" aria-hidden="true" ${attrs}>${b}</svg>`;
+const fileText = n => `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">${by[n].b}</svg>\n`;
+const put = (id, n) => { const el = document.getElementById(id); el.innerHTML = by[n].b; };
+
+document.getElementById('mark').innerHTML = DATA.logo;
+document.getElementById('ver').textContent = DATA.version;
+put('origin', 'search'); put('find-ic', 'search');
+document.querySelector('#s-close svg').innerHTML = by.close.b;
+
+const main = document.getElementById('main');
+main.innerHTML = DATA.families.map(f => `
+  <section class="fam" data-f="${f.id}"><h2>${f.title} <span>${f.count}</span></h2>
+  <div class="grid">${DATA.icons.filter(i => i.f === f.id).map(i =>
+    `<button class="ic" data-n="${i.n}" title="${i.n}" aria-label="${i.n}">${svg(i.b)}</button>`).join('')}</div></section>`).join('')
+  + '<p class="empty" id="empty" hidden></p>';
+
+// поиск
+const q = document.getElementById('q'), count = document.getElementById('count'), empty = document.getElementById('empty');
+function filter() {
+  const t = q.value.trim().toLowerCase(); let shown = 0;
+  document.querySelectorAll('.fam').forEach(sec => {
+    let k = 0;
+    sec.querySelectorAll('.ic').forEach(b => {
+      const ok = !t || b.dataset.n.includes(t) || famTitle[sec.dataset.f].toLowerCase().includes(t);
+      b.hidden = !ok; if (ok) k++;
+    });
+    sec.hidden = !k; shown += k;
+  });
+  count.textContent = t ? `${shown} из ${DATA.icons.length}` : `${DATA.icons.length}`;
+  empty.hidden = !!shown; empty.textContent = `Ничего не нашлось по «${q.value}». Попробуй английское имя: folder, bell, ai.`;
+}
+q.addEventListener('input', filter); filter();
+addEventListener('keydown', e => { if (e.key === '/' && document.activeElement !== q) { e.preventDefault(); q.focus(); } if (e.key === 'Escape') close(); });
+
+// размер
+document.querySelectorAll('.seg button').forEach(b => b.onclick = () => {
+  document.querySelectorAll('.seg button').forEach(x => x.setAttribute('aria-pressed', x === b));
+  const s = +b.dataset.s;
+  document.documentElement.style.setProperty('--glyph', s + 'px');
+  document.documentElement.style.setProperty('--cell', Math.max(56, s * 2.4) + 'px');
+});
+
+// тема
+const themeBtn = document.getElementById('theme');
+const isLight = () => document.documentElement.dataset.theme ? document.documentElement.dataset.theme === 'light' : matchMedia('(prefers-color-scheme: light)').matches;
+const paintTheme = () => themeBtn.querySelector('svg').innerHTML = (isLight() ? by.moon : by.sun).b;
+try { const t = localStorage.getItem('kiory-theme'); if (t) document.documentElement.dataset.theme = t; } catch (e) {}
+themeBtn.onclick = () => { const t = isLight() ? 'dark' : 'light'; document.documentElement.dataset.theme = t; try { localStorage.setItem('kiory-theme', t); } catch (e) {} paintTheme(); };
+paintTheme();
+
+// панель иконки
+const sheet = document.getElementById('sheet'), toast = document.getElementById('s-toast');
+let cur = null;
+function open(n, btn) {
+  document.querySelectorAll('.ic[aria-current]').forEach(x => x.removeAttribute('aria-current'));
+  btn?.setAttribute('aria-current', 'true');
+  cur = n; toast.textContent = '';
+  document.getElementById('s-name').textContent = n;
+  document.getElementById('s-fam').textContent = famTitle[by[n].f];
+  document.getElementById('s-big').innerHTML = svg(by[n].b);
+  document.getElementById('s-sizes').innerHTML = [16, 20, 24, 32, 48].map(s => `<div>${svg(by[n].b, `width="${s}" height="${s}"`)}${s}</div>`).join('');
+  sheet.classList.add('on');
+}
+function close() { sheet.classList.remove('on'); document.querySelectorAll('.ic[aria-current]').forEach(x => x.removeAttribute('aria-current')); cur = null; }
+main.addEventListener('click', e => { const b = e.target.closest('.ic'); if (b) open(b.dataset.n, b); });
+document.getElementById('s-close').onclick = close;
+document.getElementById('s-copy').onclick = async () => {
+  try { await navigator.clipboard.writeText(fileText(cur)); toast.textContent = `SVG ${cur} скопирован`; }
+  catch (e) { toast.textContent = 'Браузер не дал доступ к буферу. Скачай файл кнопкой рядом.'; }
+};
+document.getElementById('s-dl').onclick = () => {
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(new Blob([fileText(cur)], { type: 'image/svg+xml' }));
+  a.download = cur + '.svg'; a.click(); URL.revokeObjectURL(a.href);
+  toast.textContent = `${cur}.svg скачан`;
+};
+</script>
+</body>
+</html>
