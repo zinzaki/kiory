@@ -6,9 +6,9 @@
 
 Источник правды — папка `icons/`:
 
-    icons/<семейство>/family.json       {"title": "...", "order": [...]}  — order необязателен
-    icons/<семейство>/<имя>.svg         сама иконка (экспорт из Figma подойдёт)
-    icons/<семейство>/<имя>.json        паспорт, необязателен: {"tags": ["лупа", "найти"]}
+    icons/<раздел>/family.json          {"title": "Путь", "note": "Навигация и стрелки", "order": [...]}
+    icons/<раздел>/<имя>.svg            сама иконка (экспорт из Figma подойдёт)
+    icons/<раздел>/<имя>.json           паспорт, необязателен: {"tags": ["лупа", "найти"]}
 
 Положил или заменил файл — запустил сборку (или просто запушил: соберёт GitHub Actions).
 Сборка приведёт SVG к единому виду, отметит новые и обновлённые иконки, пересоберёт dist/,
@@ -103,7 +103,7 @@ def read_icon(p: Path) -> tuple[str, str] | None:
 def load() -> tuple[dict, list[dict], dict[str, dict]]:
     cfg = json.loads((ROOT / "kiory.json").read_text())
     for p in ICONS.glob("*.svg"):
-        errors.append(f"{p.relative_to(ROOT)}: иконка вне семейства — перенеси в icons/<семейство>/")
+        errors.append(f"{p.relative_to(ROOT)}: иконка вне раздела — перенеси в icons/<раздел>/")
     dirs = {d.name: d for d in ICONS.iterdir() if d.is_dir()}
     order = [f for f in cfg["families"] if f in dirs] + sorted(set(dirs) - set(cfg["families"]))
     families: list[dict] = []
@@ -119,7 +119,7 @@ def load() -> tuple[dict, list[dict], dict[str, dict]]:
                 errors.append(f"icons/{f}/{n}.svg: имя — латиницей в kebab-case, например arrow-left")
                 continue
             if n in seen:
-                errors.append(f"{n}: одно имя в двух семействах ({seen[n]} и {f})")
+                errors.append(f"{n}: одно имя в двух разделах ({seen[n]} и {f})")
                 continue
             seen[n] = f
             got = read_icon(files[n])
@@ -131,7 +131,7 @@ def load() -> tuple[dict, list[dict], dict[str, dict]]:
                         "tags": list(dict.fromkeys(n.split("-") + tags))}
         count = sum(1 for n in names if n in icons)
         if count:
-            families.append({"id": f, "title": meta.get("title", f), "count": count})
+            families.append({"id": f, "title": meta.get("title", f), "note": meta.get("note", ""), "count": count})
     return cfg, families, icons
 
 
@@ -260,11 +260,11 @@ COVER = ["search", "home", "folder", "bell", "heart", "chat", "settings", "mail"
 
 
 COVER_THEMES = {
-    # справа — фотосцена во всю высоту, сетка поверх; ночью верхний ряд сетки отдан ветви
-    "dark": {"fg": "#f4f4f2", "bg": "#000000", "line": "#262626", "skip": 4,
-             "art": [("night-water.jpg", 760, 340, 900, 300, .85, True), ("night-branch.jpg", 1060, 0, 540, 252, 1, False)]},
-    "light": {"fg": "#000000", "bg": "#ffffff", "line": "#d9d4d1", "skip": 1,
-              "art": [("paper-stage.jpg", 712, 0, 888, 640, 1, False)]},
+    # справа фото, сетка 4 × 3 поверх; ветвь живёт над сеткой, а не в её ячейках
+    "dark": {"fg": "#f4f4f2", "bg": "#000000", "line": "#262626",
+             "art": [("night-branch.jpg", 1100, -8, 500, 233, 1, False)]},
+    "light": {"fg": "#000000", "bg": "#ffffff", "line": "#d9d4d1",
+              "art": [("paper-stage.jpg", 712, -120, 888, 760, 1, False)]},
 }
 
 
@@ -292,13 +292,10 @@ def cover(icons, theme: str = "dark") -> str:
            f'<rect width="100%" height="100%" fill="{bg}"/>']
     out += [art_image(*a) for a in t["art"]]
     out.append(f'<g transform="translate(96 {(h - vb[3] * s) / 2:.1f}) scale({s:.4f})" fill="{fg}">{inner}</g>')
-    names = [c for c in COVER if c in icons]
-    for i in range(16):
-        cx, cy = 840 + (i % 4) * 172, 52 + (i // 4) * 134
+    for i, n in enumerate([c for c in COVER if c in icons][:12]):
+        cx, cy = 840 + (i % 4) * 172, 186 + (i // 4) * 134
         out.append(f'<rect x="{cx}.5" y="{cy}.5" width="171" height="133" fill="none" stroke="{t["line"]}"/>')
-        k = i - t["skip"]
-        if 0 <= k < len(names):
-            out.append(f'<g transform="translate({cx + 62} {cy + 43}) scale(2)">' + icons[names[k]]["body"].replace("currentColor", fg) + "</g>")
+        out.append(f'<g transform="translate({cx + 62} {cy + 43}) scale(2)">' + icons[n]["body"].replace("currentColor", fg) + "</g>")
     out.append("</svg>")
     return "".join(out)
 
@@ -347,7 +344,7 @@ def main() -> None:
     if CHECK:
         if unnormal:
             print("• будут приведены к единому виду при сборке:", ", ".join(i["name"] for i in unnormal))
-        print(f"✓ {len(icons)} иконок, {len(families)} семейств — проверка пройдена")
+        print(f"✓ {len(icons)} иконок, {len(families)} разделов — проверка пройдена")
         return
     for i in unnormal:
         i["file"].write_text(i["text"])
@@ -358,7 +355,7 @@ def main() -> None:
     for n in notes:
         print("•", n)
     fresh = sum(1 for i in icons.values() if i["updated"] > cfg["released"])
-    print(f"✓ {len(icons)} иконок, {len(families)} семейств" + (f", новых и обновлённых после {cfg['version']}: {fresh}" if fresh else ""))
+    print(f"✓ {len(icons)} иконок, {len(families)} разделов" + (f", новых и обновлённых после {cfg['version']}: {fresh}" if fresh else ""))
     print("✓ dist/, index.html, docs/previews/")
 
 
