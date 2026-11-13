@@ -123,9 +123,10 @@ kbd{font:400 11px var(--mono);border:1px solid var(--line-2);padding:2px 6px;col
 .chip i{width:6px;height:6px;border-radius:50%;background:currentColor}
 .chip[aria-pressed="true"]{background:var(--inv);color:var(--inv-text)}
 .chip[hidden]{display:none}
-.fams{display:flex;overflow-x:auto;scrollbar-width:none;border-top:1px solid var(--line)}
+.fams{display:flex;justify-content:space-between;gap:4px;overflow-x:auto;scrollbar-width:none;border-top:1px solid var(--line)}
 .fams::-webkit-scrollbar{display:none}
-.fams a{flex:none;text-decoration:none;color:var(--mute);font-size:13px;padding:10px 16px 11px;white-space:nowrap;transition:color .2s}
+.fams a{flex:none;text-decoration:none;color:var(--mute);font-size:14px;padding:10px 8px 11px;white-space:nowrap;transition:color .2s}
+.fams a:last-child{padding-right:0}
 .fams a:first-child{padding-left:0}
 .fams a:hover,.fams a.on{color:var(--text)}
 .fams a span{font:400 11px var(--mono);margin-left:6px;color:var(--faint)}
@@ -136,9 +137,10 @@ kbd{font:400 11px var(--mono);border:1px solid var(--line-2);padding:2px 6px;col
 main{padding-bottom:120px}
 .fam{padding-top:72px}
 .fam[hidden]{display:none}
-.fam-h{display:grid;grid-template-columns:auto 1fr auto;align-items:end;gap:20px;margin:0 0 20px}
-.fam-h h2{font:500 32px/1 var(--sans);letter-spacing:-.04em;margin:0}
-.fam-h .c{font:400 12px var(--mono);color:var(--mute);padding-bottom:3px}
+.fam-h{display:grid;grid-template-columns:auto 1fr auto;align-items:baseline;gap:20px;margin:0 0 22px}
+.fam-h h2{font:500 44px/1 var(--sans);letter-spacing:-.045em;margin:0}
+.fam-h p{margin:0;color:var(--mute);font-size:15px;min-width:0}
+.fam-h .c{font:400 12px var(--mono);color:var(--faint);margin-left:12px;font-variant-numeric:tabular-nums}
 .fam-h .all{border:0;background:none;color:var(--mute);font-size:13px;padding:0 0 2px;border-bottom:1px solid var(--line-2);transition:color .2s,border-color .2s}
 .fam-h .all:hover{color:var(--text);border-color:var(--text)}
 .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(var(--cell),1fr));border-top:1px solid var(--line);border-left:1px solid var(--line)}
@@ -236,7 +238,8 @@ main{padding-bottom:120px}
 .card-top{display:flex;justify-content:space-between;align-items:stretch;gap:12px;min-height:76px}
 .card-top>div{padding:16px 0 14px 24px;display:flex;flex-direction:column;justify-content:center}
 .card h3{margin:0;font:500 24px/1.1 var(--sans);letter-spacing:-.035em;word-break:break-word}
-.card .f{color:var(--mute);font-size:13px;margin-top:4px}
+.card .f{color:var(--text);font-size:13px;margin-top:4px}
+.card .f span{color:var(--mute)}
 .card .f b{font:500 10px var(--mono);color:var(--text);border:1px solid var(--line-2);padding:1px 5px;margin-left:8px;vertical-align:1px}
 .card-top .ib{border-left:1px solid var(--line)}
 .card .stage{position:relative;aspect-ratio:1;color:var(--icon);flex:none;overflow:hidden}
@@ -284,7 +287,6 @@ footer a{color:var(--text);text-decoration:none;border-bottom:1px solid var(--li
 /* лист разметки — сцена: фото под сеткой, иконка над ним */
 .stage{inset:0;overflow:hidden}
 @media (min-width:1001px){ .spec{aspect-ratio:auto;align-self:stretch;min-height:520px} }
-.stage .s-water{left:-10%;right:-10%;bottom:0;height:34%;background:url(art/stage-night-water.webp) 50% 100%/cover;opacity:.8;-webkit-mask:linear-gradient(transparent,#000 70%);mask:linear-gradient(transparent,#000 70%)}
 .stage .s-branch{right:-7%;top:-1%;width:64%;aspect-ratio:900/420;background:url(art/stage-night-branch.webp) 0 0/100%}
 .stage .s-paper{inset:0;background:url(art/stage-paper.webp) 50% 50%/cover}
 .intro .stage{opacity:0;animation:stage 1.8s var(--out) .6s forwards}
@@ -345,7 +347,9 @@ footer a{color:var(--text);text-decoration:none;border-bottom:1px solid var(--li
   .fmt,.size [data-s="40"],.seg .lbl,.find .n{display:none}
   .ib{width:48px}
   .fam{padding-top:48px}
-  .fam-h h2{font-size:24px}
+  .fam-h{grid-template-columns:1fr auto;row-gap:6px}
+  .fam-h h2{font-size:32px}
+  .fam-h p{grid-column:1/-1;grid-row:2;font-size:14px}
   .t .pick{opacity:0}.picking .t .pick,.t.sel .pick{opacity:1}
   .t .more{display:none}
   :root{--cell:96px}
@@ -376,7 +380,7 @@ footer a{color:var(--text);text-decoration:none;border-bottom:1px solid var(--li
     <div class="meta fade" style="--d:.1s"><span id="ver"></span><span>SVG · CSS · JS · React</span></div>
     <h1><span class="ln"><span id="h-count" style="--d:.15s">__COUNT__</span></span><span class="ln"><span id="h-word" style="--d:.25s">иконки</span></span></h1>
     <h2 class="fade" style="--d:.55s">Мягкие формы на&nbsp;точной сетке 24&nbsp;×&nbsp;24</h2>
-    <p class="fade" style="--d:.7s">Тридцать наборов — от&nbsp;навигации и&nbsp;файлов до&nbsp;дизайна, разработки и&nbsp;ИИ. Скопируйте иконку одним кликом, соберите свой набор или подключите весь пак одной строкой.</p>
+    <p class="fade" style="--d:.7s">Шестнадцать разделов — от&nbsp;навигации и&nbsp;файлов до&nbsp;дизайна, кода и&nbsp;ИИ. Скопируйте иконку одним кликом, соберите свой набор или подключите весь пак одной строкой.</p>
     <div class="hints fade" style="--d:.9s">
       <span><kbd>клик</kbd> копировать</span>
       <span><kbd>Ctrl</kbd><kbd>клик</kbd> в набор</span>
@@ -384,7 +388,7 @@ footer a{color:var(--text);text-decoration:none;border-bottom:1px solid var(--li
     </div>
   </div>
   <div class="spec" id="spec" role="button" tabindex="0" aria-label="Скопировать иконку">
-    <div class="art stage" aria-hidden="true"><i class="s-water night"></i><i class="s-branch night"></i><i class="s-paper paper"></i></div>
+    <div class="art stage" aria-hidden="true"><i class="s-branch night"></i><i class="s-paper paper"></i></div>
     <svg id="spec-grid" viewBox="-2 -2 28 28" aria-hidden="true"></svg>
     <svg class="spec-icon" id="spec-icon" viewBox="-2 -2 28 28" aria-hidden="true"></svg>
     <span class="spec-tl fade" style="--d:1s">24 × 24</span><span class="spec-tr" id="spec-xy"></span>
@@ -405,7 +409,7 @@ footer a{color:var(--text);text-decoration:none;border-bottom:1px solid var(--li
     <button class="ib" id="picking" aria-pressed="false" aria-label="Режим набора" title="Режим набора: клик добавляет иконку, а не копирует"><span data-i="select-all"></span></button>
     <button class="ib" id="theme" aria-label="Сменить тему"></button>
   </div>
-  <nav class="wrap fams" id="fams" aria-label="Наборы"></nav>
+  <nav class="wrap fams" id="fams" aria-label="Разделы"></nav>
   <i class="progress" id="progress"></i>
 </div>
 
@@ -459,9 +463,11 @@ const DATA = /*__DATA__*/null;
 const $ = id => document.getElementById(id);
 const root = document.documentElement;
 const motion = !matchMedia('(prefers-reduced-motion: reduce)').matches;
+const touch = matchMedia('(hover: none) and (pointer: coarse)').matches;
 const by = Object.fromEntries(DATA.icons.map(i => [i.n, i]));
 const order = DATA.icons.map(i => i.n);
 const famTitle = Object.fromEntries(DATA.families.map(f => [f.id, f.title]));
+const famNote = Object.fromEntries(DATA.families.map(f => [f.id, f.note]));
 const isNew = i => i.a > DATA.released, isUpd = i => !isNew(i) && i.u > DATA.released;
 const plural = (k, one, few, many) => k % 10 === 1 && k % 100 !== 11 ? one : [2, 3, 4].includes(k % 10) && ![12, 13, 14].includes(k % 100) ? few : many;
 const icons = k => `${k} ${plural(k, 'иконка', 'иконки', 'иконок')}`;
@@ -512,16 +518,16 @@ const main = $('main');
 const ok = svg(by.check.b, 'class="ok"');
 main.innerHTML = DATA.families.map(f => `
   <section class="fam" id="f-${f.id}" data-f="${f.id}">
-    <div class="fam-h"><h2>${f.title}</h2><span class="c">${f.count}</span><button class="all" data-all="${f.id}">в набор целиком</button></div>
+    <div class="fam-h"><h2>${f.title}</h2><p>${f.note}<span class="c">${f.count}</span></p><button class="all" data-all="${f.id}">весь раздел в набор</button></div>
     <div class="grid">${DATA.icons.filter(i => i.f === f.id).map(i => `
       <div class="t" data-n="${i.n}">
-        <button class="hit" aria-label="${i.n}"><span class="g">${svg(i.b)}${ok}</span><span class="nm">${i.n}</span></button>
+        <button class="hit" aria-label="${i.n}" title="${i.n}"><span class="g">${svg(i.b)}${ok}</span><span class="nm">${i.n}</span></button>
         ${isNew(i) ? '<span class="badge">NEW</span>' : isUpd(i) ? '<span class="badge">UPD</span>' : ''}
         <button class="pick" tabindex="-1" aria-label="В набор: ${i.n}" aria-pressed="false"><span class="box"></span></button>
         <button class="more" tabindex="-1" aria-label="Подробнее: ${i.n}">${svg(by['more-h'].b)}</button>
       </div>`).join('')}</div>
   </section>`).join('') + '<p class="empty" id="empty" hidden></p>';
-$('fams').innerHTML = DATA.families.map(f => `<a href="#f-${f.id}" data-f="${f.id}">${f.title}<span>${f.count}</span></a>`).join('');
+$('fams').innerHTML = DATA.families.map(f => `<a href="#f-${f.id}" data-f="${f.id}" title="${f.note}">${f.title}<span>${f.count}</span></a>`).join('');
 const tiles = Object.fromEntries([...main.querySelectorAll('.t')].map(t => [t.dataset.n, t]));
 const visible = () => order.filter(n => !tiles[n].hidden);
 
@@ -537,7 +543,7 @@ function filter(animate) {
   const t = q.value.trim().toLowerCase(), alt = t ? syn(t) : [];
   let shown = 0, k = 0;
   main.querySelectorAll('.fam').forEach(sec => {
-    let s = 0; const ft = famTitle[sec.dataset.f].toLowerCase();
+    let s = 0; const ft = (famTitle[sec.dataset.f] + ' ' + famNote[sec.dataset.f]).toLowerCase();
     sec.querySelectorAll('.t').forEach(el => {
       const i = by[el.dataset.n], n = i.n;
       const hit = !t || n.includes(t) || ft.includes(t) || i.t.some(x => x.includes(t)) || alt.some(a => n.includes(a));
@@ -644,6 +650,7 @@ main.addEventListener('click', e => {
   if (e.shiftKey && lastPick) { const v = visible(), a = v.indexOf(lastPick), b = v.indexOf(n);
     v.slice(Math.min(a, b), Math.max(a, b) + 1).forEach(x => setSel(x, true)); paintTray(); return; }
   if (e.target.closest('.pick') || picking || e.ctrlKey || e.metaKey) { lastPick = n; return toggle(n); }
+  if (touch) return openCard(n);
   copyOne(n, fmt, e);
 });
 let press;
@@ -703,7 +710,7 @@ const gridLines = anim => { let g = ''; const pl = anim ? 'pathLength="1" ' : ''
 function openCard(n, swap) {
   const first = !cur; cur = n; const i = by[n];
   $('c-name').textContent = n;
-  $('c-fam').innerHTML = famTitle[i.f] + (isNew(i) ? '<b>NEW</b>' : isUpd(i) ? '<b>UPD</b>' : '');
+  $('c-fam').innerHTML = `${famTitle[i.f]} <span>· ${famNote[i.f]}</span>` + (isNew(i) ? '<b>NEW</b>' : isUpd(i) ? '<b>UPD</b>' : '');
   const stage = $('c-stage');
   const fill = () => { stage.innerHTML = `<svg viewBox="0 0 24 24" aria-hidden="true">${gridLines(false)}</svg>` + svg(i.b, 'class="ic"'); };
   if (swap && motion) { stage.classList.add('swap'); setTimeout(() => { fill(); stage.offsetWidth; stage.classList.remove('swap'); }, 180); } else fill();
@@ -796,7 +803,7 @@ if (motion) { const el = $('h-count'), N = order.length, t0 = performance.now() 
   const tick = now => { const p = Math.min(1, Math.max(0, (now - t0) / 1300)); el.textContent = Math.round(N * (1 - Math.pow(1 - p, 4))); if (p < 1) requestAnimationFrame(tick); };
   el.textContent = '0'; requestAnimationFrame(tick); }
 
-/* ── прогресс и текущий набор ── */
+/* ── прогресс и текущий раздел ── */
 let curFam;
 function markFam() {
   const y = document.querySelector('.bar').getBoundingClientRect().bottom + 24;

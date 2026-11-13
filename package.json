@@ -1,22 +1,45 @@
 {
   "name": "kiory",
-  "version": "8.0.0",
+  "version": "8.1.0",
   "description": "Мягкие интерфейсные иконки на сетке 24 × 24: SVG, спрайт, CSS, JS и React",
   "license": "SEE LICENSE IN LICENSE",
   "type": "module",
   "main": "./dist/kiory.js",
   "types": "./dist/kiory.d.ts",
   "exports": {
-    ".": { "types": "./dist/kiory.d.ts", "default": "./dist/kiory.js" },
-    "./react": { "types": "./dist/react.d.ts", "default": "./dist/react.js" },
+    ".": {
+      "types": "./dist/kiory.d.ts",
+      "default": "./dist/kiory.js"
+    },
+    "./react": {
+      "types": "./dist/react.d.ts",
+      "default": "./dist/react.js"
+    },
     "./css": "./dist/kiory.css",
     "./sprite": "./dist/kiory.sprite.svg",
     "./json": "./dist/kiory.json",
     "./svg/*": "./dist/svg/*"
   },
-  "files": ["dist", "LICENSE"],
-  "sideEffects": ["*.css"],
-  "peerDependencies": { "react": ">=17" },
-  "peerDependenciesMeta": { "react": { "optional": true } },
-  "keywords": ["icons", "svg", "react", "css", "kiory"]
+  "files": [
+    "dist",
+    "LICENSE"
+  ],
+  "sideEffects": [
+    "*.css"
+  ],
+  "peerDependencies": {
+    "react": ">=17"
+  },
+  "peerDependenciesMeta": {
+    "react": {
+      "optional": true
+    }
+  },
+  "keywords": [
+    "icons",
+    "svg",
+    "react",
+    "css",
+    "kiory"
+  ]
 }

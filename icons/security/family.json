@@ -1,0 +1,26 @@
+{
+  "title": "Замок",
+  "note": "Безопасность, ключи, шифрование и права",
+  "order": [
+    "incognito",
+    "two-factor",
+    "otp-code",
+    "biometric-iris",
+    "certificate",
+    "signature",
+    "hash",
+    "encryption-key",
+    "vault",
+    "sandbox-shield",
+    "zero-trust",
+    "audit-log",
+    "permission-read",
+    "permission-write",
+    "permission-exec",
+    "role-admin",
+    "qr-scan",
+    "barcode",
+    "nfc",
+    "security-alert"
+  ]
+}
