@@ -260,32 +260,25 @@ COVER = ["search", "home", "folder", "bell", "heart", "chat", "settings", "mail"
 
 
 COVER_THEMES = {
-    # ночь — гербарий: ветвь у края сетки, сетка стоит на воде; день — лист мастерской: тень ветви на сетке
-    "dark": {"fg": "#f4f4f2", "bg": "#000000", "line": "#2a2a2a",
-             "under": [("night-water.jpg", 520, 400, 1100, 330, 1, True)],
-             "over": [("night-branch.png", 470, 10, 440, None, 1, False)]},
-    "light": {"fg": "#000000", "bg": "#ffffff", "line": "#e2e2df",
-              "under": [],
-              "over": [("paper-shadow.png", 900, 150, 760, None, .45, False),
-                       ("paper-branch.png", 480, 20, 400, None, 1, False)]},
+    # справа — фотосцена во всю высоту, сетка поверх; ночью верхний ряд сетки отдан ветви
+    "dark": {"fg": "#f4f4f2", "bg": "#000000", "line": "#262626", "skip": 4,
+             "art": [("night-water.jpg", 760, 340, 900, 300, .85, True), ("night-branch.jpg", 1060, 0, 540, 252, 1, False)]},
+    "light": {"fg": "#000000", "bg": "#ffffff", "line": "#d9d4d1", "skip": 1,
+              "art": [("paper-stage.jpg", 712, 0, 888, 640, 1, False)]},
 }
 
 
-def art_image(name: str, x: float, y: float, w: float, h: float | None, opacity: float, fade: bool) -> str:
+def art_image(name: str, x: float, y: float, w: float, h: float, opacity: float, fade: bool) -> str:
     path = ROOT / "art/readme" / name
     if not path.exists():
         return ""
-    data = path.read_bytes()
-    if h is None:  # размер PNG из заголовка, без сторонних библиотек
-        pw, ph = int.from_bytes(data[16:20], "big"), int.from_bytes(data[20:24], "big")
-        h = w * ph / pw
-    mime = "image/png" if name.endswith(".png") else "image/jpeg"
-    mask = f' mask="url(#fade-{name[:-4]})"' if fade else ""
-    defs = (f'<defs><linearGradient id="g-{name[:-4]}" x1="0" x2="1"><stop offset="0" stop-color="#fff" stop-opacity="0"/>'
-            f'<stop offset=".45" stop-color="#fff"/></linearGradient><mask id="fade-{name[:-4]}"><rect x="{x}" y="{y}" width="{w}" '
-            f'height="{h}" fill="url(#g-{name[:-4]})"/></mask></defs>') if fade else ""
-    return (defs + f'<image x="{x}" y="{y}" width="{w}" height="{h:.1f}" opacity="{opacity}"{mask} preserveAspectRatio="none" '
-            f'href="data:{mime};base64,{base64.b64encode(data).decode()}"/>')
+    key = name.split(".")[0]
+    mask = f' mask="url(#m-{key})"' if fade else ""
+    defs = (f'<defs><linearGradient id="g-{key}" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#fff" stop-opacity="0"/>'
+            f'<stop offset=".7" stop-color="#fff"/></linearGradient><mask id="m-{key}"><rect x="{x}" y="{y}" width="{w}" '
+            f'height="{h}" fill="url(#g-{key})"/></mask></defs>') if fade else ""
+    return (defs + f'<image x="{x}" y="{y}" width="{w}" height="{h}" opacity="{opacity}"{mask} preserveAspectRatio="xMidYMid slice" '
+            f'href="data:image/jpeg;base64,{base64.b64encode(path.read_bytes()).decode()}"/>')
 
 
 def cover(icons, theme: str = "dark") -> str:
@@ -297,13 +290,15 @@ def cover(icons, theme: str = "dark") -> str:
     s = 560 / vb[2]
     out = [f'<svg xmlns="http://www.w3.org/2000/svg" width="{w}" height="{h}" viewBox="0 0 {w} {h}">',
            f'<rect width="100%" height="100%" fill="{bg}"/>']
-    out += [art_image(*a) for a in t["under"]]
+    out += [art_image(*a) for a in t["art"]]
     out.append(f'<g transform="translate(96 {(h - vb[3] * s) / 2:.1f}) scale({s:.4f})" fill="{fg}">{inner}</g>')
-    for i, n in enumerate([c for c in COVER if c in icons][:16]):
+    names = [c for c in COVER if c in icons]
+    for i in range(16):
         cx, cy = 840 + (i % 4) * 172, 52 + (i // 4) * 134
         out.append(f'<rect x="{cx}.5" y="{cy}.5" width="171" height="133" fill="none" stroke="{t["line"]}"/>')
-        out.append(f'<g transform="translate({cx + 62} {cy + 43}) scale(2)">' + icons[n]["body"].replace("currentColor", fg) + "</g>")
-    out += [art_image(*a) for a in t["over"]]
+        k = i - t["skip"]
+        if 0 <= k < len(names):
+            out.append(f'<g transform="translate({cx + 62} {cy + 43}) scale(2)">' + icons[names[k]]["body"].replace("currentColor", fg) + "</g>")
     out.append("</svg>")
     return "".join(out)
 

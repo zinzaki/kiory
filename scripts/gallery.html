@@ -271,9 +271,9 @@ footer{border-top:1px solid var(--line);color:var(--mute);font-size:13px}
 footer .wrap{display:flex;justify-content:space-between;gap:24px;flex-wrap:wrap;padding-top:28px;padding-bottom:40px}
 footer a{color:var(--text);text-decoration:none;border-bottom:1px solid var(--line-2)}
 
-/* ── оформление: ночь — гербарий, день — лист мастерской ── */
+/* ── оформление: ночь — гербарий у воды, день — лист с тенью ветви ── */
 .art{position:absolute;pointer-events:none;user-select:none;-webkit-user-select:none}
-.art img{display:block;width:100%;height:auto}
+.art i{position:absolute;display:block;background-repeat:no-repeat}
 .art .paper{display:none}
 :root[data-theme="light"] .art .night{display:none}
 :root[data-theme="light"] .art .paper{display:block}
@@ -281,29 +281,41 @@ footer a{color:var(--text);text-decoration:none;border-bottom:1px solid var(--li
   :root:not([data-theme="dark"]) .art .night{display:none}
   :root:not([data-theme="dark"]) .art .paper{display:block}
 }
-.hero{position:relative}
-.hero-l{position:relative;z-index:1}
-.spec{z-index:1}
-.hero-art{inset:0;z-index:0;overflow:hidden}
-.hero-art .branch{position:absolute;right:470px;top:40px;width:clamp(380px,36vw,500px)}
-.hero-art .water{position:absolute;right:-40px;bottom:0;width:calc(520px + 300px);height:300px;background:url(art/night-water.webp) 70% 100%/cover no-repeat;mix-blend-mode:screen;opacity:.75;
-  -webkit-mask:linear-gradient(90deg,transparent,#000 45%);mask:linear-gradient(90deg,transparent,#000 45%)}
-.hero-art .branch.paper{width:clamp(340px,32vw,450px);top:70px;right:470px}
-.hero-art .shadow{position:absolute;right:-60px;top:120px;width:760px;mix-blend-mode:multiply;opacity:.5}
-.use{position:relative}
-.use-h,.use-box{position:relative;z-index:1}
-.use-art{inset:0;z-index:0;overflow:hidden}
-.use-art img{position:absolute;right:-10px;top:40px;width:230px;transform:rotate(-24deg)}
-@media (max-width:1000px){
-  .hero-art .branch,.hero-art .branch.paper{left:auto;right:-60px;top:24px;width:min(420px,62vw)}
-  .hero-art .water{width:auto;left:-40px;height:min(320px,60vw);-webkit-mask:none;mask:none}
-  .hero-art .shadow{top:auto;bottom:0;right:-80px;width:min(680px,120vw)}
-}
+/* лист разметки — сцена: фото под сеткой, иконка над ним */
+.stage{inset:0;overflow:hidden}
+@media (min-width:1001px){ .spec{aspect-ratio:auto;align-self:stretch;min-height:520px} }
+.stage .s-water{left:-10%;right:-10%;bottom:0;height:34%;background:url(art/stage-night-water.webp) 50% 100%/cover;opacity:.8;-webkit-mask:linear-gradient(transparent,#000 70%);mask:linear-gradient(transparent,#000 70%)}
+.stage .s-branch{right:-7%;top:-1%;width:64%;aspect-ratio:900/420;background:url(art/stage-night-branch.webp) 0 0/100%}
+.stage .s-paper{inset:0;background:url(art/stage-paper.webp) 50% 50%/cover}
+.intro .stage{opacity:0;animation:stage 1.8s var(--out) .6s forwards}
+@keyframes stage{from{opacity:0;transform:scale(1.05);filter:blur(10px)}to{opacity:1;transform:none;filter:none}}
+/* подписи поверх фото — матовые плашки */
+.spec-tl,.spec-tr,.spec-cap b,.spec-cap span{padding:3px 8px;background:color-mix(in srgb,var(--bg) 55%,transparent);
+  -webkit-backdrop-filter:blur(12px) saturate(1.4);backdrop-filter:blur(12px) saturate(1.4);
+  box-shadow:inset 0 0 0 1px color-mix(in srgb,var(--text) 9%,transparent)}
+.spec-tl{left:16px;top:14px}.spec-tr{right:16px;top:14px}
+.spec-cap{left:16px;right:16px;bottom:14px}
+
+/* кадр перед «Подключением»: фото во всю ширину, заголовок на его пустой части, панель — стекло */
+.band{position:relative;height:clamp(300px,32vw,520px);border-top:1px solid var(--line);overflow:hidden}
+.band i{inset:0;background-size:cover;background-position:72% 50%;
+  -webkit-mask:linear-gradient(#000 55%,transparent);mask:linear-gradient(#000 55%,transparent)}
+.band .night{background-image:url(art/band-night.webp)}
+.band .paper{background-image:url(art/band-paper.webp)}
+.band + .use{border-top:0;margin-top:calc(-1 * clamp(300px,32vw,520px));padding-top:clamp(72px,8vw,128px);position:relative}
+.use-box{background:color-mix(in srgb,var(--bg) 62%,transparent);-webkit-backdrop-filter:blur(28px) saturate(1.3);backdrop-filter:blur(28px) saturate(1.3);
+  box-shadow:inset 0 1px 0 color-mix(in srgb,var(--text) 8%,transparent)}
+.snip button{background:transparent}
+.band + .use .use-h p{max-width:34ch}
+
+/* плавающие слои — стекло */
+.tray,.toast{background:color-mix(in srgb,var(--inv) 90%,transparent);-webkit-backdrop-filter:blur(22px) saturate(1.6);backdrop-filter:blur(22px) saturate(1.6)}
+.tray{box-shadow:inset 0 1px 0 color-mix(in srgb,var(--inv-text) 14%,transparent),0 30px 70px -24px rgb(0 0 0 / .55)}
+.scrim{background:rgb(0 0 0 / .42);-webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px)}
 @media (max-width:720px){
-  .hero-art .branch,.hero-art .branch.paper{right:-70px;top:12px;width:62vw}
-  .hero-art .branch.paper{right:-56px;top:-4px;width:50vw}
-  .hero-art .shadow{opacity:.32;right:-120px}
-  .use-art img{width:104px;right:-14px;top:52px}
+  .band{height:52vw}
+  .band i{background-position:100% 50%}
+  .band + .use{margin-top:0;padding-top:8px}
 }
 
 @media (max-width:1100px){ .fmt .lbl{display:none} }
@@ -360,12 +372,6 @@ footer a{color:var(--text);text-decoration:none;border-bottom:1px solid var(--li
 </div>
 
 <header class="wrap hero intro" id="top">
-  <div class="art hero-art" aria-hidden="true">
-    <i class="water night"></i>
-    <img class="branch night" src="art/night-branch.webp" width="1400" height="911" alt="" loading="lazy" decoding="async">
-    <img class="shadow paper" src="art/paper-shadow.webp" width="1400" height="700" alt="" loading="lazy" decoding="async">
-    <img class="branch paper" src="art/paper-branch.webp" width="1400" height="929" alt="" loading="lazy" decoding="async">
-  </div>
   <div class="hero-l">
     <div class="meta fade" style="--d:.1s"><span id="ver"></span><span>SVG · CSS · JS · React</span></div>
     <h1><span class="ln"><span id="h-count" style="--d:.15s">__COUNT__</span></span><span class="ln"><span id="h-word" style="--d:.25s">иконки</span></span></h1>
@@ -378,6 +384,7 @@ footer a{color:var(--text);text-decoration:none;border-bottom:1px solid var(--li
     </div>
   </div>
   <div class="spec" id="spec" role="button" tabindex="0" aria-label="Скопировать иконку">
+    <div class="art stage" aria-hidden="true"><i class="s-water night"></i><i class="s-branch night"></i><i class="s-paper paper"></i></div>
     <svg id="spec-grid" viewBox="-2 -2 28 28" aria-hidden="true"></svg>
     <svg class="spec-icon" id="spec-icon" viewBox="-2 -2 28 28" aria-hidden="true"></svg>
     <span class="spec-tl fade" style="--d:1s">24 × 24</span><span class="spec-tr" id="spec-xy"></span>
@@ -404,11 +411,8 @@ footer a{color:var(--text);text-decoration:none;border-bottom:1px solid var(--li
 
 <main class="wrap" id="main"></main>
 
+<div class="band" aria-hidden="true"><div class="art" style="inset:0"><i class="night"></i><i class="paper"></i></div></div>
 <section class="wrap use" id="use">
-  <div class="art use-art" aria-hidden="true">
-    <img class="night" src="art/night-petal.webp" width="698" height="700" alt="" loading="lazy" decoding="async">
-    <img class="paper" src="art/paper-petal.webp" width="600" height="600" alt="" loading="lazy" decoding="async">
-  </div>
   <div class="use-h">
     <h2>Подключение</h2>
     <p>Всё уже собрано: отдельные SVG, спрайт, CSS-классы, модуль для JS и компонент для React. Выберите, как удобнее.</p>
@@ -776,8 +780,9 @@ const run = () => { clearInterval(specTimer); if (motion) specTimer = setInterva
 specIcon.innerHTML = by[SPEC[0]].b; capt(SPEC[0]);
 setTimeout(() => { document.querySelector('.hero').classList.remove('intro'); run(); }, motion ? 2600 : 0);
 spec.addEventListener('pointermove', e => {
-  const r = spec.getBoundingClientRect(), u = 28 / r.width;
-  const cx = Math.max(0, Math.min(23, Math.floor((e.clientX - r.left) * u - 2))), cy = Math.max(0, Math.min(23, Math.floor((e.clientY - r.top) * u - 2)));
+  const r = spec.getBoundingClientRect(), side = Math.min(r.width, r.height), u = 28 / side;
+  const ox = r.left + (r.width - side) / 2, oy = r.top + (r.height - side) / 2;
+  const cx = Math.max(0, Math.min(23, Math.floor((e.clientX - ox) * u - 2))), cy = Math.max(0, Math.min(23, Math.floor((e.clientY - oy) * u - 2)));
   $('hl').setAttribute('x', cx); $('hl').setAttribute('y', cy);
   $('cross').setAttribute('d', `M${cx + .5} 0V24M0 ${cy + .5}H24`);
   $('spec-xy').textContent = `x ${String(cx).padStart(2, '0')}   y ${String(cy).padStart(2, '0')}`;
