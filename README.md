@@ -114,5 +114,5 @@ TypeScript подсказывает имена иконок.
   [GitHub](https://github.com/zinzaki);
 - передавая иконки дальше, сохраняйте текст лицензии и строку `Required Notice`.
 
-Шрифты каталога — Geologica и JetBrains Mono, лицензия SIL OFL ([`fonts/`](fonts)).
+Шрифты каталога — Geist и Geist Mono (Vercel), лицензия SIL OFL ([`fonts/`](fonts)).
 Фотографии ветвей и лепестков в [`art/`](art) — только оформление каталога и README, в пак иконок они не входят.

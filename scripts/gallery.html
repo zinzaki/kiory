@@ -8,37 +8,36 @@
 <meta name="theme-color" content="#000000">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Crect width='24' height='24' fill='%23000'/%3E%3Ccircle cx='11' cy='11' r='5.5' fill='none' stroke='%23fff' stroke-width='2.4'/%3E%3Cpath d='M15.2 15.2l3.6 3.6' stroke='%23fff' stroke-width='2.6' stroke-linecap='round'/%3E%3C/svg%3E">
 <style>
-@font-face{font-family:"Geologica";font-weight:300 700;font-display:swap;src:url(fonts/geologica-cyrillic.woff2) format("woff2");unicode-range:U+0301,U+0400-045F,U+0490-0491,U+04B0-04B1,U+2116}
-@font-face{font-family:"Geologica";font-weight:300 700;font-display:swap;src:url(fonts/geologica-latin.woff2) format("woff2");unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD}
-@font-face{font-family:"JetBrains Mono";font-weight:400 500;font-display:swap;src:url(fonts/jetbrains-mono-cyrillic.woff2) format("woff2");unicode-range:U+0301,U+0400-045F,U+0490-0491,U+04B0-04B1,U+2116}
-@font-face{font-family:"JetBrains Mono";font-weight:400 500;font-display:swap;src:url(fonts/jetbrains-mono-latin.woff2) format("woff2");unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD}
+@font-face{font-family:"Geist";font-weight:100 900;font-display:swap;src:url(fonts/geist-variable.woff2) format("woff2")}
+@font-face{font-family:"Geist Mono";font-weight:100 900;font-display:swap;src:url(fonts/geist-mono-variable.woff2) format("woff2")}
 :root{
-  --bg:#000; --hover:#0f0f0f; --line:#222; --line-2:#3a3a3a;
-  --text:#f4f4f2; --mute:#7c7c7a; --faint:#3a3a3a;
-  --inv:#f4f4f2; --inv-text:#000;
+  --bg:#060606; --hover:#100f0e; --line:#1f1e1c; --line-2:#363431;
+  --text:#f2efe9; --mute:#8b8781; --faint:#3a3835;
+  --inv:#f2efe9; --inv-text:#060606;
   --icon:var(--text); --glyph:24px; --cell:112px;
-  --sans:"Geologica",system-ui,sans-serif; --mono:"JetBrains Mono",ui-monospace,monospace;
+  --sans:"Geist",system-ui,sans-serif; --mono:"Geist Mono",ui-monospace,monospace;
   --out:cubic-bezier(.16,1,.3,1); --spring:cubic-bezier(.34,1.56,.64,1);
   --accent:#d0223b; --glow:rgb(255 255 255 / .065);
   color-scheme:dark;
 }
 :root[data-theme="light"]{
   --accent:#a61c25; --glow:rgb(0 0 0 / .04);
-  --bg:#fff; --hover:#f4f4f3; --line:#e6e6e3; --line-2:#c9c9c6;
-  --text:#000; --mute:#76767a; --faint:#cfcfcc; --inv:#000; --inv-text:#fff;
+  --bg:#f7f5f2; --hover:#efebe6; --line:#e4dfd8; --line-2:#cbc4bb;
+  --text:#141211; --mute:#77716a; --faint:#cfc8bf; --inv:#141211; --inv-text:#f7f5f2;
   color-scheme:light;
 }
 @media (prefers-color-scheme: light){
   :root:not([data-theme="dark"]){
     --accent:#a61c25; --glow:rgb(0 0 0 / .04);
-    --bg:#fff; --hover:#f4f4f3; --line:#e6e6e3; --line-2:#c9c9c6;
-    --text:#000; --mute:#76767a; --faint:#cfcfcc; --inv:#000; --inv-text:#fff;
+    --bg:#f7f5f2; --hover:#efebe6; --line:#e4dfd8; --line-2:#cbc4bb;
+    --text:#141211; --mute:#77716a; --faint:#cfc8bf; --inv:#141211; --inv-text:#f7f5f2;
     color-scheme:light;
   }
 }
 *{box-sizing:border-box}
 html{background:var(--bg);scroll-padding-top:132px;scroll-behavior:smooth}
-body{margin:0;background:var(--bg);color:var(--text);font:350 15px/1.55 var(--sans);-webkit-font-smoothing:antialiased}
+body{margin:0;background:var(--bg);color:var(--text);font:400 15px/1.55 var(--sans);-webkit-font-smoothing:antialiased;font-feature-settings:"ss01"}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
 button,input{font:inherit;color:inherit}
 button{cursor:pointer}
 a{color:inherit}
@@ -46,60 +45,163 @@ a{color:inherit}
 svg{display:block}
 ::selection{background:var(--inv);color:var(--inv-text)}
 .wrap{max-width:1360px;margin:0 auto;padding:0 40px}
-kbd{font:400 11px var(--mono);border:1px solid var(--line-2);padding:2px 6px;color:var(--text);white-space:nowrap}
+kbd{font:400 11px var(--mono);border:1px solid var(--line-2);border-radius:6px;padding:2px 6px;color:var(--text);white-space:nowrap}
 ::view-transition-old(root),::view-transition-new(root){animation:none;mix-blend-mode:normal}
 
-/* ── верх ── */
-.top{display:flex;align-items:center;justify-content:space-between;gap:16px;height:72px;border-bottom:1px solid var(--line)}
-.top .logo{width:84px;color:var(--text);display:block}
+/* ── верх: поверх поля с иконками ── */
+.top{position:absolute;z-index:6;top:0;left:0;right:0;display:flex;align-items:center;justify-content:space-between;gap:16px;height:76px}
+.top .logo{width:80px;color:var(--text);display:block}
 .top .logo svg{width:100%;height:auto}
 .top nav{display:flex;align-items:center;gap:28px;font-size:14px}
 .top nav a{color:var(--mute);text-decoration:none;transition:color .2s}
 .top nav a:hover{color:var(--text)}
-.btn{display:inline-flex;align-items:center;gap:10px;height:40px;padding:0 18px;border:1px solid var(--inv);background:var(--inv);color:var(--inv-text);font-weight:500;font-size:14px;white-space:nowrap;position:relative;overflow:hidden;isolation:isolate;transition:color .35s var(--out)}
+.top .ib{width:42px;height:42px;border-radius:50%}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:10px;height:42px;padding:0 20px;border-radius:999px;border:1px solid var(--inv);background:var(--inv);color:var(--inv-text);font-weight:500;font-size:14px;text-decoration:none;white-space:nowrap;position:relative;overflow:hidden;isolation:isolate;transition:color .35s var(--out)}
 .btn::before{content:"";position:absolute;inset:0;background:var(--bg);transform:translateY(101%);transition:transform .45s var(--out);z-index:-1}
 .btn:hover{color:var(--text)}
 .btn:hover::before{transform:none}
 .btn svg{width:18px;height:18px}
+.btn.ghost{background:transparent;color:var(--text);border-color:color-mix(in srgb,var(--text) 22%,transparent)}
+.btn.ghost::before{background:var(--text)}
+.btn.ghost:hover{color:var(--bg)}
+.glass{background:color-mix(in srgb,var(--bg) 60%,transparent);-webkit-backdrop-filter:blur(26px) saturate(1.35);backdrop-filter:blur(26px) saturate(1.35);
+  box-shadow:inset 0 1px 0 color-mix(in srgb,var(--text) 10%,transparent),inset 0 0 0 1px color-mix(in srgb,var(--text) 8%,transparent),0 40px 120px -40px rgb(0 0 0 / .55)}
 
-/* ── герой ── */
-.hero{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,520px);border-bottom:1px solid var(--line)}
-.hero-l{padding:72px 56px 48px 0;border-right:1px solid var(--line);display:flex;flex-direction:column}
-.meta{font:400 12px var(--mono);color:var(--mute);display:flex;gap:24px;flex-wrap:wrap}
-.hero h1{font:600 clamp(64px,10vw,152px)/.88 var(--sans);letter-spacing:-.06em;margin:40px 0 0}
-.hero h1 .ln{display:block;overflow:hidden;padding-bottom:.06em;margin-bottom:-.06em}
-.hero h1 .ln>span{display:block;font-variant-numeric:tabular-nums}
-.hero h2{font:300 clamp(24px,2.6vw,36px)/1.12 var(--sans);letter-spacing:-.03em;margin:22px 0 0;color:var(--mute);max-width:18em}
-.hero p{margin:36px 0 0;max-width:46ch;color:var(--mute);font-size:16px}
-.hints{display:flex;gap:32px;flex-wrap:wrap;margin-top:auto;padding-top:48px;font-size:13px;color:var(--mute)}
-.hints span{display:inline-flex;align-items:center;gap:8px}
-.spec{position:relative;aspect-ratio:1;cursor:copy;user-select:none;-webkit-user-select:none;outline-offset:-1px}
-.spec svg{position:absolute;inset:0;width:100%;height:100%}
-.spec .cell{stroke:var(--line);stroke-width:.025}
-.spec .key{stroke:var(--line-2);stroke-width:.025;fill:none;opacity:.7}
-.spec .hl{fill:var(--text);opacity:0;transition:opacity .2s}
-.spec .cross{stroke:var(--mute);stroke-width:.03;opacity:0;transition:opacity .2s}
-.spec:hover .hl{opacity:.08}.spec:hover .cross{opacity:1}
-.spec-icon{color:var(--text);transition:opacity .5s var(--out),filter .5s var(--out),transform .6s var(--out)}
-.spec-icon.out{opacity:0;filter:blur(10px);transform:scale(.94)}
-.spec-cap{position:absolute;left:24px;right:24px;bottom:18px;display:flex;justify-content:space-between;align-items:baseline;font:400 12px var(--mono);color:var(--mute);pointer-events:none}
-.spec-cap b{color:var(--text);font-weight:500}
-.spec-tl,.spec-tr{position:absolute;top:20px;font:400 12px var(--mono);color:var(--mute);pointer-events:none;font-variant-numeric:tabular-nums;white-space:pre}
-.spec-tl{left:24px}.spec-tr{right:24px;opacity:0;transition:opacity .2s}
-.spec:hover .spec-tr{opacity:1}
-
-/* ── вступление ── */
-.intro .ln>span{transform:translateY(105%);animation:rise 1.1s var(--out) forwards;animation-delay:var(--d,0s)}
-.intro .fade{opacity:0;animation:fade .9s var(--out) forwards;animation-delay:var(--d,0s)}
-.intro .spec .cell,.intro .spec .key{stroke-dasharray:1 1;stroke-dashoffset:1;animation:draw 1.2s var(--out) forwards;animation-delay:calc(.25s + var(--i) * 30ms)}
-.intro .spec .key{animation-delay:1s}
-.intro .spec-icon{opacity:0;filter:blur(14px);transform:scale(.9);animation:focus 1.2s var(--out) .9s forwards}
+/* ── герой: всё поле иконок, лупа под курсором, стеклянная панель с поиском ── */
+.hero{position:relative;height:100svh;min-height:660px;max-height:1080px;overflow:hidden;border-bottom:1px solid var(--line)}
+.field{position:absolute;inset:0;--fs:18px}
+.field i{position:absolute;left:0;top:0;width:var(--fs);height:var(--fs);margin:calc(var(--fs) / -2) 0 0 calc(var(--fs) / -2);color:var(--text);opacity:.2;will-change:transform,opacity;transition:color .3s}
+.field i svg{width:100%;height:100%}
+.field i.near{color:var(--accent)}
+.field.q i{opacity:.05}
+.field.q i.hit{opacity:.9;color:var(--accent)}
+.hero::after{content:"";position:absolute;inset:0;pointer-events:none;z-index:1;background:linear-gradient(var(--bg),transparent 150px),radial-gradient(75% 70% at 50% 50%,transparent 55%,var(--bg) 100%)}
+.ftag{position:absolute;z-index:4;left:0;top:0;pointer-events:none;font:500 12px var(--mono);padding:5px 10px;border-radius:9px;opacity:0;transition:opacity .2s;white-space:nowrap}
+.panel{position:absolute;z-index:3;left:50%;top:53%;transform:translate(-50%,-50%);width:min(640px,calc(100% - 32px));padding:52px 52px 34px;border-radius:32px;text-align:center}
+.panel .xl{display:block;width:min(300px,60vw);margin:0 auto;color:var(--text)}
+.panel .xl svg{width:100%;height:auto}
+.panel p{margin:22px auto 0;max-width:34ch;color:var(--mute);font-size:18px;line-height:1.45;letter-spacing:-.01em}
+.panel p b{color:var(--text);font-weight:500}
+.hfind{margin-top:30px;display:flex;align-items:center;gap:12px;height:58px;padding:0 9px 0 18px;border-radius:19px;cursor:text;text-align:left;
+  background:color-mix(in srgb,var(--text) 6%,transparent);box-shadow:inset 0 0 0 1px color-mix(in srgb,var(--text) 11%,transparent);transition:box-shadow .3s var(--out)}
+.hfind:focus-within{box-shadow:inset 0 0 0 1px color-mix(in srgb,var(--text) 32%,transparent),0 0 0 6px color-mix(in srgb,var(--accent) 14%,transparent)}
+.hfind>svg{width:20px;height:20px;color:var(--mute);flex:none}
+.hfind input{flex:1;min-width:0;border:0;background:none;outline:0;font-size:16px;height:100%}
+.hfind input::placeholder{color:var(--mute)}
+.hfind input::-webkit-search-cancel-button{display:none}
+.hfind .go{height:40px;padding:0 16px;border:0;border-radius:13px;background:var(--text);color:var(--bg);font-size:13px;font-weight:500;white-space:nowrap;font-variant-numeric:tabular-nums}
+.hmeta{margin-top:20px;display:flex;justify-content:center;gap:10px 20px;flex-wrap:wrap;font:400 12px var(--mono);color:var(--mute)}
+.intro .field i{animation:fin 1.2s var(--out) backwards;animation-delay:var(--d)}
+.intro .panel{animation:pin 1.3s var(--out) .45s backwards}
+.intro .top{animation:fade 1s var(--out) .9s backwards}
+@keyframes fin{from{opacity:0;transform:scale(.2)}}
+@keyframes pin{from{opacity:0;transform:translate(-50%,-46%) scale(.97);filter:blur(10px)}}
+@keyframes fade{from{opacity:0}}
 @keyframes rise{to{transform:none}}
-@keyframes fade{to{opacity:1}}
-@keyframes draw{to{stroke-dashoffset:0}}
-@keyframes focus{to{opacity:1;filter:none;transform:none}}
 
-/* ── панель ── */
+/* ── заголовок секции ── */
+.sec-h{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:40px;align-items:end;margin-bottom:44px}
+.sec-h h2{font:500 clamp(52px,6.4vw,96px)/.92 var(--sans);letter-spacing:-.055em;margin:0}
+.sec-h p{margin:0;color:var(--mute);max-width:42ch;font-size:16px}
+
+/* ── ремесло: одна иконка крупно, табличка, лента образцов ── */
+.craft{padding-top:150px}
+.cbox{display:grid;grid-template-columns:minmax(0,1.15fr) minmax(0,.85fr);border:1px solid var(--line);border-radius:30px;overflow:hidden}
+.plate{position:relative;display:grid;place-items:center;padding:60px 48px 44px;border-right:1px solid var(--line);cursor:copy;user-select:none;-webkit-user-select:none;outline-offset:-1px;border-radius:30px 0 0 0}
+.plate::before{content:"";position:absolute;inset:0;background:radial-gradient(46% 46% at 50% 52%,color-mix(in srgb,var(--accent) 22%,transparent),transparent 72%);animation:breathe 8s ease-in-out infinite;pointer-events:none}
+@keyframes breathe{50%{opacity:.5;transform:scale(1.05)}}
+.pin{position:relative;width:min(100%,440px,52vh);aspect-ratio:1}
+.pin svg{position:absolute;inset:0;width:100%;height:100%}
+.pin .cell{stroke:var(--line-2);stroke-width:.02}
+.pin .key{stroke:color-mix(in srgb,var(--text) 22%,transparent);stroke-width:.03;fill:none;stroke-dasharray:.16 .16}
+.pin .hl{fill:var(--accent);opacity:0;transition:opacity .2s}
+.pin .cross{stroke:var(--accent);stroke-width:.03;opacity:0;transition:opacity .2s}
+.plate:hover .hl{opacity:.3}.plate:hover .cross{opacity:.55}
+.p-ico{color:var(--text)}
+.tick{position:absolute;top:0;transform:translate(-50%,-170%);font:400 11px var(--mono);color:var(--mute)}
+.tick.v{left:0;top:auto;transform:translate(-190%,-50%)}
+.p-xy{position:absolute;right:22px;top:20px;font:400 12px var(--mono);color:var(--mute);opacity:0;transition:opacity .2s;white-space:pre;font-variant-numeric:tabular-nums}
+.plate:hover .p-xy{opacity:1}
+.scan{position:absolute;top:0;height:1px;z-index:2;pointer-events:none;background:var(--accent);box-shadow:0 0 14px 1px var(--accent)}
+.scan::before{content:"";position:absolute;left:0;right:0;bottom:1px;height:64px;background:linear-gradient(transparent,color-mix(in srgb,var(--accent) 16%,transparent))}
+.placard{padding:44px 44px 36px;display:flex;flex-direction:column;min-width:0}
+.pl-no{font:400 13px var(--mono);color:var(--mute);font-variant-numeric:tabular-nums}
+.pl-no b{color:var(--text);font-weight:500}
+.pl-name{font:500 clamp(44px,4.6vw,72px)/.95 var(--sans);letter-spacing:-.05em;margin:16px 0 0;overflow-wrap:anywhere}
+.pl-sec{margin-top:14px;color:var(--mute);font-size:16px}
+.pl-sec b{color:var(--text);font-weight:500}
+.ladder2{display:flex;align-items:flex-end;gap:26px;margin-top:auto;padding-top:30px;border-top:1px solid var(--line);font:400 11px var(--mono);color:var(--mute)}
+.ladder2 div{display:grid;justify-items:center;gap:10px}
+.ladder2 svg{color:var(--text)}
+.pl-act{display:flex;gap:10px;margin-top:28px;flex-wrap:wrap}
+.strip{grid-column:1/-1;display:grid;grid-template-columns:repeat(12,1fr);border-top:1px solid var(--line)}
+.strip button{height:64px;border:0;border-right:1px solid var(--line);background:none;color:var(--mute);display:grid;place-items:center;position:relative;transition:color .3s,background .3s}
+.strip button:last-child{border-right:0}
+.strip button svg{width:22px;height:22px;transition:transform .5s var(--spring)}
+.strip button:hover{color:var(--text);background:var(--hover)}
+.strip button:hover svg{transform:scale(1.15)}
+.strip button[aria-current="true"]{color:var(--text)}
+.strip button[aria-current="true"]::after{content:"";position:absolute;left:30%;right:30%;bottom:-1px;height:2px;background:var(--accent)}
+.facts{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:24px;margin-top:40px}
+.facts div{border-top:1px solid var(--line);padding-top:18px;color:var(--mute);font-size:14px}
+.facts b{display:block;margin-bottom:6px;font:500 26px/1.05 var(--sans);letter-spacing:-.035em;color:var(--text)}
+
+/* ── в деле: окно приложения, собранное из Kiory ── */
+.inuse{padding-top:150px;padding-bottom:140px}
+.win{--w-bg:#0e0d0c;--w-bg2:#151413;--w-text:#f2efe9;--w-mute:#8b8781;--w-line:#24221f;--w-acc:#d0223b;
+  position:relative;display:grid;grid-template-columns:236px minmax(0,1fr) 300px;height:clamp(480px,46vw,620px);border-radius:26px;overflow:hidden;
+  background:var(--w-bg);color:var(--w-text);transition:background .7s var(--out),color .7s var(--out);
+  box-shadow:inset 0 0 0 1px color-mix(in srgb,var(--w-text) 9%,transparent),0 70px 140px -50px rgb(0 0 0 / .6)}
+.win[data-t="paper"]{--w-bg:#fbfaf8;--w-bg2:#f1eee9;--w-text:#141211;--w-mute:#78726b;--w-line:#e6e1da;--w-acc:#a61c25}
+.win *{transition:background-color .5s var(--out),color .5s var(--out),border-color .7s var(--out)}
+.w-side{border-right:1px solid var(--w-line);padding:18px 12px;display:flex;flex-direction:column;gap:2px;background:var(--w-bg2)}
+.w-brand{display:flex;align-items:center;gap:10px;padding:6px 12px 16px;font-weight:500;font-size:14px}
+.w-brand svg{height:16px;width:auto}
+.w-it{display:flex;align-items:center;gap:12px;padding:9px 12px;border-radius:11px;color:var(--w-mute);font-size:14px}
+.w-it svg{width:18px;height:18px;flex:none}
+.w-it .b{margin-left:auto;font:500 11px var(--mono);padding:1px 7px;border-radius:999px;background:var(--w-acc);color:#fff}
+.w-it.on{background:color-mix(in srgb,var(--w-text) 8%,transparent);color:var(--w-text)}
+.w-sep{height:1px;background:var(--w-line);margin:10px 6px}
+.w-main{display:flex;flex-direction:column;min-width:0}
+.w-bar{height:58px;display:flex;align-items:center;gap:4px;padding:0 14px;border-bottom:1px solid var(--w-line);color:var(--w-mute)}
+.w-ib{width:36px;height:36px;border-radius:10px;display:grid;place-items:center;flex:none}
+.w-ib svg{width:18px;height:18px}
+.w-ib.on{background:color-mix(in srgb,var(--w-text) 8%,transparent);color:var(--w-text)}
+.w-crumb{margin-left:8px;font-size:14px;color:var(--w-text);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.w-crumb span{color:var(--w-mute)}
+.w-sp{flex:1}
+.w-mode{display:flex;gap:2px;padding:3px;border-radius:999px;background:color-mix(in srgb,var(--w-text) 6%,transparent);margin-left:6px}
+.w-mode button{border:0;background:none;height:30px;padding:0 12px;border-radius:999px;font-size:12px;color:var(--w-mute);display:flex;align-items:center;gap:6px}
+.w-mode button svg{width:14px;height:14px}
+.w-mode button[aria-pressed="true"]{background:var(--w-text);color:var(--w-bg)}
+.w-rows{padding:8px;overflow:hidden}
+.w-row{display:grid;grid-template-columns:24px minmax(0,1fr) auto 24px;align-items:center;gap:14px;padding:11px 12px;border-radius:12px;font-size:14px}
+.w-row svg{width:18px;height:18px;color:var(--w-mute)}
+.w-row .m{font:400 12px var(--mono);color:var(--w-mute)}
+.w-row.on{background:color-mix(in srgb,var(--w-acc) 12%,transparent)}
+.w-row.on>svg:first-child{color:var(--w-acc)}
+.w-right{border-left:1px solid var(--w-line);padding:20px;display:flex;flex-direction:column;gap:16px;background:var(--w-bg2);min-width:0}
+.w-art{position:relative;aspect-ratio:1;border-radius:16px;overflow:hidden;background:#000}
+.w-art i{position:absolute;inset:0;background-size:cover;background-position:center;transition:opacity .8s var(--out)}
+.w-art .n{background:#000 url(art/stage-night-branch.webp) 100% 0/95% no-repeat}
+.w-art .p{background-image:url(art/stage-paper.webp);opacity:0}
+.win[data-t="paper"] .w-art .p{opacity:1}
+.w-tr{font-size:15px;font-weight:500}.w-tr span{display:block;color:var(--w-mute);font-size:13px;font-weight:400}
+.w-wave{display:flex;align-items:center;gap:3px;height:30px}
+.w-wave i{flex:1;border-radius:2px;height:30%;background:color-mix(in srgb,var(--w-text) 22%,transparent);transition:height .35s var(--out),background .5s}
+.w-wave i.pl{background:var(--w-acc)}
+.w-ctl{display:flex;justify-content:space-between;align-items:center;margin-top:auto}
+.w-ctl svg{width:20px;height:20px}
+.w-ctl .play{width:50px;height:50px;border-radius:50%;background:var(--w-text);color:var(--w-bg);display:grid;place-items:center}
+.w-toast{position:absolute;right:22px;bottom:22px;z-index:4;display:flex;gap:10px;align-items:center;padding:12px 16px;border-radius:14px;font-size:14px;
+  background:color-mix(in srgb,var(--w-text) 92%,transparent);color:var(--w-bg);transform:translateY(160%);transition:transform .7s var(--out)}
+.w-toast.on{transform:none}
+.w-toast svg{width:18px;height:18px}
+.w-cur{position:absolute;z-index:5;left:0;top:0;width:22px;height:22px;margin:-4px 0 0 -4px;pointer-events:none;color:var(--w-text);transition:transform 1.1s cubic-bezier(.65,0,.35,1),color .5s}
+.w-cur svg{width:22px;height:22px;filter:drop-shadow(0 3px 8px rgb(0 0 0 / .35))}
+.w-cap{margin-top:18px;font:400 12px var(--mono);color:var(--mute);display:flex;justify-content:space-between;gap:20px;flex-wrap:wrap}
+
+/* ── панель ── *//* ── панель ── */
 .bar{position:sticky;top:0;z-index:20;background:color-mix(in srgb,var(--bg) 88%,transparent);backdrop-filter:blur(16px) saturate(1.2);-webkit-backdrop-filter:blur(16px);border-bottom:1px solid var(--line)}
 .progress{position:absolute;left:0;bottom:-1px;height:1px;width:100%;background:var(--text);transform-origin:0 50%;transform:scaleX(var(--p,0))}
 .bar-row{display:flex;align-items:stretch;height:56px}
@@ -299,24 +401,6 @@ footer a{color:var(--text);text-decoration:none;border-bottom:1px solid var(--li
   :root:not([data-theme="dark"]) .art .night{display:none}
   :root:not([data-theme="dark"]) .art .paper{display:block}
 }
-/* лист разметки — сцена: фото под сеткой, иконка над ним */
-.stage{inset:0;overflow:hidden}
-@media (min-width:1001px){ .spec{aspect-ratio:auto;align-self:stretch;min-height:520px} }
-.stage .s-branch{right:-7%;top:-1%;width:64%;aspect-ratio:900/420;background:url(art/stage-night-branch.webp) 0 0/100%;
-  transform:translate3d(calc(var(--px,0) * -22px),calc(var(--py,0) * -14px + var(--sy,0) * .14px),0)}
-.stage .s-paper{inset:-28px;background:url(art/stage-paper.webp) 50% 50%/cover;
-  transform:translate3d(calc(var(--px,0) * -14px),calc(var(--py,0) * -10px + var(--sy,0) * .09px),0)}
-.scan{position:absolute;top:0;height:1px;z-index:2;pointer-events:none;background:var(--accent);box-shadow:0 0 14px 1px var(--accent)}
-.scan::before{content:"";position:absolute;left:0;right:0;bottom:1px;height:56px;background:linear-gradient(transparent,color-mix(in srgb,var(--accent) 16%,transparent))}
-.intro .stage{opacity:0;animation:stage 1.8s var(--out) .6s forwards}
-@keyframes stage{from{opacity:0;transform:scale(1.05);filter:blur(10px)}to{opacity:1;transform:none;filter:none}}
-/* подписи поверх фото — матовые плашки */
-.spec-tl,.spec-tr,.spec-cap b,.spec-cap span{padding:3px 8px;background:color-mix(in srgb,var(--bg) 55%,transparent);
-  -webkit-backdrop-filter:blur(12px) saturate(1.4);backdrop-filter:blur(12px) saturate(1.4);
-  box-shadow:inset 0 0 0 1px color-mix(in srgb,var(--text) 9%,transparent)}
-.spec-tl{left:16px;top:14px}.spec-tr{right:16px;top:14px}
-.spec-cap{left:16px;right:16px;bottom:14px}
-
 /* кадр перед «Подключением»: фото во всю ширину, заголовок на его пустой части, панель — стекло */
 .band{position:relative;height:clamp(300px,32vw,520px);border-top:1px solid var(--line);overflow:hidden}
 .band i{inset:0;background-size:cover;background-position:72% 50%;
@@ -345,23 +429,38 @@ footer a{color:var(--text);text-decoration:none;border-bottom:1px solid var(--li
 
 @media (max-width:1100px){ .fmt .lbl{display:none} }
 @media (max-width:1000px){
-  .hero{grid-template-columns:1fr}
-  .hero-l{border-right:0;padding-right:0;padding-bottom:40px}
-  .spec{max-width:520px;width:100%;border-top:1px solid var(--line);justify-self:start}
   .use-h{grid-template-columns:1fr}
+  .sec-h{grid-template-columns:1fr;gap:20px}
+  .cbox{grid-template-columns:1fr}
+  .plate{border-right:0;border-bottom:1px solid var(--line);padding:56px 40px 40px;border-radius:30px 30px 0 0}
+  .facts{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .win{grid-template-columns:200px minmax(0,1fr)}
+  .w-right{display:none}
   .use-box{grid-template-columns:1fr}
   .use-tabs{flex-direction:row;overflow-x:auto;border-right:0;border-bottom:1px solid var(--line);scrollbar-width:none}
   .use-tabs button{border-bottom:0;border-right:1px solid var(--line);flex:none}
 }
 @media (max-width:720px){
   .wrap{padding-left:16px;padding-right:16px}
-  .top{height:60px}
+  .top{height:64px}
   .top nav a{display:none}
-  .hero-l{padding-top:36px}
-  .hero h1{margin-top:28px}
-  .hero p{margin-top:24px;font-size:15px}
-  .hints{display:none}
-  .spec{max-width:none}
+  .top .btn{display:none}
+  .panel{padding:36px 22px 24px;border-radius:26px;top:54%}
+  .panel p{font-size:16px}
+  .hfind .go{display:none}
+  .craft,.inuse{padding-top:96px}
+  .inuse{padding-bottom:96px}
+  .plate{padding:44px 26px 28px}
+  .placard{padding:32px 22px 26px}
+  .strip{grid-template-columns:repeat(6,1fr)}
+  .strip button:nth-child(6){border-right:0}
+  .strip button:nth-child(n+7){border-top:1px solid var(--line)}
+  .facts{gap:18px}
+  .win{grid-template-columns:minmax(0,1fr);height:520px}
+  .w-side{display:none}
+  .w-crumb span{display:none}
+  .w-bar [data-w],.w-bar .w-ib:not([data-w]):nth-child(2){display:none}
+  .w-mode button{padding:0 10px}
   .bar-row{height:auto;flex-wrap:wrap}
   .bar-row>.find{flex-basis:100%;height:52px;border-right:0;border-bottom:1px solid var(--line)}
   .bar-row>*{height:48px}
@@ -388,36 +487,76 @@ footer a{color:var(--text);text-decoration:none;border-bottom:1px solid var(--li
 </head>
 <body>
 
-<div class="wrap top">
-  <a class="logo" id="logo" href="#top" aria-label="Kiory"></a>
-  <nav>
-    <a href="#catalog">Каталог</a>
-    <a href="#use">Подключение</a>
-    <a id="gh" href="#" rel="noopener">GitHub</a>
-    <button class="btn" id="dl-all"><span data-i="download"></span>Скачать всё</button>
-  </nav>
-</div>
-
-<header class="wrap hero intro" id="top">
-  <div class="hero-l">
-    <div class="meta fade" style="--d:.1s"><span id="ver"></span><span>SVG · CSS · JS · React</span></div>
-    <h1><span class="ln"><span id="h-count" style="--d:.15s">__COUNT__</span></span><span class="ln"><span id="h-word" style="--d:.25s">иконки</span></span></h1>
-    <h2 class="fade" style="--d:.55s">Мягкие формы на&nbsp;точной сетке 24&nbsp;×&nbsp;24</h2>
-    <p class="fade" style="--d:.7s">Шестнадцать разделов — от&nbsp;навигации и&nbsp;файлов до&nbsp;дизайна, кода и&nbsp;ИИ. Скопируйте иконку одним кликом, соберите свой набор или подключите весь пак одной строкой.</p>
-    <div class="hints fade" style="--d:.9s">
-      <span><kbd>клик</kbd> копировать</span>
-      <span><kbd>Ctrl</kbd><kbd>клик</kbd> в набор</span>
-      <span><kbd>Shift</kbd><kbd>клик</kbd> диапазон</span>
-    </div>
+<header class="hero intro" id="top">
+  <div class="field" id="field" aria-hidden="true"></div>
+  <div class="ftag glass" id="ftag" aria-hidden="true"></div>
+  <div class="wrap top">
+    <a class="logo" id="logo" href="#top" aria-label="Kiory"></a>
+    <nav>
+      <a href="#craft">Ремесло</a>
+      <a href="#inuse">В деле</a>
+      <a href="#catalog">Каталог</a>
+      <a href="#use">Подключение</a>
+      <a id="gh" href="#" rel="noopener">GitHub</a>
+      <button class="ib" id="theme-top" aria-label="Сменить тему"></button>
+      <button class="btn" id="dl-all"><span data-i="download"></span>Скачать всё</button>
+    </nav>
   </div>
-  <div class="spec" id="spec" role="button" tabindex="0" aria-label="Скопировать иконку">
-    <div class="art stage" aria-hidden="true"><i class="s-branch night"></i><i class="s-paper paper"></i></div>
-    <svg id="spec-grid" viewBox="-2 -2 28 28" aria-hidden="true"></svg>
-    <svg class="spec-icon" id="spec-icon" viewBox="-2 -2 28 28" aria-hidden="true"></svg>
-    <span class="spec-tl fade" style="--d:1s">24 × 24</span><span class="spec-tr" id="spec-xy"></span>
-    <div class="spec-cap fade" style="--d:1.2s"><b id="spec-name"></b><span id="spec-fam"></span></div>
+  <div class="panel glass">
+    <h1 class="sr">Kiory — __COUNT__ иконок</h1>
+    <span class="xl" id="logo-xl" aria-hidden="true"></span>
+    <p><b>__COUNT__ мягких иконок</b> мастерской YHK — шестнадцать разделов на&nbsp;одной сетке 24&nbsp;×&nbsp;24.</p>
+    <label class="hfind"><span data-i="search"></span>
+      <input id="hq" type="search" placeholder="Найти: папка, облако, ai…" autocomplete="off" spellcheck="false" aria-label="Поиск иконки">
+      <button class="go" id="hgo" type="button">Все __COUNT__</button></label>
+    <div class="hmeta"><span id="ver"></span><span>SVG · спрайт · CSS · JS · React</span><span id="lens-hint">наведите на поле — лупа</span></div>
   </div>
 </header>
+
+<section class="wrap craft" id="craft">
+  <div class="sec-h"><h2>Ремесло</h2><p>Каждая иконка собрана на&nbsp;сетке 24&nbsp;×&nbsp;24: одна толщина линии, мягкие концы, общие пропорции внутри раздела. Наведите на&nbsp;сетку — увидите координаты, кликните — иконка в&nbsp;буфере.</p></div>
+  <div class="cbox">
+    <div class="plate" id="plate" role="button" tabindex="0" aria-label="Скопировать иконку">
+      <div class="pin" id="pin">
+        <svg id="p-grid" viewBox="-2 -2 28 28" aria-hidden="true"></svg>
+        <svg class="p-ico" id="p-ico" viewBox="-2 -2 28 28" aria-hidden="true"></svg>
+        <span class="tick" style="left:7.14%">0</span><span class="tick" style="left:50%">12</span><span class="tick" style="left:92.86%">24</span>
+      </div>
+      <span class="p-xy" id="p-xy"></span>
+    </div>
+    <div class="placard">
+      <div class="pl-no">№ <b id="pl-no"></b> из __COUNT__</div>
+      <div class="pl-name" id="pl-name"></div>
+      <div class="pl-sec" id="pl-sec"></div>
+      <div class="ladder2" id="ladder2"></div>
+      <div class="pl-act"><button class="btn" id="pl-copy"><span data-i="copy"></span>Скопировать SVG</button><button class="btn ghost" id="pl-open">Карточка иконки</button></div>
+    </div>
+    <div class="strip" id="strip" aria-label="Образцы"></div>
+  </div>
+  <div class="facts">
+    <div><b>24 × 24</b>сетка, на которой собрана каждая иконка</div>
+    <div><b>Одна толщина</b>во всех __COUNT__ иконках, от стрелки до шейдера</div>
+    <div><b>16 разделов</b>от навигации и файлов до кода и ИИ</div>
+    <div><b>currentColor</b>цвет и размер берутся из текста</div>
+  </div>
+</section>
+
+<section class="wrap inuse" id="inuse">
+  <div class="sec-h"><h2>В деле</h2><p>Иконки держат интерфейс, а не украшают его. Окно ниже собрано целиком из Kiory — в ночной теме и в бумажной.</p></div>
+  <div class="win" id="win" data-t="night">
+    <aside class="w-side" id="w-side"></aside>
+    <div class="w-main"><div class="w-bar" id="w-bar"></div><div class="w-rows" id="w-rows"></div></div>
+    <div class="w-right">
+      <div class="w-art"><i class="n"></i><i class="p"></i></div>
+      <div class="w-tr">Ночной гербарий<span>мастерская YHK · 3:42</span></div>
+      <div class="w-wave" id="w-wave"></div>
+      <div class="w-ctl" id="w-ctl"></div>
+    </div>
+    <div class="w-toast" id="w-toast"></div>
+    <i class="w-cur" id="w-cur" aria-hidden="true"></i>
+  </div>
+  <div class="w-cap"><span id="w-count"></span><span>Переключите тему окна вверху справа</span></div>
+</section>
 
 <div class="bar" id="catalog">
   <div class="wrap bar-row">
@@ -510,7 +649,7 @@ document.querySelectorAll('[data-i]').forEach(el => el.outerHTML = svg(by[el.dat
 $('logo').innerHTML = DATA.logo;
 $('ver').textContent = `Kiory ${DATA.version}`; $('ver2').textContent = DATA.version;
 $('gh').href = GH; $('gh2').href = GH;
-$('h-word').textContent = plural(order.length, 'иконка', 'иконки', 'иконок');
+$('logo-xl').innerHTML = DATA.logo;
 
 /* ── русские слова ── */
 const RU = {
@@ -608,19 +747,20 @@ seg('[data-s]', b => { const s = +b.dataset.s; root.style.setProperty('--glyph',
 seg('[data-fmt]', b => { fmt = b.dataset.fmt; toast(`Клик копирует ${FMT_T[fmt]}`, 'info'); });
 
 /* ── тема с круговым переходом ── */
-const themeBtn = $('theme');
+const themeBtn = $('theme'), themeBtns = [themeBtn, $('theme-top')];
 const isLight = () => root.dataset.theme ? root.dataset.theme === 'light' : matchMedia('(prefers-color-scheme: light)').matches;
-const paintTheme = () => { themeBtn.innerHTML = svg((isLight() ? by.moon : by.sun).b); document.querySelector('meta[name=theme-color]').content = isLight() ? '#ffffff' : '#000000'; };
+const paintTheme = () => { themeBtns.forEach(b => b.innerHTML = svg((isLight() ? by.moon : by.sun).b)); document.querySelector('meta[name=theme-color]').content = isLight() ? '#ffffff' : '#000000'; };
 try { const t = localStorage.getItem('kiory-theme'); if (t) root.dataset.theme = t; } catch (e) {}
-themeBtn.onclick = () => {
+const flipTheme = btn => {
   const t = isLight() ? 'dark' : 'light';
   const apply = () => { root.dataset.theme = t; try { localStorage.setItem('kiory-theme', t); } catch (e) {} paintTheme(); };
   if (!document.startViewTransition || !motion) return apply();
-  const r = themeBtn.getBoundingClientRect(), x = r.left + r.width / 2, y = r.top + r.height / 2;
+  const r = btn.getBoundingClientRect(), x = r.left + r.width / 2, y = r.top + r.height / 2;
   const R = Math.hypot(Math.max(x, innerWidth - x), Math.max(y, innerHeight - y));
   document.startViewTransition(apply).ready.then(() => root.animate({ clipPath: [`circle(0 at ${x}px ${y}px)`, `circle(${R}px at ${x}px ${y}px)`] },
     { duration: 700, easing: 'cubic-bezier(.16,1,.3,1)', pseudoElement: '::view-transition-new(root)' }));
 };
+themeBtns.forEach(b => b.onclick = () => flipTheme(b));
 paintTheme();
 
 /* ── буфер и тост ── */
@@ -779,9 +919,10 @@ addEventListener('keydown', e => {
   if (t && e.key === ' ') { e.preventDefault(); lastPick = t.dataset.n; toggle(t.dataset.n); return; }
   if (e.key.length === 1 && e.key !== ' ' || e.key === 'Backspace') {
     e.preventDefault();
-    q.value = e.key === 'Backspace' ? q.value.slice(0, -1) : q.value + e.key;
-    q.focus({ preventScroll: true }); q.setSelectionRange(q.value.length, q.value.length);
-    q.dispatchEvent(new Event('input'));
+    const box = scrollY < innerHeight * .6 ? $('hq') : q;
+    box.value = e.key === 'Backspace' ? box.value.slice(0, -1) : box.value + e.key;
+    box.focus({ preventScroll: true }); box.setSelectionRange(box.value.length, box.value.length);
+    box.dispatchEvent(new Event('input'));
   }
 });
 function moveFocus(t, key) {
@@ -796,56 +937,166 @@ function moveFocus(t, key) {
   go(cand.filter(x => Math.abs(x.getBoundingClientRect().top - rowY) < 4).sort((a, b) => Math.abs(a.getBoundingClientRect().left - r.left) - Math.abs(b.getBoundingClientRect().left - r.left))[0]);
 }
 
-/* ── лист разметки ── */
-const spec = $('spec'), specIcon = $('spec-icon');
-$('spec-grid').innerHTML = gridLines(true) + '<rect class="hl" id="hl" width="1" height="1"/><path class="cross" id="cross"/>';
-const SPEC = ['search', 'folder', 'bell', 'heart', 'chat', 'cloud', 'camera', 'microphone', 'settings', 'mail', 'face-id', 'ai-spark', 'webhook', 'mention', 'home', 'edit'].filter(n => by[n]);
-let si = 0, specTimer;
-const capt = n => { $('spec-name').textContent = n; $('spec-fam').textContent = famTitle[by[n].f]; };
-// смена иконки — скан: линия идёт по сетке сверху вниз, выше неё уже новая иконка
-function showSpec() {
-  const n = SPEC[si];
-  if (!motion) { specIcon.innerHTML = by[n].b; capt(n); return; }
-  const r = spec.getBoundingClientRect(), side = Math.min(r.width, r.height);
-  const ox = (r.width - side) / 2, oy = (r.height - side) / 2, h = r.height, T = 1150;
-  const nu = specIcon.cloneNode(false); nu.removeAttribute('id'); nu.innerHTML = by[n].b; specIcon.after(nu);
-  const line = Object.assign(document.createElement('i'), { className: 'scan' });
-  line.style.cssText = `left:${ox}px;width:${side}px`; spec.append(line);
-  const o = { duration: T, easing: 'cubic-bezier(.65,0,.35,1)', fill: 'forwards' };
-  const a = specIcon.animate({ clipPath: [`inset(${oy}px 0 0 0)`, `inset(${oy + side}px 0 0 0)`] }, o);
-  nu.animate({ clipPath: [`inset(0 0 ${h - oy}px 0)`, `inset(0 0 ${oy}px 0)`] }, o);
-  line.animate([{ transform: `translateY(${oy}px)`, opacity: 0 }, { opacity: 1, offset: .1 }, { opacity: 1, offset: .88 }, { transform: `translateY(${oy + side}px)`, opacity: 0 }], o);
-  setTimeout(() => capt(n), T * .45);
-  a.onfinish = () => { specIcon.innerHTML = by[n].b; a.cancel(); nu.remove(); line.remove(); };
+/* ── герой: поле всех иконок и лупа ── */
+const hero = document.querySelector('.hero'), field = $('field'), ftag = $('ftag');
+field.innerHTML = order.map(n => `<i data-n="${n}">${svg(by[n].b)}</i>`).join('');
+const nodes = [...field.children];
+let pts = [];
+function layoutField() {
+  const W = hero.clientWidth, H = hero.clientHeight;
+  const cell = Math.max(30, Math.min(46, Math.sqrt(W * H / order.length)));
+  const cols = Math.max(6, Math.floor(W / cell)), rows = Math.ceil(H / cell);
+  const ox = (W - (cols - 1) * cell) / 2, oy = (H - (rows - 1) * cell) / 2, cx = W / 2, cy = H / 2;
+  field.style.setProperty('--fs', Math.round(cell * .44) + 'px');
+  pts = nodes.map((el, k) => {
+    if (k >= cols * rows) { el.hidden = true; return null; }
+    el.hidden = false;
+    const x = ox + (k % cols) * cell, y = oy + Math.floor(k / cols) * cell;
+    el.style.left = x + 'px'; el.style.top = y + 'px';
+    el.style.setProperty('--d', Math.round(Math.hypot(x - cx, y - cy) * .9) + 'ms');
+    return [x, y];
+  });
 }
-const run = () => { clearInterval(specTimer); if (motion) specTimer = setInterval(() => { si = (si + 1) % SPEC.length; showSpec(); }, 3000); };
-specIcon.innerHTML = by[SPEC[0]].b; capt(SPEC[0]);
-setTimeout(() => { document.querySelector('.hero').classList.remove('intro'); run(); }, motion ? 2600 : 0);
-spec.addEventListener('pointermove', e => {
-  const r = spec.getBoundingClientRect(), side = Math.min(r.width, r.height), u = 28 / side;
-  const ox = r.left + (r.width - side) / 2, oy = r.top + (r.height - side) / 2;
-  const cx = Math.max(0, Math.min(23, Math.floor((e.clientX - ox) * u - 2))), cy = Math.max(0, Math.min(23, Math.floor((e.clientY - oy) * u - 2)));
-  $('hl').setAttribute('x', cx); $('hl').setAttribute('y', cy);
-  $('cross').setAttribute('d', `M${cx + .5} 0V24M0 ${cy + .5}H24`);
-  $('spec-xy').textContent = `x ${String(cx).padStart(2, '0')}   y ${String(cy).padStart(2, '0')}`;
-});
-spec.addEventListener('pointerenter', () => clearInterval(specTimer)); spec.addEventListener('pointerleave', run);
-const specCopy = () => copyOne(SPEC[si], 'svg');
-spec.onclick = specCopy; spec.onkeydown = e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); specCopy(); } };
+layoutField(); addEventListener('resize', layoutField);
+setTimeout(() => { hero.classList.remove('intro'); pBox = null; }, motion ? 2600 : 0);
 
-/* ── глубина сцены: фото чуть сдвигается за курсором и при прокрутке, сетка стоит ── */
-const stage = document.querySelector('.stage');
-if (motion) {
-  let tx = 0, ty = 0, cx = 0, cy = 0, raf = 0;
-  const step = () => { cx += (tx - cx) * .07; cy += (ty - cy) * .07;
-    stage.style.setProperty('--px', cx.toFixed(4)); stage.style.setProperty('--py', cy.toFixed(4));
-    raf = Math.abs(tx - cx) + Math.abs(ty - cy) > .0005 ? requestAnimationFrame(step) : 0; };
-  const kick = () => { if (!raf) raf = requestAnimationFrame(step); };
-  if (!touch) { const hero = document.querySelector('.hero');
-    hero.addEventListener('pointermove', e => { tx = e.clientX / innerWidth - .5; ty = e.clientY / innerHeight - .5; kick(); });
-    hero.addEventListener('pointerleave', () => { tx = ty = 0; kick(); }); }
-  addEventListener('scroll', () => { if (scrollY < 1400) stage.style.setProperty('--sy', Math.round(scrollY)); }, { passive: true });
+const panel = document.querySelector('.panel');
+let pBox = null; const panelBox = () => pBox || (pBox = (() => { const r = panel.getBoundingClientRect(), h = hero.getBoundingClientRect(); return { left: r.left - h.left - 10, right: r.right - h.left + 10, top: r.top - h.top - 10, bottom: r.bottom - h.top + 10 }; })());
+addEventListener('resize', () => pBox = null);
+let lx = hero.clientWidth * .3, ly = hero.clientHeight * .4, gx = 0, gy = 0, last = 0, near = null, nearD = 1e9, heroOn = true;
+const t0 = performance.now(), R = 160;
+if (touch) $('lens-hint').textContent = 'лупа бродит по полю сама';
+if (!touch) {
+  hero.addEventListener('pointermove', e => { const r = hero.getBoundingClientRect(); gx = e.clientX - r.left; gy = e.clientY - r.top; last = performance.now(); });
+  hero.addEventListener('pointerleave', () => { last = 0; });
 }
+function lens(t) {
+  if (!heroOn) return;
+  const W = hero.clientWidth, H = hero.clientHeight;
+  let tx = gx, ty = gy;
+  if (!last || t - last > 2600) { const s = (t - t0) / 1000; tx = W * (.5 + .38 * Math.sin(s * .3)); ty = H * (.5 + .36 * Math.sin(s * .47 + 1.3)); }
+  lx += (tx - lx) * .12; ly += (ty - ly) * .12;
+  let best = null, bd = 1e9;
+  const quiet = field.classList.contains('q');
+  for (let k = 0; k < nodes.length; k++) {
+    const p = pts[k]; if (!p) continue;
+    const el = nodes[k], dx = p[0] - lx, dy = p[1] - ly, d = Math.hypot(dx, dy);
+    if (d < R) {
+      const f = (1 - d / R) ** 2, push = 22 * f;
+      el.style.transform = `translate(${dx / (d || 1) * push}px,${dy / (d || 1) * push}px) scale(${1 + 1.8 * f})`;
+      if (!quiet) el.style.opacity = .2 + .8 * f;
+      el._on = 1; if (d < bd) { bd = d; best = el; }
+    } else if (el._on) { el.style.transform = ''; el.style.opacity = ''; el._on = 0; }
+  }
+  if (best !== near) { near?.classList.remove('near'); best?.classList.add('near'); near = best; }
+  nearD = bd;
+  const pr = panelBox(), over = lx > pr.left && lx < pr.right && ly > pr.top && ly < pr.bottom;
+  const show = near && bd < 34 && !over && ly > 80;
+  if (show) { ftag.textContent = near.dataset.n; ftag.style.transform = `translate(${lx + 20}px,${ly + 20}px)`; }
+  ftag.style.opacity = show ? 1 : 0;
+  hero.style.cursor = show && last ? 'copy' : '';
+  requestAnimationFrame(lens);
+}
+if (motion) new IntersectionObserver(([e]) => { const was = heroOn; heroOn = e.isIntersecting; if (heroOn && !was) requestAnimationFrame(lens); }).observe(hero);
+if (motion) requestAnimationFrame(lens);
+hero.addEventListener('click', e => { if (e.target.closest('.panel, .top') || !near || nearD > 34) return; copyOne(near.dataset.n, 'svg'); });
+
+/* поиск в герое подсвечивает иконки в поле и ведёт в каталог */
+const hq = $('hq'), hgo = $('hgo');
+const heroMatch = (i, t, alt) => i.n.includes(t) || i.t.some(x => x.includes(t)) || alt.some(a => i.n.includes(a)) || (famTitle[i.f] + ' ' + famNote[i.f]).toLowerCase().includes(t);
+hq.addEventListener('input', () => {
+  const t = hq.value.trim().toLowerCase(), alt = t ? syn(t) : [];
+  field.classList.toggle('q', !!t);
+  nodes.forEach(el => el.classList.toggle('hit', !!t && heroMatch(by[el.dataset.n], t, alt)));
+  const k = t ? DATA.icons.filter(i => heroMatch(i, t, alt)).length : order.length;
+  hgo.textContent = !t ? `Все ${order.length}` : k ? `Показать ${k}` : 'Ничего';
+});
+const toCatalog = () => { q.value = hq.value; filter(true); $('catalog').scrollIntoView({ behavior: motion ? 'smooth' : 'auto' }); };
+hgo.onclick = toCatalog;
+hq.addEventListener('keydown', e => { if (e.key === 'Enter') { e.preventDefault(); toCatalog(); } if (e.key === 'Escape' && hq.value) { hq.value = ''; hq.dispatchEvent(new Event('input')); } });
+
+/* ── ремесло: одна иконка крупно, смена — скан по сетке ── */
+const plate = $('plate'), pin = $('pin'), pIco = $('p-ico');
+$('p-grid').innerHTML = gridLines(false) + '<rect class="hl" id="phl" width="1" height="1"/><path class="cross" id="pcross"/>';
+const SPEC = ['folder', 'bell', 'heart', 'cloud', 'mail', 'microphone', 'ai-spark', 'settings', 'chat', 'camera', 'search', 'home'].filter(n => by[n]);
+let si = 0, specTimer, plN = SPEC[0], craftOn = false;
+$('strip').innerHTML = SPEC.map((n, k) => `<button data-k="${k}" aria-label="${n}" title="${n}">${svg(by[n].b)}</button>`).join('');
+function paintPlacard(n) {
+  plN = n;
+  $('pl-no').textContent = String(order.indexOf(n) + 1).padStart(3, '0');
+  $('pl-name').textContent = n;
+  $('pl-sec').innerHTML = `<b>${famTitle[by[n].f]}</b> — ${famNote[by[n].f].toLowerCase()}`;
+  $('ladder2').innerHTML = [16, 20, 24, 32, 48].map(s => `<div>${svg(by[n].b, `width="${s}" height="${s}"`)}${s}</div>`).join('');
+  $('strip').querySelectorAll('button').forEach((b, k) => b.setAttribute('aria-current', SPEC[k] === n));
+}
+function showSpec(k, now) {
+  si = (k + SPEC.length) % SPEC.length;
+  const n = SPEC[si];
+  if (now || !motion) { pIco.innerHTML = by[n].b; paintPlacard(n); return; }
+  const H = pin.offsetHeight, T = 1150, o = { duration: T, easing: 'cubic-bezier(.65,0,.35,1)', fill: 'forwards' };
+  const nu = pIco.cloneNode(false); nu.removeAttribute('id'); nu.innerHTML = by[n].b; pIco.after(nu);
+  const line = Object.assign(document.createElement('i'), { className: 'scan' }); line.style.cssText = 'left:0;width:100%'; pin.append(line);
+  const a = pIco.animate({ clipPath: ['inset(0 0 0 0)', `inset(${H}px 0 0 0)`] }, o);
+  nu.animate({ clipPath: [`inset(0 0 ${H}px 0)`, 'inset(0 0 0 0)'] }, o);
+  line.animate([{ transform: 'translateY(0)', opacity: 0 }, { opacity: 1, offset: .1 }, { opacity: 1, offset: .88 }, { transform: `translateY(${H}px)`, opacity: 0 }], o);
+  setTimeout(() => paintPlacard(n), T * .4);
+  a.onfinish = () => { pIco.innerHTML = by[n].b; a.cancel(); nu.remove(); line.remove(); };
+}
+showSpec(0, true);
+const runSpec = () => { clearInterval(specTimer); if (motion && craftOn) specTimer = setInterval(() => showSpec(si + 1), 3400); };
+new IntersectionObserver(([e]) => { craftOn = e.isIntersecting; runSpec(); }, { threshold: .25 }).observe(plate);
+$('strip').onclick = e => { const b = e.target.closest('[data-k]'); if (b) { showSpec(+b.dataset.k); runSpec(); } };
+plate.addEventListener('pointermove', e => {
+  const r = pin.getBoundingClientRect(), u = 28 / r.width;
+  const cx = Math.max(0, Math.min(23, Math.floor((e.clientX - r.left) * u - 2))), cy = Math.max(0, Math.min(23, Math.floor((e.clientY - r.top) * u - 2)));
+  $('phl').setAttribute('x', cx); $('phl').setAttribute('y', cy);
+  $('pcross').setAttribute('d', `M${cx + .5} 0V24M0 ${cy + .5}H24`);
+  $('p-xy').textContent = `x ${String(cx).padStart(2, '0')}   y ${String(cy).padStart(2, '0')}`;
+});
+plate.addEventListener('pointerenter', () => clearInterval(specTimer)); plate.addEventListener('pointerleave', runSpec);
+plate.onclick = () => copyOne(plN, 'svg');
+plate.onkeydown = e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); copyOne(plN, 'svg'); } if (e.key === 'ArrowRight') showSpec(si + 1); if (e.key === 'ArrowLeft') showSpec(si - 1); };
+$('pl-copy').onclick = () => copyOne(plN, 'svg');
+$('pl-open').onclick = () => openCard(plN);
+
+/* ── в деле: окно из Kiory, само показывает обе темы ── */
+const win = $('win'), used = new Set();
+const I = n => { used.add(n); return svg(by[n].b); };
+$('w-side').innerHTML = `<div class="w-brand">${DATA.logo}</div>` + [['home', 'Главная'], ['search', 'Поиск'], ['folder', 'Файлы', 1], ['bell', 'Уведомления', 0, 3], ['chat', 'Сообщения'], null, ['ai-spark', 'Ассистент'], ['settings', 'Настройки']]
+  .map(x => x ? `<div class="w-it${x[2] ? ' on' : ''}">${I(x[0])}${x[1]}${x[3] ? `<span class="b">${x[3]}</span>` : ''}</div>` : '<div class="w-sep"></div>').join('');
+$('w-bar').innerHTML = ['back', 'forward'].map(n => `<span class="w-ib">${I(n)}</span>`).join('') + '<span class="w-crumb"><span>Мастерская / </span>Kiory</span><span class="w-sp"></span>'
+  + ['grid', 'list', 'share'].map((n, k) => `<span class="w-ib${k === 1 ? ' on' : ''}" data-w="${n}">${I(n)}</span>`).join('')
+  + `<span class="w-mode"><button data-t="night" aria-pressed="true">${I('moon')}Ночь</button><button data-t="paper" aria-pressed="false">${I('sun')}Бумага</button></span>`;
+const WROWS = [['folder', 'Эталоны', '14 файлов'], ['image-file', 'Обложка — ночь', '1,2 МБ'], ['code-file', 'build.py', '12 КБ'], ['audio-file', 'Ночной гербарий', '3:42'], ['file-text', 'CHANGELOG.md', '2 КБ'], ['archive', 'kiory-8.1.0.zip', '1,4 МБ'], ['folder', 'Черновики', '6 файлов']];
+$('w-rows').innerHTML = WROWS.map(r => `<div class="w-row">${I(r[0])}<span>${r[1]}</span><span class="m">${r[2]}</span>${I('more-h')}</div>`).join('');
+$('w-wave').innerHTML = '<i></i>'.repeat(42);
+$('w-ctl').innerHTML = I('shuffle') + I('previous') + `<span class="play">${I('pause')}</span>` + I('next') + I('repeat');
+$('w-toast').innerHTML = I('check-circle') + '<span><b>folder</b> — SVG в буфере</span>';
+$('w-cur').innerHTML = I('cursor');
+$('w-count').textContent = `${used.size} иконок Kiory в этом окне`;
+const setScene = t => { win.dataset.t = t; win.querySelectorAll('.w-mode button').forEach(b => b.setAttribute('aria-pressed', b.dataset.t === t)); };
+let wTook = false;
+win.querySelector('.w-mode').onclick = e => { const b = e.target.closest('[data-t]'); if (b) { wTook = true; setScene(b.dataset.t); } };
+const wRows = [...win.querySelectorAll('.w-row')], wWave = [...win.querySelectorAll('.w-wave i')], wCur = $('w-cur');
+const goTo = el => { const r = el.getBoundingClientRect(), w = win.getBoundingClientRect(); wCur.style.transform = `translate(${r.left - w.left + r.width * .55}px,${r.top - w.top + r.height * .55}px)`; };
+const pick = k => wRows.forEach((r, j) => r.classList.toggle('on', j === k));
+const visibleIn = el => el.offsetParent !== null;
+const STEPS = [
+  () => { goTo(wRows[1]); pick(1); },
+  () => { goTo(wRows[3]); pick(3); },
+  () => { const g = win.querySelector('[data-w="grid"]'); goTo(g); win.querySelectorAll('[data-w]').forEach(x => x.classList.toggle('on', x === g)); },
+  () => { const b = win.querySelector('.w-mode [data-t="paper"]'); goTo(b); if (!wTook) setScene('paper'); },
+  () => { goTo(wRows[0]); pick(0); $('w-toast').classList.add('on'); setTimeout(() => $('w-toast').classList.remove('on'), 1900); },
+  () => { const l = win.querySelector('[data-w="list"]'); goTo(l); win.querySelectorAll('[data-w]').forEach(x => x.classList.toggle('on', x === l)); },
+  () => { const b = win.querySelector('.w-mode [data-t="night"]'); goTo(b); if (!wTook) setScene('night'); },
+];
+let wStep = 0, wTimer, waveT, wPos = 0;
+const wPlay = () => { wPos = (wPos + 1) % wWave.length; wWave.forEach((w, j) => { w.style.height = (16 + Math.random() * 84) + '%'; w.classList.toggle('pl', j <= wPos); }); };
+new IntersectionObserver(([e]) => {
+  clearInterval(wTimer); clearInterval(waveT);
+  if (e.isIntersecting && motion) { wTimer = setInterval(() => { STEPS[wStep % STEPS.length](); wStep++; }, 1800); waveT = setInterval(wPlay, 420); }
+}, { threshold: .3 }).observe(win);
+pick(3);
 
 /* ── свет над сеткой каталога ── */
 if (!touch) main.addEventListener('pointermove', e => { const g = e.target.closest('.grid'); if (!g) return;
@@ -857,11 +1108,6 @@ if (motion && 'IntersectionObserver' in window) {
   const io = new IntersectionObserver(es => es.forEach(e => { if (e.isIntersecting) { e.target.classList.add('seen'); io.unobserve(e.target); } }), { rootMargin: '0px 0px -12% 0px' });
   main.querySelectorAll('.fam').forEach(f => io.observe(f));
 }
-
-/* ── счётчик в заголовке ── */
-if (motion) { const el = $('h-count'), N = order.length, t0 = performance.now() + 150;
-  const tick = now => { const p = Math.min(1, Math.max(0, (now - t0) / 1300)); el.textContent = Math.round(N * (1 - Math.pow(1 - p, 4))); if (p < 1) requestAnimationFrame(tick); };
-  el.textContent = '0'; requestAnimationFrame(tick); }
 
 /* ── прогресс и текущий раздел ── */
 let curFam;
