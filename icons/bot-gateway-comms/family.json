@@ -1,0 +1,26 @@
+{
+  "title": "Telegram-боты, шлюзы и очереди",
+  "order": [
+    "bot-command",
+    "inline-keyboard",
+    "reply-markup",
+    "callback-query",
+    "webhook-in",
+    "webhook-out",
+    "long-polling",
+    "chat-pinned",
+    "chat-archive",
+    "chat-mute",
+    "chat-thread",
+    "channel-feed",
+    "group-admin",
+    "anti-spam",
+    "rate-limit",
+    "retry-loop",
+    "dead-letter",
+    "session-store",
+    "heartbeat",
+    "voice-note",
+    "sticker-pack"
+  ]
+}

@@ -1,0 +1,28 @@
+{
+  "title": "Дизайн-токены и адаптивный UI",
+  "order": [
+    "toggle-left",
+    "toggle-right",
+    "token-color",
+    "token-space",
+    "token-radius",
+    "token-font",
+    "token-shadow",
+    "theme-light",
+    "theme-dark",
+    "auto-layout-h",
+    "auto-layout-v",
+    "wrap-layout",
+    "padding-box",
+    "margin-box",
+    "gap-row",
+    "gap-col",
+    "breakpoint-sm",
+    "breakpoint-md",
+    "breakpoint-lg",
+    "variant-swap",
+    "slot-placeholder",
+    "skeleton-load",
+    "toast-alert"
+  ]
+}

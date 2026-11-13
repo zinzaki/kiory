@@ -1,0 +1,26 @@
+{
+  "title": "IDE, отладка и AST-примитивы",
+  "order": [
+    "regex",
+    "breakpoint",
+    "step-over",
+    "step-into",
+    "step-out",
+    "watch-var",
+    "call-stack",
+    "ast-tree",
+    "bytecode",
+    "variable",
+    "function",
+    "class-box",
+    "interface-node",
+    "enum-list",
+    "struct-grid",
+    "pointer",
+    "lambda",
+    "linter",
+    "formatter",
+    "profiler",
+    "coverage"
+  ]
+}

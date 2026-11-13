@@ -1,0 +1,25 @@
+{
+  "title": "Мультиагенты и LLM-пайплайны",
+  "order": [
+    "ai-router",
+    "ai-orchestrator",
+    "ai-planner",
+    "ai-critic",
+    "ai-embeddings",
+    "ai-vector-db",
+    "ai-rerank",
+    "ai-chunking",
+    "ai-fine-tune",
+    "ai-eval",
+    "ai-benchmark",
+    "ai-reward",
+    "ai-system-prompt",
+    "ai-few-shot",
+    "ai-structured-output",
+    "ai-stream",
+    "ai-safety",
+    "ai-verified",
+    "ai-cost",
+    "ai-latency"
+  ]
+}

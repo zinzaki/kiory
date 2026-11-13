@@ -1,6 +1,6 @@
 {
   "name": "kiory",
-  "version": "7.0.0",
+  "version": "8.0.0",
   "description": "Мягкие интерфейсные иконки на сетке 24 × 24: SVG, спрайт, CSS, JS и React",
   "license": "SEE LICENSE IN LICENSE",
   "type": "module",

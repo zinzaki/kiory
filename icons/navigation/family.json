@@ -1,5 +1,5 @@
 {
-  "title": "Навигация",
+  "title": "Навигация и стрелки",
   "order": [
     "home",
     "search",
@@ -24,6 +24,9 @@
     "more-v",
     "external-link",
     "locate",
-    "unfold"
+    "unfold",
+    "chevrons-up",
+    "chevrons-down",
+    "unfold-h"
   ]
 }

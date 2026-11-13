@@ -1,0 +1,29 @@
+{
+  "title": "Типографика и Markdown",
+  "order": [
+    "bold",
+    "italic",
+    "underline",
+    "strikethrough",
+    "align-left",
+    "align-center",
+    "align-right",
+    "align-justify",
+    "heading-1",
+    "heading-2",
+    "heading-3",
+    "pilcrow",
+    "list-ordered",
+    "list-checks",
+    "list-tree",
+    "list-collapse",
+    "indent",
+    "outdent",
+    "text-wrap",
+    "text-cursor",
+    "subscript",
+    "superscript",
+    "sigma",
+    "block-quote"
+  ]
+}

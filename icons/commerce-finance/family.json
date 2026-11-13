@@ -1,0 +1,13 @@
+{
+  "title": "Финансы, платежи и магазин",
+  "order": [
+    "shopping-cart",
+    "shopping-bag",
+    "store",
+    "gift",
+    "truck",
+    "credit-card",
+    "wallet",
+    "receipt"
+  ]
+}

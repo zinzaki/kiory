@@ -1,0 +1,26 @@
+{
+  "title": "Окружение RYOKU OS и тайлинг",
+  "order": [
+    "tiling",
+    "layout-float",
+    "layout-monocle",
+    "layout-spiral",
+    "layout-columns-3",
+    "workspace-plus",
+    "workspace-minus",
+    "workspace-next",
+    "workspace-prev",
+    "pin-window",
+    "pip-enter",
+    "pip-exit",
+    "scratchpad",
+    "theme-auto",
+    "night-light",
+    "wallpaper",
+    "screensaver",
+    "notification-off",
+    "do-not-disturb",
+    "clipboard-list",
+    "clipboard-check"
+  ]
+}

@@ -1,0 +1,25 @@
+{
+  "title": "Погода, виджеты и продуктивность",
+  "order": [
+    "cloud-rain",
+    "cloud-snow",
+    "cloud-lightning",
+    "wind",
+    "thermometer",
+    "droplet",
+    "sunrise",
+    "sunset",
+    "pomodoro",
+    "kanban-plus",
+    "milestone",
+    "roadmap",
+    "mindmap",
+    "flowchart",
+    "node-connect",
+    "node-disconnect",
+    "battery-eco",
+    "power-saving",
+    "focus-mode",
+    "zen-circle"
+  ]
+}

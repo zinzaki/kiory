@@ -1,4 +1,4 @@
-<p align="center"><img src="docs/previews/cover.png" alt="Kiory — 352 иконки на сетке 24 × 24" width="100%"></p>
+<p align="center"><img src="docs/previews/cover.png" alt="Kiory — 726 иконок на сетке 24 × 24" width="100%"></p>
 
 <p align="center">
 <a href="https://zinzaki.github.io/kiory/"><b>Каталог</b></a> ·
@@ -8,16 +8,16 @@
 </p>
 
 <p align="center">
-<img alt="352 иконки" src="https://img.shields.io/badge/иконок-352-f4f4f2?style=flat-square&labelColor=000000">
+<img alt="726 иконок" src="https://img.shields.io/badge/иконок-726-f4f4f2?style=flat-square&labelColor=000000">
 <img alt="сетка 24×24" src="https://img.shields.io/badge/сетка-24×24-f4f4f2?style=flat-square&labelColor=000000">
-<img alt="версия" src="https://img.shields.io/badge/версия-7.0.0-f4f4f2?style=flat-square&labelColor=000000">
+<img alt="версия" src="https://img.shields.io/badge/версия-8.0.0-f4f4f2?style=flat-square&labelColor=000000">
 <img alt="лицензия" src="https://img.shields.io/badge/лицензия-PolyForm_SB-f4f4f2?style=flat-square&labelColor=000000">
 </p>
 
 # Kiory
 
-Мягкие интерфейсные иконки на точной сетке 24 × 24. Тринадцать наборов — навигация, действия,
-файлы, графики, окна, устройства, общение, медиа, разработка и ИИ. Одна толщина линии во всех
+Мягкие интерфейсные иконки на точной сетке 24 × 24. Тридцать наборов — от навигации, файлов
+и окон до дизайна, 3D, разработки, Linux и ИИ. Одна толщина линии во всех
 иконках, залитые контуры, цвет берётся из текста.
 
 ## Каталог

@@ -1,0 +1,31 @@
+{
+  "title": "Время, геолокация и объекты",
+  "order": [
+    "calendar",
+    "calendar-check",
+    "clock",
+    "timer",
+    "hourglass",
+    "history",
+    "book-open",
+    "list-todo",
+    "lightbulb",
+    "rocket",
+    "crown",
+    "award",
+    "coffee",
+    "infinity",
+    "map",
+    "location",
+    "compass",
+    "globe",
+    "bookmark",
+    "tag",
+    "pin",
+    "target",
+    "qr-code",
+    "cube",
+    "pin-off",
+    "bookmark-filled"
+  ]
+}

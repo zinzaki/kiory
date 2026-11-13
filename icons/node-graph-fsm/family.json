@@ -1,0 +1,26 @@
+{
+  "title": "Нодовые графы и стейт-машины",
+  "order": [
+    "node-input",
+    "node-output",
+    "node-math",
+    "node-branch",
+    "node-loop",
+    "node-merge",
+    "node-split",
+    "node-group",
+    "node-reroute",
+    "node-comment",
+    "node-trigger",
+    "port-in",
+    "port-out",
+    "bezier-link",
+    "state-start",
+    "state-end",
+    "state-active",
+    "state-error",
+    "transition-arrow",
+    "event-bus",
+    "pipeline-stage"
+  ]
+}
