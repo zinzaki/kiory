@@ -1,7 +1,7 @@
 {
   "name": "kiory",
-  "version": "8.1.0",
-  "description": "Мягкие интерфейсные иконки на сетке 24 × 24: SVG, спрайт, CSS, JS и React",
+  "version": "8.2.0",
+  "description": "Soft interface icons on a 24 × 24 grid: SVG, sprite, CSS, JS and React",
   "license": "SEE LICENSE IN LICENSE",
   "type": "module",
   "main": "./dist/kiory.js",

@@ -1,6 +1,6 @@
 {
-  "title": "Архив",
-  "note": "Файлы, папки, диски и Btrfs",
+  "title": "Archive",
+  "note": "Files, folders, drives and Btrfs",
   "order": [
     "file",
     "new-file",

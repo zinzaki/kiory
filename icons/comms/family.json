@@ -1,6 +1,6 @@
 {
-  "title": "Голос",
-  "note": "Люди, почта, звонки, Telegram-боты и очереди",
+  "title": "Voice",
+  "note": "People, mail, calls, Telegram bots and queues",
   "order": [
     "user",
     "users",

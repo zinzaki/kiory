@@ -1,6 +1,6 @@
 {
-  "title": "Схема",
-  "note": "Данные, SQLite, графики и нодовые схемы",
+  "title": "Schema",
+  "note": "Data, SQLite, charts and node graphs",
   "order": [
     "primary-key",
     "foreign-key",

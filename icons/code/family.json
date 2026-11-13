@@ -1,6 +1,6 @@
 {
-  "title": "Верстак",
-  "note": "Код, Git, CI, отладка, терминал и DevOps",
+  "title": "Workbench",
+  "note": "Code, Git, CI, debugging, terminal and DevOps",
   "order": [
     "code",
     "terminal",

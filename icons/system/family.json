@@ -1,6 +1,6 @@
 {
-  "title": "Механизм",
-  "note": "Система, железо, сеть, ядро и слоты ОС",
+  "title": "Mechanism",
+  "note": "System, hardware, network, kernel and OS slots",
   "order": [
     "settings",
     "sliders",
@@ -65,7 +65,6 @@
     "pkg-install",
     "pkg-remove",
     "pkg-upgrade",
-    "pkg-aur",
     "repo-sync",
     "flatpak-box",
     "dotfiles"

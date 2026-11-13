@@ -1,55 +1,55 @@
-# Как добавить или заменить иконку
+# Adding or replacing an icon
 
-Всё собирается само. Руками правится только папка `icons/`.
+Everything is built for you. The only folder you edit by hand is `icons/`.
 
 ```
 icons/
   navigation/
-    family.json        название раздела, подпись и порядок иконок
-    search.svg         иконка
-    search.json        паспорт — необязателен
+    family.json        section title, note and icon order
+    search.svg         the icon
+    search.json        passport, optional
 ```
 
-## Новая иконка
+## A new icon
 
-1. Нарисуйте на холсте 24 × 24, обводки переведите в контур (Outline stroke), сделайте Flatten.
-2. Экспортируйте SVG и положите в папку раздела: `icons/<раздел>/<имя>.svg`.
-   Имя — латиницей через дефис: `arrow-left`, `ai-spark`.
-3. Запушьте в `main`. GitHub Actions приведёт файл к единому виду (цвет → `currentColor`,
-   без лишних атрибутов), пересоберёт `dist/`, каталог и превью и выложит сайт.
+1. Draw it on a 24 × 24 canvas, convert strokes to outlines (Outline stroke) and flatten.
+2. Export the SVG into the section folder: `icons/<section>/<name>.svg`.
+   Names are lowercase kebab-case: `arrow-left`, `ai-spark`.
+3. Push to `main`. GitHub Actions normalizes the file (colour becomes `currentColor`, extra
+   attributes go), rebuilds `dist/`, the catalog and the README cover, and publishes the site.
 
-Локально то же самое — `python3 scripts/build.py` (нужен Python 3.11+, для превью — `rsvg-convert`).
-Проверка без записи — `python3 scripts/build.py --check`.
+Locally it is the same: `python3 scripts/build.py` (Python 3.11+, plus `rsvg-convert` for the
+cover). To check without writing anything, run `python3 scripts/build.py --check`.
 
-Если что-то не так с файлом, сборка скажет, что именно: «обводка — переведи её в контур»,
-«нужен холст 24 × 24» и т. п.
+If something is wrong with a file, the build says exactly what: "has a stroke; convert it to an
+outline", "needs a 24 × 24 canvas" and so on.
 
-## Заменить иконку
+## Replacing an icon
 
-Положите новый файл поверх старого с тем же именем. В каталоге она получит отметку **UPD**,
-новые — **NEW**; отметки держатся до следующего выпуска.
+Put the new file over the old one with the same name. The catalog marks it **UPD**, new icons get
+**NEW**; the marks stay until the next release.
 
-## Паспорт
+## Passport
 
-Необязательный `<имя>.json` рядом с иконкой — слова, по которым её найдут в каталоге:
+An optional `<name>.json` next to the icon lists extra words the catalog search should match:
 
 ```json
-{ "tags": ["лупа", "найти", "zoom"] }
+{ "tags": ["magnifier", "find", "zoom"] }
 ```
 
-## Раздел и порядок
+## Sections and order
 
-`family.json` в папке раздела:
+`family.json` in the section folder:
 
 ```json
-{ "title": "Путь", "note": "Навигация и стрелки", "order": ["home", "search", "back"] }
+{ "title": "Path", "note": "Navigation and arrows", "order": ["home", "search", "back"] }
 ```
 
-Название раздела — одно слово мастерской, `note` — простыми словами, что внутри; по обоим ищет
-каталог. Иконки, которых нет в `order`, встают в конец по алфавиту. Новый раздел — новая папка;
-порядок разделов на странице задаёт `kiory.json`.
+The title is one atelier word; `note` says in plain words what is inside. The catalog searches
+both. Icons missing from `order` go to the end in alphabetical order. A new section is a new
+folder; `kiory.json` sets the order of sections on the page.
 
-## Выпуск
+## Release
 
-Поднимите `version` и `released` в `kiory.json` и добавьте запись в `CHANGELOG.md`.
-Отметки NEW и UPD при этом обнулятся.
+Bump `version` and `released` in `kiory.json` and add an entry to `CHANGELOG.md`. The NEW and UPD
+marks reset with it.

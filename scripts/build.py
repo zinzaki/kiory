@@ -1,18 +1,19 @@
 #!/usr/bin/env python3
-"""Сборка Kiory.
+"""Kiory build.
 
-    python3 scripts/build.py            # привести иконки к единому виду и собрать всё
-    python3 scripts/build.py --check    # только проверить, ничего не пишет
+    python3 scripts/build.py            # normalize the icons and build everything
+    python3 scripts/build.py --check    # check only, writes nothing
 
-Источник правды — папка `icons/`:
+The source of truth is the `icons/` folder:
 
-    icons/<раздел>/family.json          {"title": "Путь", "note": "Навигация и стрелки", "order": [...]}
-    icons/<раздел>/<имя>.svg            сама иконка (экспорт из Figma подойдёт)
-    icons/<раздел>/<имя>.json           паспорт, необязателен: {"tags": ["лупа", "найти"]}
+    icons/<section>/family.json         {"title": "Path", "note": "Navigation and arrows", "order": [...]}
+    icons/<section>/<name>.svg          the icon itself (a Figma export works)
+    icons/<section>/<name>.json         optional passport: {"tags": ["magnifier", "find"]}
 
-Положил или заменил файл — запустил сборку (или просто запушил: соберёт GitHub Actions).
-Сборка приведёт SVG к единому виду, отметит новые и обновлённые иконки, пересоберёт dist/,
-каталог index.html и превью. Нужен Python 3.11+; превью рисует `rsvg-convert` (librsvg).
+Drop in or replace a file and run the build (or just push: GitHub Actions builds it).
+The build normalizes the SVGs, marks new and updated icons, and regenerates dist/,
+the index.html catalog and the README cover. Needs Python 3.11+; the cover is rendered
+with `rsvg-convert` (librsvg).
 """
 from __future__ import annotations
 
@@ -41,19 +42,19 @@ errors: list[str] = []
 notes: list[str] = []
 
 
-# ── чтение и нормализация ──────────────────────────────────────────────────────
+# ── reading and normalization ──────────────────────────────────────────────────────
 
 def body_of(paths: list[tuple[str, str]]) -> str:
     return "".join(f'<path fill="currentColor" fill-rule="{r}" d="{d}"/>' for r, d in paths)
 
 
 def read_icon(p: Path) -> tuple[str, str] | None:
-    """(тело из path, канонический текст файла) или None, если иконку не разобрать."""
+    """(body built from paths, canonical file text), or None if the icon cannot be parsed."""
     rel = p.relative_to(ROOT)
     try:
         root = ET.fromstring(p.read_text())
     except ET.ParseError as e:
-        errors.append(f"{rel}: битый XML ({e})")
+        errors.append(f"{rel}: broken XML ({e})")
         return None
     vb = root.get("viewBox")
     if vb is None and root.get("width") in ("24", "24px") and root.get("height") in ("24", "24px"):
@@ -63,7 +64,7 @@ def read_icon(p: Path) -> tuple[str, str] | None:
     except ValueError:
         ok = False
     if not ok:
-        errors.append(f"{rel}: нужен холст 24 × 24 (viewBox «0 0 24 24»), а тут «{vb}»")
+        errors.append(f"{rel}: needs a 24 × 24 canvas (viewBox \"0 0 24 24\"), got \"{vb}\"")
         return None
     paths: list[tuple[str, str]] = []
 
@@ -73,17 +74,17 @@ def read_icon(p: Path) -> tuple[str, str] | None:
             return
         if tag == "defs":
             if len(el):
-                errors.append(f"{rel}: <defs> с содержимым (маски, градиенты) не поддерживаются")
+                errors.append(f"{rel}: <defs> with content (masks, gradients) is not supported")
             return
         if tag not in ("svg", "g", "path"):
-            errors.append(f"{rel}: <{tag}> не поддерживается — переведи фигуры в контуры (Outline stroke, Flatten)")
+            errors.append(f"{rel}: <{tag}> is not supported; convert shapes to outlines (Outline stroke, Flatten)")
             return
         if el.get("transform"):
-            errors.append(f"{rel}: transform у <{tag}> — сделай Flatten перед экспортом")
+            errors.append(f"{rel}: transform on <{tag}>; flatten before exporting")
         if el.get("stroke") not in (None, "none"):
-            errors.append(f"{rel}: обводка — переведи её в контур (Outline stroke)")
+            errors.append(f"{rel}: has a stroke; convert it to an outline (Outline stroke)")
         if el.get("clip-path") or el.get("mask") or el.get("opacity") or el.get("fill-opacity"):
-            errors.append(f"{rel}: маски и прозрачность не поддерживаются")
+            errors.append(f"{rel}: masks and opacity are not supported")
         rule = el.get("fill-rule") or el.get("clip-rule") or rule
         if tag == "path" and el.get("fill") != "none":
             d = " ".join((el.get("d") or "").split())
@@ -94,7 +95,7 @@ def read_icon(p: Path) -> tuple[str, str] | None:
 
     walk(root, None)
     if not paths:
-        errors.append(f"{rel}: внутри нет ни одного залитого контура")
+        errors.append(f"{rel}: contains no filled outline")
         return None
     body = body_of(paths)
     return body, f'<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">{body}</svg>\n'
@@ -103,7 +104,7 @@ def read_icon(p: Path) -> tuple[str, str] | None:
 def load() -> tuple[dict, list[dict], dict[str, dict]]:
     cfg = json.loads((ROOT / "kiory.json").read_text())
     for p in ICONS.glob("*.svg"):
-        errors.append(f"{p.relative_to(ROOT)}: иконка вне раздела — перенеси в icons/<раздел>/")
+        errors.append(f"{p.relative_to(ROOT)}: icon outside a section; move it to icons/<section>/")
     dirs = {d.name: d for d in ICONS.iterdir() if d.is_dir()}
     order = [f for f in cfg["families"] if f in dirs] + sorted(set(dirs) - set(cfg["families"]))
     families: list[dict] = []
@@ -116,10 +117,10 @@ def load() -> tuple[dict, list[dict], dict[str, dict]]:
         names = [n for n in meta.get("order", []) if n in files] + sorted(set(files) - set(meta.get("order", [])))
         for n in names:
             if not NAME.fullmatch(n):
-                errors.append(f"icons/{f}/{n}.svg: имя — латиницей в kebab-case, например arrow-left")
+                errors.append(f"icons/{f}/{n}.svg: name must be lowercase kebab-case, e.g. arrow-left")
                 continue
             if n in seen:
-                errors.append(f"{n}: одно имя в двух разделах ({seen[n]} и {f})")
+                errors.append(f"{n}: same name in two sections ({seen[n]} and {f})")
                 continue
             seen[n] = f
             got = read_icon(files[n])
@@ -135,10 +136,10 @@ def load() -> tuple[dict, list[dict], dict[str, dict]]:
     return cfg, families, icons
 
 
-# ── выходные файлы ─────────────────────────────────────────────────────────────
+# ── output files ─────────────────────────────────────────────────────────────
 
 def stamp(icons: dict[str, dict], released: str) -> None:
-    """Даты появления и обновления берутся из прошлой сборки; новое и изменённое — сегодняшним днём."""
+    """Added/updated dates come from the previous build; anything new or changed gets today's date."""
     prev = DIST / "kiory.json"
     old = {i["name"]: i for i in json.loads(prev.read_text())["icons"]} if prev.exists() else {}
     for n, i in icons.items():
@@ -148,7 +149,7 @@ def stamp(icons: dict[str, dict], released: str) -> None:
         i["added"] = o["added"] if o else (TODAY if old else released)
         i["updated"] = (o["updated"] if o["hash"] == h else TODAY) if o else i["added"]
     if gone := sorted(set(old) - set(icons)):
-        notes.append(f"убраны: {', '.join(gone)}")
+        notes.append(f"removed: {', '.join(gone)}")
 
 
 def write(cfg: dict, families: list[dict], icons: dict[str, dict]) -> list[str]:
@@ -170,7 +171,7 @@ def write(cfg: dict, families: list[dict], icons: dict[str, dict]) -> list[str]:
 
     def uri(n: str) -> str:
         return "data:image/svg+xml," + quote(icons[n]["text"].strip().replace("currentColor", "#000"), safe=":/=\" ")
-    css = [f"/* Kiory {cfg['version']}: <i class=\"ki ki-search\"></i> — размер задаёт font-size, цвет — color */",
+    css = [f"/* Kiory {cfg['version']}: <i class=\"ki ki-search\"></i>; size follows font-size, colour follows color */",
            ".ki{display:inline-block;width:1em;height:1em;flex:none;vertical-align:-.125em;background:currentColor;"
            "-webkit-mask:var(--ki) center/contain no-repeat;mask:var(--ki) center/contain no-repeat}"]
     css += [f'.ki-{n}{{--ki:url("{uri(n)}")}}' for n in order]
@@ -178,13 +179,13 @@ def write(cfg: dict, families: list[dict], icons: dict[str, dict]) -> list[str]:
 
     js_icons = ",\n".join(f"  {json.dumps(n)}: {json.dumps(icons[n]['body'])}" for n in order)
     (DIST / "kiory.js").write_text(
-        f"// Kiory {cfg['version']}: тела иконок и svg(name, {{ size }})\n"
+        f"// Kiory {cfg['version']}: icon bodies and svg(name, {{ size }})\n"
         f"export const version = {json.dumps(cfg['version'])};\n"
         f"export const icons = {{\n{js_icons}\n}};\n"
         "export const names = Object.keys(icons);\n"
         "export function svg(name, { size = 24, ...attrs } = {}) {\n"
         "  const body = icons[name];\n"
-        "  if (!body) throw new Error(`Kiory: нет иконки «${name}»`);\n"
+        "  if (!body) throw new Error(`Kiory: no icon named \"${name}\"`);\n"
         "  const a = Object.entries(attrs).map(([k, v]) => ` ${k}=\"${v}\"`).join('');\n"
         "  return `<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"${size}\" height=\"${size}\" viewBox=\"0 0 24 24\" fill=\"none\"${a}>${body}</svg>`;\n"
         "}\n"
@@ -198,7 +199,7 @@ def write(cfg: dict, families: list[dict], icons: dict[str, dict]) -> list[str]:
         "export declare function svg(name: KioryName, opts?: { size?: number | string } & Record<string, string | number>): string;\n"
         "export default icons;\n")
     (DIST / "react.js").write_text(
-        "// <KioryIcon name=\"search\" size={20} /> — берёт цвет текста\n"
+        "// <KioryIcon name=\"search\" size={20} />: takes the text colour\n"
         "import { createElement } from 'react';\n"
         "import { icons } from './kiory.js';\n"
         "export function KioryIcon({ name, size = 24, title, ...rest }) {\n"
@@ -233,34 +234,14 @@ def write(cfg: dict, families: list[dict], icons: dict[str, dict]) -> list[str]:
     return order
 
 
-# ── превью для README ──────────────────────────────────────────────────────────
-
-def sheet(icons, names, cols, cell, icon, fg, bg, line=None, pad=48, labels=False) -> str:
-    rows = -(-len(names) // cols)
-    lh = 24 if labels else 0
-    w, h = pad * 2 + cols * cell, pad * 2 + rows * (cell + lh)
-    out = [f'<svg xmlns="http://www.w3.org/2000/svg" width="{w}" height="{h}" viewBox="0 0 {w} {h}">',
-           f'<rect width="100%" height="100%" fill="{bg}"/>']
-    for i, n in enumerate(names):
-        cx, cy = pad + (i % cols) * cell, pad + (i // cols) * (cell + lh)
-        if line:
-            out.append(f'<rect x="{cx + .5}" y="{cy + .5}" width="{cell}" height="{cell + lh}" fill="none" stroke="{line}"/>')
-        x, y = cx + (cell - icon) / 2, cy + (cell - icon) / 2
-        out.append(f'<g transform="translate({x:.2f} {y:.2f}) scale({icon / 24:.4f})">'
-                   + icons[n]["body"].replace("currentColor", fg) + "</g>")
-        if labels:
-            out.append(f'<text x="{cx + cell / 2}" y="{cy + cell + 8}" font-family="DejaVu Sans Mono, monospace" font-size="11" '
-                       f'fill="{fg}" fill-opacity=".5" text-anchor="middle">{n}</text>')
-    out.append("</svg>")
-    return "".join(out)
-
+# ── README cover ──────────────────────────────────────────────────────────
 
 COVER = ["search", "home", "folder", "bell", "heart", "chat", "settings", "mail",
          "microphone", "camera", "cloud", "edit", "ai-spark", "webhook", "mention", "face-id"]
 
 
 COVER_THEMES = {
-    # справа фото, сетка 4 × 3 поверх; ветвь живёт над сеткой, а не в её ячейках
+    # photo on the right, a 4 × 3 grid on top; the branch lives above the grid, not inside its cells
     "dark": {"fg": "#f4f4f2", "bg": "#000000", "line": "#262626",
              "art": [("night-branch.jpg", 1100, -8, 500, 233, 1, False)]},
     "light": {"fg": "#000000", "bg": "#ffffff", "line": "#d9d4d1",
@@ -309,54 +290,47 @@ def render(svg: str, out: Path) -> None:
 
 def previews(families, icons, order) -> None:
     if not shutil.which("rsvg-convert"):
-        notes.append("rsvg-convert не найден — превью не обновлены")
+        notes.append("rsvg-convert not found; the README cover was not updated")
         return
-    d = ROOT / "docs/previews"
+    d = ROOT / "docs"
     d.mkdir(parents=True, exist_ok=True)
-    # перерисовываем только когда поменялись иконки: PNG от разных версий librsvg отличаются байтами
+    # re-render only when the inputs change: PNGs from different librsvg versions differ byte for byte
     art = sorted((p.name, hashlib.sha1(p.read_bytes()).hexdigest()) for p in (ROOT / "art/readme").glob("*"))
-    key = hashlib.sha1(json.dumps([families, [(n, icons[n]["body"]) for n in order],
+    key = hashlib.sha1(json.dumps([[(n, icons[n]["body"]) for n in COVER if n in icons],
                                    Path(__file__).read_text(), art]).encode()).hexdigest()
-    stamp_file = d / ".source"
+    stamp_file = d / ".cover-source"
     if stamp_file.exists() and stamp_file.read_text().strip() == key and (d / "cover-dark.png").exists():
         return
     stamp_file.write_text(key + "\n")
-    for old in d.glob("*.png"):
-        old.unlink()
     render(cover(icons, "dark"), d / "cover-dark.png")
     render(cover(icons, "light"), d / "cover-light.png")
-    render(sheet(icons, order, 22, 56, 24, "#f4f4f2", "#000000"), d / "all-dark.png")
-    render(sheet(icons, order, 22, 56, 24, "#000000", "#ffffff"), d / "all-light.png")
-    for f in families:
-        ns = [n for n in order if icons[n]["family"] == f["id"]]
-        render(sheet(icons, ns, 8, 112, 40, "#f4f4f2", "#000000", "#222222", labels=True), d / f"{f['id']}.png")
 
 
-# ── запуск ─────────────────────────────────────────────────────────────────────
+# ── entry point ─────────────────────────────────────────────────────────────────────
 
 def main() -> None:
     cfg, families, icons = load()
     if errors:
         for e in errors:
             print("✗", e)
-        sys.exit(f"{len(errors)} ошибок — исправь и запусти снова")
+        sys.exit(f"{len(errors)} errors; fix them and run again")
     unnormal = [i for i in icons.values() if i["file"].read_text() != i["text"]]
     if CHECK:
         if unnormal:
-            print("• будут приведены к единому виду при сборке:", ", ".join(i["name"] for i in unnormal))
-        print(f"✓ {len(icons)} иконок, {len(families)} разделов — проверка пройдена")
+            print("• will be normalized by the build:", ", ".join(i["name"] for i in unnormal))
+        print(f"✓ {len(icons)} icons, {len(families)} sections: check passed")
         return
     for i in unnormal:
         i["file"].write_text(i["text"])
-        notes.append(f"приведена к единому виду: {i['file'].relative_to(ROOT)}")
+        notes.append(f"normalized: {i['file'].relative_to(ROOT)}")
     stamp(icons, cfg["released"])
     order = write(cfg, families, icons)
     previews(families, icons, order)
     for n in notes:
         print("•", n)
     fresh = sum(1 for i in icons.values() if i["updated"] > cfg["released"])
-    print(f"✓ {len(icons)} иконок, {len(families)} разделов" + (f", новых и обновлённых после {cfg['version']}: {fresh}" if fresh else ""))
-    print("✓ dist/, index.html, docs/previews/")
+    print(f"✓ {len(icons)} icons, {len(families)} sections" + (f", new or updated since {cfg['version']}: {fresh}" if fresh else ""))
+    print("✓ dist/, index.html, docs/")
 
 
 if __name__ == "__main__":

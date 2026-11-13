@@ -1,10 +1,10 @@
 <!doctype html>
-<html lang="ru">
+<html lang="en">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Kiory — иконки</title>
-<meta name="description" content="Kiory: __COUNT__ мягких интерфейсных иконок на сетке 24 × 24. SVG, спрайт, CSS, JS и React. Клик копирует, выбранные скачиваются архивом.">
+<title>Kiory — icons</title>
+<meta name="description" content="Kiory: __COUNT__ soft interface icons on a 24 × 24 grid. SVG, sprite, CSS, JS and React. Click to copy, pick a set and download it as a ZIP.">
 <meta name="theme-color" content="#000000">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Crect width='24' height='24' fill='%23000'/%3E%3Ccircle cx='11' cy='11' r='5.5' fill='none' stroke='%23fff' stroke-width='2.4'/%3E%3Cpath d='M15.2 15.2l3.6 3.6' stroke='%23fff' stroke-width='2.6' stroke-linecap='round'/%3E%3C/svg%3E">
 <style>
@@ -48,7 +48,7 @@ svg{display:block}
 kbd{font:400 11px var(--mono);border:1px solid var(--line-2);border-radius:6px;padding:2px 6px;color:var(--text);white-space:nowrap}
 ::view-transition-old(root),::view-transition-new(root){animation:none;mix-blend-mode:normal}
 
-/* ── верх: поверх поля с иконками ── */
+/* ── top bar: floats over the icon field ── */
 .top{position:absolute;z-index:6;top:0;left:0;right:0;display:flex;align-items:center;justify-content:space-between;gap:16px;height:76px}
 .top .logo{width:80px;color:var(--text);display:block}
 .top .logo svg{width:100%;height:auto}
@@ -67,7 +67,7 @@ kbd{font:400 11px var(--mono);border:1px solid var(--line-2);border-radius:6px;p
 .glass{background:color-mix(in srgb,var(--bg) 60%,transparent);-webkit-backdrop-filter:blur(26px) saturate(1.35);backdrop-filter:blur(26px) saturate(1.35);
   box-shadow:inset 0 1px 0 color-mix(in srgb,var(--text) 10%,transparent),inset 0 0 0 1px color-mix(in srgb,var(--text) 8%,transparent),0 40px 120px -40px rgb(0 0 0 / .55)}
 
-/* ── герой: всё поле иконок, лупа под курсором, стеклянная панель с поиском ── */
+/* ── hero: the whole icon field, a lens under the cursor, a glass panel with search ── */
 .hero{position:relative;height:100svh;min-height:660px;max-height:1080px;overflow:hidden;border-bottom:1px solid var(--line)}
 .field{position:absolute;inset:0;--fs:18px}
 .field i{position:absolute;left:0;top:0;width:var(--fs);height:var(--fs);margin:calc(var(--fs) / -2) 0 0 calc(var(--fs) / -2);color:var(--text);opacity:.2;will-change:transform,opacity;transition:color .3s}
@@ -99,12 +99,12 @@ kbd{font:400 11px var(--mono);border:1px solid var(--line-2);border-radius:6px;p
 @keyframes fade{from{opacity:0}}
 @keyframes rise{to{transform:none}}
 
-/* ── заголовок секции ── */
+/* ── section heading ── */
 .sec-h{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:40px;align-items:end;margin-bottom:44px}
 .sec-h h2{font:500 clamp(52px,6.4vw,96px)/.92 var(--sans);letter-spacing:-.055em;margin:0}
 .sec-h p{margin:0;color:var(--mute);max-width:42ch;font-size:16px}
 
-/* ── ремесло: одна иконка крупно, табличка, лента образцов ── */
+/* ── craft: one icon up close, a placard, a strip of specimens ── */
 .craft{padding-top:150px}
 .cbox{display:grid;grid-template-columns:minmax(0,1.15fr) minmax(0,.85fr);border:1px solid var(--line);border-radius:30px;overflow:hidden}
 .plate{position:relative;display:grid;place-items:center;padding:60px 48px 44px;border-right:1px solid var(--line);cursor:copy;user-select:none;-webkit-user-select:none;outline-offset:-1px;border-radius:30px 0 0 0}
@@ -146,7 +146,7 @@ kbd{font:400 11px var(--mono);border:1px solid var(--line-2);border-radius:6px;p
 .facts div{border-top:1px solid var(--line);padding-top:18px;color:var(--mute);font-size:14px}
 .facts b{display:block;margin-bottom:6px;font:500 26px/1.05 var(--sans);letter-spacing:-.035em;color:var(--text)}
 
-/* ── в деле: окно приложения, собранное из Kiory ── */
+/* ── in use: an app window built from Kiory ── */
 .inuse{padding-top:150px;padding-bottom:140px}
 .win{--w-bg:#0e0d0c;--w-bg2:#151413;--w-text:#f2efe9;--w-mute:#8b8781;--w-line:#24221f;--w-acc:#d0223b;
   position:relative;display:grid;grid-template-columns:236px minmax(0,1fr) 300px;height:clamp(480px,46vw,620px);border-radius:26px;overflow:hidden;
@@ -201,7 +201,7 @@ kbd{font:400 11px var(--mono);border:1px solid var(--line-2);border-radius:6px;p
 .w-cur svg{width:22px;height:22px;filter:drop-shadow(0 3px 8px rgb(0 0 0 / .35))}
 .w-cap{margin-top:18px;font:400 12px var(--mono);color:var(--mute);display:flex;justify-content:space-between;gap:20px;flex-wrap:wrap}
 
-/* ── панель ── *//* ── панель ── */
+/* ── catalog bar ── */
 .bar{position:sticky;top:0;z-index:20;background:color-mix(in srgb,var(--bg) 88%,transparent);backdrop-filter:blur(16px) saturate(1.2);-webkit-backdrop-filter:blur(16px);border-bottom:1px solid var(--line)}
 .progress{position:absolute;left:0;bottom:-1px;height:1px;width:100%;background:var(--text);transform-origin:0 50%;transform:scaleX(var(--p,0))}
 .bar-row{display:flex;align-items:stretch;height:56px}
@@ -239,7 +239,7 @@ kbd{font:400 11px var(--mono);border:1px solid var(--line-2);border-radius:6px;p
 .fams a[hidden]{display:none}
 .fink{position:absolute;left:0;bottom:0;height:2px;width:0;background:var(--text);transition:transform .55s var(--out),width .55s var(--out);pointer-events:none}
 
-/* ── сетка ── */
+/* ── grid ── */
 main{padding-bottom:120px}
 .fam{padding-top:72px}
 .fam[hidden]{display:none}
@@ -288,7 +288,7 @@ main{padding-bottom:120px}
 .grid::after{content:"";position:absolute;inset:0;z-index:3;pointer-events:none;opacity:0;transition:opacity .45s var(--out);
   background:radial-gradient(240px circle at var(--mx,50%) var(--my,50%),var(--glow),transparent 72%)}
 .grid:hover::after{opacity:1}
-/* заголовок раздела поднимается из-под маски один раз */
+/* section titles rise from behind a mask once */
 .fam-h h2{overflow:hidden;padding-bottom:.08em;margin-bottom:-.08em}
 .fam-h h2 span{display:block}
 .veil .fam-h h2 span{transform:translateY(108%)}
@@ -296,7 +296,7 @@ main{padding-bottom:120px}
 .fam.seen .fam-h h2 span{transform:none;transition:transform 1.05s var(--out)}
 .fam.seen .fam-h p{opacity:1;transition:opacity .9s var(--out) .25s}
 
-/* ── подключение ── */
+/* ── install ── */
 .use{border-top:1px solid var(--line);padding-top:96px;padding-bottom:120px}
 .use-h{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:40px;align-items:end;margin-bottom:40px}
 .use-h h2{font:600 clamp(40px,5vw,72px)/.95 var(--sans);letter-spacing:-.05em;margin:0}
@@ -320,7 +320,7 @@ main{padding-bottom:120px}
 .pane-anim{animation:pane .5s var(--out)}
 @keyframes pane{from{opacity:0;transform:translateY(8px)}}
 
-/* ── лоток набора ── */
+/* ── set tray ── */
 .tray{position:fixed;left:50%;bottom:24px;z-index:30;transform:translate(-50%,calc(100% + 40px));transition:transform .6s var(--out);
   display:flex;align-items:stretch;height:52px;background:var(--inv);color:var(--inv-text);max-width:calc(100vw - 24px);box-shadow:0 30px 70px -24px rgb(0 0 0 / .55)}
 .tray.on{transform:translate(-50%,0)}
@@ -338,14 +338,14 @@ main{padding-bottom:120px}
 .tray button svg{width:18px;height:18px}
 .tray .x{padding:0 16px}
 
-/* ── тост ── */
+/* ── toast ── */
 .toast{position:fixed;left:50%;top:20px;z-index:60;transform:translate(-50%,-160%);transition:transform .5s var(--out);
   display:flex;align-items:center;gap:10px;padding:12px 18px 12px 14px;background:var(--inv);color:var(--inv-text);font-weight:500;font-size:14px;pointer-events:none;max-width:calc(100vw - 24px)}
 .toast.on{transform:translate(-50%,0)}
 .toast svg{width:18px;height:18px;flex:none}
 .toast code{font:500 13px var(--mono)}
 
-/* ── карточка ── */
+/* ── icon card ── */
 .scrim{position:fixed;inset:0;z-index:50;background:rgb(0 0 0 / .6);opacity:0;pointer-events:none;transition:opacity .4s var(--out)}
 .scrim.on{opacity:1;pointer-events:auto}
 .card{position:fixed;z-index:51;top:0;right:0;bottom:0;width:min(460px,100vw);background:var(--bg);border-left:1px solid var(--line);overflow:auto;overscroll-behavior:contain;
@@ -391,7 +391,7 @@ footer{border-top:1px solid var(--line);color:var(--mute);font-size:13px}
 footer .wrap{display:flex;justify-content:space-between;gap:24px;flex-wrap:wrap;padding-top:28px;padding-bottom:40px}
 footer a{color:var(--text);text-decoration:none;border-bottom:1px solid var(--line-2)}
 
-/* ── оформление: ночь — гербарий у воды, день — лист с тенью ветви ── */
+/* ── art: night is a herbarium by the water, day is a sheet with a branch shadow ── */
 .art{position:absolute;pointer-events:none;user-select:none;-webkit-user-select:none}
 .art i{position:absolute;display:block;background-repeat:no-repeat}
 .art .paper{display:none}
@@ -401,7 +401,7 @@ footer a{color:var(--text);text-decoration:none;border-bottom:1px solid var(--li
   :root:not([data-theme="dark"]) .art .night{display:none}
   :root:not([data-theme="dark"]) .art .paper{display:block}
 }
-/* кадр перед «Подключением»: фото во всю ширину, заголовок на его пустой части, панель — стекло */
+/* frame before Install: a full-width photo, the heading on its empty side, the panel is glass */
 .band{position:relative;height:clamp(300px,32vw,520px);border-top:1px solid var(--line);overflow:hidden}
 .band i{inset:0;background-size:cover;background-position:72% 50%;
   -webkit-mask:linear-gradient(#000 55%,transparent);mask:linear-gradient(#000 55%,transparent)}
@@ -417,7 +417,7 @@ footer a{color:var(--text);text-decoration:none;border-bottom:1px solid var(--li
 .snip button{background:transparent}
 .band + .use .use-h p{max-width:34ch}
 
-/* плавающие слои — стекло */
+/* floating layers are glass */
 .tray,.toast{background:color-mix(in srgb,var(--inv) 90%,transparent);-webkit-backdrop-filter:blur(22px) saturate(1.6);backdrop-filter:blur(22px) saturate(1.6)}
 .tray{box-shadow:inset 0 1px 0 color-mix(in srgb,var(--inv-text) 14%,transparent),0 30px 70px -24px rgb(0 0 0 / .55)}
 .scrim{background:rgb(0 0 0 / .42);-webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px)}
@@ -493,30 +493,30 @@ footer a{color:var(--text);text-decoration:none;border-bottom:1px solid var(--li
   <div class="wrap top">
     <a class="logo" id="logo" href="#top" aria-label="Kiory"></a>
     <nav>
-      <a href="#craft">Ремесло</a>
-      <a href="#inuse">В деле</a>
-      <a href="#catalog">Каталог</a>
-      <a href="#use">Подключение</a>
+      <a href="#craft">Craft</a>
+      <a href="#inuse">In use</a>
+      <a href="#catalog">Catalog</a>
+      <a href="#use">Install</a>
       <a id="gh" href="#" rel="noopener">GitHub</a>
-      <button class="ib" id="theme-top" aria-label="Сменить тему"></button>
-      <button class="btn" id="dl-all"><span data-i="download"></span>Скачать всё</button>
+      <button class="ib" id="theme-top" aria-label="Switch theme"></button>
+      <button class="btn" id="dl-all"><span data-i="download"></span>Download all</button>
     </nav>
   </div>
   <div class="panel glass">
-    <h1 class="sr">Kiory — __COUNT__ иконок</h1>
+    <h1 class="sr">Kiory — __COUNT__ icons</h1>
     <span class="xl" id="logo-xl" aria-hidden="true"></span>
-    <p><b>__COUNT__ мягких иконок</b> мастерской YHK — шестнадцать разделов на&nbsp;одной сетке 24&nbsp;×&nbsp;24.</p>
+    <p><b>__COUNT__ soft icons</b> from the YHK Atelier — sixteen sections on&nbsp;one 24&nbsp;×&nbsp;24 grid.</p>
     <label class="hfind"><span data-i="search"></span>
-      <input id="hq" type="search" placeholder="Найти: папка, облако, ai…" autocomplete="off" spellcheck="false" aria-label="Поиск иконки">
-      <button class="go" id="hgo" type="button">Все __COUNT__</button></label>
-    <div class="hmeta"><span id="ver"></span><span>SVG · спрайт · CSS · JS · React</span><span id="lens-hint">наведите на поле — лупа</span></div>
+      <input id="hq" type="search" placeholder="Find: folder, cloud, ai…" autocomplete="off" spellcheck="false" aria-label="Search icons">
+      <button class="go" id="hgo" type="button">All __COUNT__</button></label>
+    <div class="hmeta"><span id="ver"></span><span>SVG · sprite · CSS · JS · React</span><span id="lens-hint">hover the field to use the lens</span></div>
   </div>
 </header>
 
 <section class="wrap craft" id="craft">
-  <div class="sec-h"><h2>Ремесло</h2><p>Каждая иконка собрана на&nbsp;сетке 24&nbsp;×&nbsp;24: одна толщина линии, мягкие концы, общие пропорции внутри раздела. Наведите на&nbsp;сетку — увидите координаты, кликните — иконка в&nbsp;буфере.</p></div>
+  <div class="sec-h"><h2>Craft</h2><p>Every icon is built on&nbsp;a 24&nbsp;×&nbsp;24 grid: one line weight, soft ends, shared proportions within a&nbsp;section. Hover the grid to&nbsp;read coordinates, click to&nbsp;copy the icon.</p></div>
   <div class="cbox">
-    <div class="plate" id="plate" role="button" tabindex="0" aria-label="Скопировать иконку">
+    <div class="plate" id="plate" role="button" tabindex="0" aria-label="Copy the icon">
       <div class="pin" id="pin">
         <svg id="p-grid" viewBox="-2 -2 28 28" aria-hidden="true"></svg>
         <svg class="p-ico" id="p-ico" viewBox="-2 -2 28 28" aria-hidden="true"></svg>
@@ -525,53 +525,53 @@ footer a{color:var(--text);text-decoration:none;border-bottom:1px solid var(--li
       <span class="p-xy" id="p-xy"></span>
     </div>
     <div class="placard">
-      <div class="pl-no">№ <b id="pl-no"></b> из __COUNT__</div>
+      <div class="pl-no">No. <b id="pl-no"></b> of __COUNT__</div>
       <div class="pl-name" id="pl-name"></div>
       <div class="pl-sec" id="pl-sec"></div>
       <div class="ladder2" id="ladder2"></div>
-      <div class="pl-act"><button class="btn" id="pl-copy"><span data-i="copy"></span>Скопировать SVG</button><button class="btn ghost" id="pl-open">Карточка иконки</button></div>
+      <div class="pl-act"><button class="btn" id="pl-copy"><span data-i="copy"></span>Copy SVG</button><button class="btn ghost" id="pl-open">Open icon card</button></div>
     </div>
-    <div class="strip" id="strip" aria-label="Образцы"></div>
+    <div class="strip" id="strip" aria-label="Specimens"></div>
   </div>
   <div class="facts">
-    <div><b>24 × 24</b>сетка, на которой собрана каждая иконка</div>
-    <div><b>Одна толщина</b>во всех __COUNT__ иконках, от стрелки до шейдера</div>
-    <div><b>16 разделов</b>от навигации и файлов до кода и ИИ</div>
-    <div><b>currentColor</b>цвет и размер берутся из текста</div>
+    <div><b>24 × 24</b>the grid every icon is built on</div>
+    <div><b>One weight</b>across all __COUNT__ icons, from an arrow to a shader</div>
+    <div><b>16 sections</b>from navigation and files to code and AI</div>
+    <div><b>currentColor</b>colour and size follow the text</div>
   </div>
 </section>
 
 <section class="wrap inuse" id="inuse">
-  <div class="sec-h"><h2>В деле</h2><p>Иконки держат интерфейс, а не украшают его. Окно ниже собрано целиком из Kiory — в ночной теме и в бумажной.</p></div>
+  <div class="sec-h"><h2>In use</h2><p>Icons carry an interface rather than decorate it. The window below is built entirely from Kiory, in the night theme and the paper one.</p></div>
   <div class="win" id="win" data-t="night">
     <aside class="w-side" id="w-side"></aside>
     <div class="w-main"><div class="w-bar" id="w-bar"></div><div class="w-rows" id="w-rows"></div></div>
     <div class="w-right">
       <div class="w-art"><i class="n"></i><i class="p"></i></div>
-      <div class="w-tr">Ночной гербарий<span>мастерская YHK · 3:42</span></div>
+      <div class="w-tr">Night Herbarium<span>YHK Atelier · 3:42</span></div>
       <div class="w-wave" id="w-wave"></div>
       <div class="w-ctl" id="w-ctl"></div>
     </div>
     <div class="w-toast" id="w-toast"></div>
     <i class="w-cur" id="w-cur" aria-hidden="true"></i>
   </div>
-  <div class="w-cap"><span id="w-count"></span><span>Переключите тему окна вверху справа</span></div>
+  <div class="w-cap"><span id="w-count"></span><span>Switch the window theme at the top right</span></div>
 </section>
 
 <div class="bar" id="catalog">
   <div class="wrap bar-row">
     <label class="find"><span data-i="search"></span>
-      <input id="q" type="search" placeholder="Начните печатать…" autocomplete="off" spellcheck="false" aria-label="Поиск иконки">
+      <input id="q" type="search" placeholder="Start typing…" autocomplete="off" spellcheck="false" aria-label="Search icons">
       <span class="n" id="count"></span></label>
-    <button class="chip" id="fresh" aria-pressed="false" hidden><i></i><span id="fresh-t">Новые</span></button>
-    <div class="seg size" role="group" aria-label="Размер"><span class="lbl">px</span>
+    <button class="chip" id="fresh" aria-pressed="false" hidden><i></i><span id="fresh-t">New</span></button>
+    <div class="seg size" role="group" aria-label="Size"><span class="lbl">px</span>
       <button data-s="16">16</button><button data-s="20">20</button><button data-s="24" aria-pressed="true">24</button><button data-s="32">32</button><button data-s="40">40</button><i class="ink"></i></div>
-    <div class="seg fmt" role="group" aria-label="Что копировать по клику"><span class="lbl">клик копирует</span>
-      <button data-fmt="svg" aria-pressed="true">SVG</button><button data-fmt="jsx">JSX</button><button data-fmt="css">CSS</button><button data-fmt="name">имя</button><i class="ink"></i></div>
-    <button class="ib" id="picking" aria-pressed="false" aria-label="Режим набора" title="Режим набора: клик добавляет иконку, а не копирует"><span data-i="select-all"></span></button>
-    <button class="ib" id="theme" aria-label="Сменить тему"></button>
+    <div class="seg fmt" role="group" aria-label="What a click copies"><span class="lbl">click copies</span>
+      <button data-fmt="svg" aria-pressed="true">SVG</button><button data-fmt="jsx">JSX</button><button data-fmt="css">CSS</button><button data-fmt="name">name</button><i class="ink"></i></div>
+    <button class="ib" id="picking" aria-pressed="false" aria-label="Set mode" title="Set mode: a click adds the icon to your set instead of copying it"><span data-i="select-all"></span></button>
+    <button class="ib" id="theme" aria-label="Switch theme"></button>
   </div>
-  <nav class="wrap fams" id="fams" aria-label="Разделы"></nav>
+  <nav class="wrap fams" id="fams" aria-label="Sections"></nav>
   <i class="progress" id="progress"></i>
 </div>
 
@@ -580,8 +580,8 @@ footer a{color:var(--text);text-decoration:none;border-bottom:1px solid var(--li
 <div class="band" aria-hidden="true"><div class="art" style="inset:0"><i class="night"></i><i class="paper"></i></div></div>
 <section class="wrap use" id="use">
   <div class="use-h">
-    <h2>Подключение</h2>
-    <p>Всё уже собрано: отдельные SVG, спрайт, CSS-классы, модуль для JS и компонент для React. Выберите, как удобнее.</p>
+    <h2>Install</h2>
+    <p>Everything is prebuilt: individual SVGs, a sprite, CSS classes, a JS module and a React component. Pick whatever fits.</p>
   </div>
   <div class="use-box">
     <div class="use-tabs" role="tablist" id="use-tabs"></div>
@@ -590,33 +590,33 @@ footer a{color:var(--text);text-decoration:none;border-bottom:1px solid var(--li
 </section>
 
 <footer><div class="wrap">
-  <span>Kiory <span id="ver2"></span> — <a href="LICENSE">PolyForm Small Business</a>: бесплатно для людей и небольших команд.</span>
-  <span>Крупным компаниям — <a id="gh2" href="#">лицензия по запросу</a></span>
+  <span>Kiory <span id="ver2"></span> — <a href="LICENSE">PolyForm Small Business</a>: free for individuals and small teams.</span>
+  <span>Larger companies — <a id="gh2" href="#">licence on request</a></span>
 </div></footer>
 
-<div class="tray" id="tray" role="region" aria-label="Набор">
+<div class="tray" id="tray" role="region" aria-label="Your set">
   <span class="k" id="tray-k"></span>
   <span class="strip" id="tray-strip"></span>
-  <button id="t-copy"><span data-i="copy"></span><span class="lbl-t">Копировать</span></button>
+  <button id="t-copy"><span data-i="copy"></span><span class="lbl-t">Copy</span></button>
   <button id="t-zip"><span data-i="download"></span>ZIP</button>
-  <button class="x" id="t-clear" aria-label="Очистить набор"><span data-i="close"></span></button>
+  <button class="x" id="t-clear" aria-label="Clear the set"><span data-i="close"></span></button>
 </div>
 
 <div class="toast" id="toast" role="status" aria-live="polite"><span data-i="check-circle"></span><span id="toast-t"></span></div>
 
 <div class="scrim" id="scrim"></div>
-<aside class="card" id="card" aria-label="Иконка" aria-hidden="true" inert>
+<aside class="card" id="card" aria-label="Icon" aria-hidden="true" inert>
   <div class="card-top"><div><h3 id="c-name"></h3><div class="f" id="c-fam"></div></div>
-    <button class="ib" id="c-close" aria-label="Закрыть"><span data-i="close"></span></button></div>
+    <button class="ib" id="c-close" aria-label="Close"><span data-i="close"></span></button></div>
   <div class="stage" id="c-stage"></div>
   <div class="ladder" id="c-ladder"></div>
   <div class="c-copy">
-    <button class="main" id="c-svg"><span data-i="copy"></span>Скопировать SVG</button>
-    <button data-cf="jsx">JSX</button><button data-cf="css">CSS</button><button data-cf="use">&lt;use&gt;</button><button data-cf="name">имя</button><button data-cf="uri">data:</button>
+    <button class="main" id="c-svg"><span data-i="copy"></span>Copy SVG</button>
+    <button data-cf="jsx">JSX</button><button data-cf="css">CSS</button><button data-cf="use">&lt;use&gt;</button><button data-cf="name">name</button><button data-cf="uri">data:</button>
   </div>
   <div class="c-row"><span class="lb">PNG</span><button data-png="32">32</button><button data-png="64">64</button><button data-png="128">128</button><button data-png="512">512</button></div>
-  <div class="c-more"><button id="c-dl"><span data-i="download"></span>.svg</button><button id="c-pick"><span data-i="add"></span><span>В набор</span></button></div>
-  <div class="c-more"><button id="c-link"><span data-i="link"></span>Ссылка</button><button id="c-find"><span data-i="search"></span>Похожие</button></div>
+  <div class="c-more"><button id="c-dl"><span data-i="download"></span>.svg</button><button id="c-pick"><span data-i="add"></span><span>Add to set</span></button></div>
+  <div class="c-more"><button id="c-link"><span data-i="link"></span>Link</button><button id="c-find"><span data-i="search"></span>Similar</button></div>
   <div class="nav2"><button id="c-prev"><span data-i="chevron-left"></span><span id="c-pn"></span></button><button id="c-next"><span id="c-nn"></span><span data-i="chevron-right"></span></button></div>
 </aside>
 
@@ -631,8 +631,7 @@ const order = DATA.icons.map(i => i.n);
 const famTitle = Object.fromEntries(DATA.families.map(f => [f.id, f.title]));
 const famNote = Object.fromEntries(DATA.families.map(f => [f.id, f.note]));
 const isNew = i => i.a > DATA.released, isUpd = i => !isNew(i) && i.u > DATA.released;
-const plural = (k, one, few, many) => k % 10 === 1 && k % 100 !== 11 ? one : [2, 3, 4].includes(k % 10) && ![12, 13, 14].includes(k % 100) ? few : many;
-const icons = k => `${k} ${plural(k, 'иконка', 'иконки', 'иконок')}`;
+const icons = k => `${k} ${k === 1 ? 'icon' : 'icons'}`;
 const svg = (b, a = '') => `<svg viewBox="0 0 24 24" fill="none" aria-hidden="true" ${a}>${b}</svg>`;
 const fileText = n => `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">${by[n].b}</svg>`;
 const FMT = {
@@ -643,7 +642,7 @@ const FMT = {
   name: n => n,
   uri: n => 'data:image/svg+xml,' + encodeURIComponent(fileText(n).replace(/currentColor/g, '#000')),
 };
-const FMT_T = { svg: 'SVG', jsx: 'JSX', css: 'CSS-класс', use: '<use>', name: 'имя', uri: 'data URI' };
+const FMT_T = { svg: 'SVG', jsx: 'JSX', css: 'CSS class', use: '<use>', name: 'name', uri: 'data URI' };
 const REPO = DATA.repo, GH = `https://github.com/${REPO}`;
 document.querySelectorAll('[data-i]').forEach(el => el.outerHTML = svg(by[el.dataset.i].b));
 $('logo').innerHTML = DATA.logo;
@@ -651,64 +650,45 @@ $('ver').textContent = `Kiory ${DATA.version}`; $('ver2').textContent = DATA.ver
 $('gh').href = GH; $('gh2').href = GH;
 $('logo-xl').innerHTML = DATA.logo;
 
-/* ── русские слова ── */
-const RU = {
-  'поиск':'search','лупа':'search','найти':'search','дом':'home','главн':'home','папк':'folder','файл':'file','документ':'file','колокол':'bell','уведом':'notification bell',
-  'сердц':'heart','лайк':'heart thumbs-up','нрав':'heart thumbs-up','чат':'chat message','сообщ':'message chat','настрой':'settings sliders','шестер':'settings','почт':'mail','письм':'mail',
-  'микрофон':'microphone','камер':'camera','облак':'cloud','карандаш':'edit pen','правк':'edit','редакт':'edit','кисть':'brush','ластик':'eraser','пипетк':'eyedropper',
-  'стрелк':'arrow chevron','назад':'back arrow-left','вперёд':'forward arrow-right','вперед':'forward arrow-right','закры':'close x-circle','крест':'close x-circle',
-  'плюс':'add plus','добав':'add plus','удал':'delete remove','корзин':'delete shopping-cart','скач':'download','загруз':'upload download','копир':'copy duplicate',
-  'встав':'paste','ссылк':'link','замок':'lock','безопас':'shield lock','защит':'shield','ключ':'key passkey','пароль':'passkey key lock','пользоват':'user','люди':'users','контакт':'contacts',
-  'звезд':'star','звёзд':'star','календар':'calendar','час':'clock timer hourglass','время':'clock history timer','таймер':'timer','глаз':'eye','скрыт':'eye-off','звук':'volume music',
-  'громк':'volume','музык':'music','видео':'video','играть':'play','плей':'play','пауз':'pause','стоп':'stop','запис':'record','фото':'image camera','картин':'image','изображ':'image',
-  'график':'chart','диаграм':'chart','данн':'database chart','база':'database','нейро':'ai','ии':'ai','искусств':'ai','агент':'ai-agent','код':'code terminal','терминал':'terminal',
-  'ошибк':'error bug warning','жук':'bug','баг':'bug','ракет':'rocket deploy','окн':'window','сетк':'grid','слои':'layers','фильтр':'filter funnel','сорт':'sort','меню':'menu more',
-  'тема':'sun moon','солн':'sun','лун':'moon','ночь':'moon','батаре':'battery','заряд':'charging battery','сеть':'network wi-fi','интернет':'globe wi-fi','мир':'globe',
-  'телефон':'smartphone call','звон':'call','компьют':'desktop laptop monitor','ноутбук':'laptop','клавиат':'keyboard','мыш':'mouse','карт':'map credit-card','деньг':'wallet credit-card',
-  'оплат':'credit-card wallet','покуп':'shopping','магазин':'store','подар':'gift','кофе':'coffee','огон':'fire','молни':'zap','лампоч':'lightbulb','идея':'lightbulb','смайл':'smile laugh',
-  'улыб':'smile','грус':'frown','палит':'palette','цвет':'palette fill','текст':'text','отпечат':'fingerprint','лицо':'face-id smile','гит':'git','ветк':'git-branch','публик':'deploy share',
-  'поделит':'share','отправ':'send','инфо':'info','помощ':'help','вопрос':'help','внимани':'warning','галоч':'check','готов':'check','обнов':'refresh','повтор':'repeat redo','отмен':'undo',
-  'наушник':'headphones','процессор':'cpu','сервер':'server','вход':'log-in','выход':'log-out','закладк':'bookmark','книг':'book-open','заметк':'note',
-  'тег':'tag','метк':'tag','медал':'award','награ':'award','корон':'crown','грузов':'truck','доставк':'truck','чек':'receipt','трансл':'cast','разговор':'chat call'
-};
-const syn = t => { const out = []; for (const k in RU) if (t.includes(k) || (t.length >= 3 && k.startsWith(t))) out.push(...RU[k].split(' ')); return out; };
 const lev = (a, b) => { const d = Array.from({ length: b.length + 1 }, (_, i) => i); for (let i = 1; i <= a.length; i++) { let p = d[0]; d[0] = i;
   for (let j = 1; j <= b.length; j++) { const t = d[j]; d[j] = Math.min(d[j] + 1, d[j - 1] + 1, p + (a[i - 1] === b[j - 1] ? 0 : 1)); p = t; } } return d[b.length]; };
 
-/* ── сетка ── */
+/* ── grid ── */
 const main = $('main');
 const ok = svg(by.check.b, 'class="ok"');
 main.innerHTML = DATA.families.map(f => `
   <section class="fam" id="f-${f.id}" data-f="${f.id}">
-    <div class="fam-h"><h2><span>${f.title}</span></h2><p>${f.note}<span class="c">${f.count}</span></p><button class="all" data-all="${f.id}">весь раздел в набор</button></div>
+    <div class="fam-h"><h2><span>${f.title}</span></h2><p>${f.note}<span class="c">${f.count}</span></p><button class="all" data-all="${f.id}">add section to set</button></div>
     <div class="grid">${DATA.icons.filter(i => i.f === f.id).map(i => `
       <div class="t" data-n="${i.n}">
         <button class="hit" aria-label="${i.n}" title="${i.n}"><span class="g">${svg(i.b)}${ok}</span><span class="nm">${i.n}</span></button>
         ${isNew(i) ? '<span class="badge">NEW</span>' : isUpd(i) ? '<span class="badge">UPD</span>' : ''}
-        <button class="pick" tabindex="-1" aria-label="В набор: ${i.n}" aria-pressed="false"><span class="box"></span></button>
-        <button class="more" tabindex="-1" aria-label="Подробнее: ${i.n}">${svg(by['more-h'].b)}</button>
+        <button class="pick" tabindex="-1" aria-label="Add to set: ${i.n}" aria-pressed="false"><span class="box"></span></button>
+        <button class="more" tabindex="-1" aria-label="Details: ${i.n}">${svg(by['more-h'].b)}</button>
       </div>`).join('')}</div>
   </section>`).join('') + '<p class="empty" id="empty" hidden></p>';
 $('fams').innerHTML = DATA.families.map(f => `<a href="#f-${f.id}" data-f="${f.id}" title="${f.note}">${f.title}<span>${f.count}</span></a>`).join('');
 const tiles = Object.fromEntries([...main.querySelectorAll('.t')].map(t => [t.dataset.n, t]));
 const visible = () => order.filter(n => !tiles[n].hidden);
 
-/* ── новые ── */
+/* ── new ── */
 const freshN = DATA.icons.filter(i => isNew(i) || isUpd(i)).length;
 let onlyFresh = false;
-if (freshN) { $('fresh').hidden = false; $('fresh-t').textContent = `Новые · ${freshN}`; }
+if (freshN) { $('fresh').hidden = false; $('fresh-t').textContent = `New · ${freshN}`; }
 $('fresh').onclick = () => { onlyFresh = !onlyFresh; $('fresh').setAttribute('aria-pressed', onlyFresh); filter(true); };
 
-/* ── поиск ── */
+/* ── search ── */
 const q = $('q'), count = $('count'), empty = $('empty');
 function filter(animate) {
-  const t = q.value.trim().toLowerCase(), alt = t ? syn(t) : [];
+  const t = q.value.trim().toLowerCase();
+  // a section note only counts when no icon name or tag matches the query
+  const byName = t && DATA.icons.some(i => i.n.includes(t) || i.t.some(x => x.includes(t)));
   let shown = 0, k = 0;
   main.querySelectorAll('.fam').forEach(sec => {
     let s = 0; const ft = (famTitle[sec.dataset.f] + ' ' + famNote[sec.dataset.f]).toLowerCase();
     sec.querySelectorAll('.t').forEach(el => {
       const i = by[el.dataset.n], n = i.n;
-      const hit = !t || n.includes(t) || ft.includes(t) || i.t.some(x => x.includes(t)) || alt.some(a => n.includes(a));
+      const hit = !t || n.includes(t) || i.t.some(x => x.includes(t)) || (!byName && ft.includes(t));
       const show = hit && (!onlyFresh || isNew(i) || isUpd(i));
       const was = !el.hidden;
       el.hidden = !show;
@@ -721,7 +701,7 @@ function filter(animate) {
   empty.hidden = !!shown;
   if (!shown) {
     const near = order.map(n => [lev(t, n.slice(0, Math.max(t.length, 3))), n]).sort((a, b) => a[0] - b[0]).slice(0, 3).map(x => x[1]);
-    empty.innerHTML = `По запросу <b>«${q.value.replace(/[<&]/g, '')}»</b> ничего нет. Может быть, ${near.map(n => `<button data-try="${n}">${n}</button>`).join(', ')}?`;
+    empty.innerHTML = `Nothing matches <b>“${q.value.replace(/[<&]/g, '')}”</b>. Maybe ${near.map(n => `<button data-try="${n}">${n}</button>`).join(', ')}?`;
   }
   markFam();
 }
@@ -731,10 +711,10 @@ q.addEventListener('input', () => {
   if (q.value && top > 1) scrollTo({ top: scrollY + top, behavior: motion ? 'smooth' : 'auto' });
 });
 empty.addEventListener('click', e => { const b = e.target.closest('[data-try]'); if (b) { q.value = b.dataset.try; filter(true); } });
-const PH = ['папка', 'сердце', 'ai', 'стрелка', 'облако', 'chart', 'замок'];
-let phI = -1; setInterval(() => { if (document.activeElement === q || q.value) return; phI = (phI + 1) % (PH.length + 1); q.placeholder = phI === PH.length ? 'Начните печатать…' : `Например, «${PH[phI]}»`; }, 2800);
+const PH = ['folder', 'heart', 'ai', 'arrow', 'cloud', 'chart', 'lock'];
+let phI = -1; setInterval(() => { if (document.activeElement === q || q.value) return; phI = (phI + 1) % (PH.length + 1); q.placeholder = phI === PH.length ? 'Start typing…' : `Try “${PH[phI]}”`; }, 2800);
 
-/* ── сегменты с бегунком ── */
+/* ── segmented controls with a sliding ink ── */
 function seg(sel, fn) {
   const btns = [...document.querySelectorAll(sel)], ink = btns[0].parentElement.querySelector('.ink');
   const place = b => { ink.style.left = b.offsetLeft + 10 + 'px'; ink.style.width = b.offsetWidth - 20 + 'px'; };
@@ -744,9 +724,9 @@ function seg(sel, fn) {
 }
 let fmt = 'svg';
 seg('[data-s]', b => { const s = +b.dataset.s; root.style.setProperty('--glyph', s + 'px'); root.style.setProperty('--cell', (s >= 32 ? 132 : 112) + 'px'); });
-seg('[data-fmt]', b => { fmt = b.dataset.fmt; toast(`Клик копирует ${FMT_T[fmt]}`, 'info'); });
+seg('[data-fmt]', b => { fmt = b.dataset.fmt; toast(`A click now copies ${FMT_T[fmt]}`, 'info'); });
 
-/* ── тема с круговым переходом ── */
+/* ── theme with a circular reveal ── */
 const themeBtn = $('theme'), themeBtns = [themeBtn, $('theme-top')];
 const isLight = () => root.dataset.theme ? root.dataset.theme === 'light' : matchMedia('(prefers-color-scheme: light)').matches;
 const paintTheme = () => { themeBtns.forEach(b => b.innerHTML = svg((isLight() ? by.moon : by.sun).b)); document.querySelector('meta[name=theme-color]').content = isLight() ? '#ffffff' : '#000000'; };
@@ -763,7 +743,7 @@ const flipTheme = btn => {
 themeBtns.forEach(b => b.onclick = () => flipTheme(b));
 paintTheme();
 
-/* ── буфер и тост ── */
+/* ── clipboard and toast ── */
 let toastT;
 function toast(html, ic = 'check-circle') {
   $('toast').firstElementChild.outerHTML = svg(by[ic].b);
@@ -778,8 +758,8 @@ async function clip(text) {
   }
 }
 async function copyOne(n, f = fmt, ev) {
-  if (!(await clip(FMT[f](n)))) return toast('Браузер не дал доступ к буферу — скачайте файл в карточке иконки', 'warning');
-  toast(`<code>${n}</code> — ${FMT_T[f].replace('<', '&lt;')} в буфере`);
+  if (!(await clip(FMT[f](n)))) return toast('The browser blocked the clipboard; download the file from the icon card', 'warning');
+  toast(`<code>${n}</code> copied as ${FMT_T[f].replace('<', '&lt;')}`);
   const t = tiles[n]; if (!t || !motion) return;
   const r = t.getBoundingClientRect(), x = ev?.clientX ? ev.clientX - r.left : r.width / 2, y = ev?.clientY ? ev.clientY - r.top : r.height / 2;
   const rip = document.createElement('span'); rip.className = 'rip';
@@ -788,7 +768,7 @@ async function copyOne(n, f = fmt, ev) {
   t.classList.add('done'); clearTimeout(t._d); t._d = setTimeout(() => t.classList.remove('done'), 900);
 }
 
-/* ── набор ── */
+/* ── the set ── */
 const sel = new Set();
 let picking = false, lastPick = null, cur = null;
 function setSel(n, on) { on ? sel.add(n) : sel.delete(n); tiles[n].classList.toggle('sel', on); tiles[n].querySelector('.pick').setAttribute('aria-pressed', on); }
@@ -798,11 +778,11 @@ function paintTray() {
   const el = $('tray-k'); el.textContent = icons(k); el.classList.remove('bump'); void el.offsetWidth; el.classList.add('bump');
   $('tray-strip').innerHTML = [...sel].slice(-10).map(n => svg(by[n].b)).join('');
 }
-const paintCardPick = () => { if (cur) $('c-pick').lastChild.textContent = sel.has(cur) ? 'Убрать из набора' : 'В набор'; };
+const paintCardPick = () => { if (cur) $('c-pick').lastChild.textContent = sel.has(cur) ? 'Remove from set' : 'Add to set'; };
 const toggle = n => { setSel(n, !sel.has(n)); paintTray(); paintCardPick(); };
 const clearSel = () => { [...sel].forEach(n => setSel(n, false)); paintTray(); paintCardPick(); };
 $('picking').onclick = () => { picking = !picking; $('picking').setAttribute('aria-pressed', picking); main.classList.toggle('picking', picking);
-  toast(picking ? 'Режим набора: клик добавляет иконку' : 'Клик снова копирует', 'select-all'); };
+  toast(picking ? 'Set mode: a click adds the icon' : 'A click copies again', 'select-all'); };
 main.addEventListener('click', e => {
   const all = e.target.closest('[data-all]');
   if (all) { const ns = [...main.querySelectorAll(`#f-${all.dataset.all} .t:not([hidden])`)].map(t => t.dataset.n);
@@ -826,12 +806,12 @@ main.addEventListener('contextmenu', e => { if (press === 'done') e.preventDefau
 $('t-clear').onclick = clearSel;
 $('t-copy').onclick = async () => {
   const k = sel.size, text = [...sel].map(n => fmt === 'svg' ? `<!-- ${n} -->\n${fileText(n)}` : FMT[fmt](n)).join('\n');
-  if (await clip(text)) { toast(`${icons(k)} в буфере`); clearSel(); } else toast('Буфер недоступен — скачайте ZIP', 'warning');
+  if (await clip(text)) { toast(`${icons(k)} copied`); clearSel(); } else toast('Clipboard unavailable; download the ZIP instead', 'warning');
 };
-$('t-zip').onclick = () => { const k = sel.size; download(zip([...sel], false), `kiory-${k}.zip`); toast(`${icons(k)} — архив скачан`, 'download'); clearSel(); };
-$('dl-all').onclick = () => { download(zip(order, true), `kiory-${DATA.version}.zip`); toast(`Весь пак — ${icons(order.length)}`, 'download'); };
+$('t-zip').onclick = () => { const k = sel.size; download(zip([...sel], false), `kiory-${k}.zip`); toast(`${icons(k)} downloaded as a ZIP`, 'download'); clearSel(); };
+$('dl-all').onclick = () => { download(zip(order, true), `kiory-${DATA.version}.zip`); toast(`The whole pack, ${icons(order.length)}`, 'download'); };
 
-/* ── ZIP без зависимостей ── */
+/* ── ZIP without dependencies ── */
 const CRC = (() => { const t = new Uint32Array(256); for (let n = 0; n < 256; n++) { let c = n; for (let k = 0; k < 8; k++) c = c & 1 ? 0xEDB88320 ^ (c >>> 1) : c >>> 1; t[n] = c >>> 0; } return t; })();
 const crc32 = b => { let c = 0xFFFFFFFF; for (let i = 0; i < b.length; i++) c = CRC[(c ^ b[i]) & 255] ^ (c >>> 8); return (c ^ 0xFFFFFFFF) >>> 0; };
 function zip(names, full) {
@@ -862,11 +842,11 @@ function png(n, size) {
   const src = fileText(n).replace(/currentColor/g, color).replace('width="24" height="24"', `width="${size}" height="${size}"`);
   const img = new Image(), url = URL.createObjectURL(new Blob([src], { type: 'image/svg+xml' }));
   img.onload = () => { const c = Object.assign(document.createElement('canvas'), { width: size, height: size }); c.getContext('2d').drawImage(img, 0, 0, size, size);
-    URL.revokeObjectURL(url); c.toBlob(b => download(b, `${n}-${size}.png`)); toast(`<code>${n}-${size}.png</code> скачан`, 'download'); };
+    URL.revokeObjectURL(url); c.toBlob(b => download(b, `${n}-${size}.png`)); toast(`<code>${n}-${size}.png</code> downloaded`, 'download'); };
   img.src = url;
 }
 
-/* ── карточка ── */
+/* ── icon card ── */
 const gridLines = anim => { let g = ''; const pl = anim ? 'pathLength="1" ' : '';
   for (let i = 0; i <= 24; i++) g += `<path class="cell" ${pl}style="--i:${Math.abs(12 - i)}" d="M${i} 0V24M0 ${i}H24"/>`;
   return g + `<circle class="key" ${pl}cx="12" cy="12" r="10"/><rect class="key" ${pl}x="3" y="3" width="18" height="18" rx="2"/><rect class="key" ${pl}x="2" y="4" width="20" height="16" rx="2"/><rect class="key" ${pl}x="4" y="2" width="16" height="20" rx="2"/>`; };
@@ -892,14 +872,14 @@ $('c-close').onclick = closeCard; $('scrim').onclick = closeCard;
 $('c-svg').onclick = () => copyOne(cur, 'svg');
 document.querySelectorAll('[data-cf]').forEach(b => b.onclick = () => copyOne(cur, b.dataset.cf));
 document.querySelectorAll('[data-png]').forEach(b => b.onclick = () => png(cur, +b.dataset.png));
-$('c-dl').onclick = () => { download(new Blob([fileText(cur) + '\n'], { type: 'image/svg+xml' }), cur + '.svg'); toast(`<code>${cur}.svg</code> скачан`, 'download'); };
+$('c-dl').onclick = () => { download(new Blob([fileText(cur) + '\n'], { type: 'image/svg+xml' }), cur + '.svg'); toast(`<code>${cur}.svg</code> downloaded`, 'download'); };
 $('c-pick').onclick = () => toggle(cur);
-$('c-link').onclick = async () => { if (await clip(location.origin + location.pathname + '#' + cur)) toast('Ссылка на иконку в буфере', 'link'); };
+$('c-link').onclick = async () => { if (await clip(location.origin + location.pathname + '#' + cur)) toast('Link to the icon copied', 'link'); };
 $('c-find').onclick = () => { const w = cur.split('-')[0]; closeCard(); q.value = w; filter(true); $('catalog').scrollIntoView({ behavior: motion ? 'smooth' : 'auto' }); };
 const step = d => openCard(order[(order.indexOf(cur) + d + order.length) % order.length], true);
 $('c-prev').onclick = () => step(-1); $('c-next').onclick = () => step(1);
 
-/* ── клавиатура: печать откуда угодно, стрелки по сетке ── */
+/* ── keyboard: type from anywhere, arrows move through the grid ── */
 addEventListener('keydown', e => {
   const typing = e.target.closest?.('input, textarea, [contenteditable]');
   if (e.key === 'Escape') {
@@ -937,7 +917,7 @@ function moveFocus(t, key) {
   go(cand.filter(x => Math.abs(x.getBoundingClientRect().top - rowY) < 4).sort((a, b) => Math.abs(a.getBoundingClientRect().left - r.left) - Math.abs(b.getBoundingClientRect().left - r.left))[0]);
 }
 
-/* ── герой: поле всех иконок и лупа ── */
+/* ── hero: the field of all icons and the lens ── */
 const hero = document.querySelector('.hero'), field = $('field'), ftag = $('ftag');
 field.innerHTML = order.map(n => `<i data-n="${n}">${svg(by[n].b)}</i>`).join('');
 const nodes = [...field.children];
@@ -965,7 +945,7 @@ let pBox = null; const panelBox = () => pBox || (pBox = (() => { const r = panel
 addEventListener('resize', () => pBox = null);
 let lx = hero.clientWidth * .3, ly = hero.clientHeight * .4, gx = 0, gy = 0, last = 0, near = null, nearD = 1e9, heroOn = true;
 const t0 = performance.now(), R = 160;
-if (touch) $('lens-hint').textContent = 'лупа бродит по полю сама';
+if (touch) $('lens-hint').textContent = 'the lens wanders the field on its own';
 if (!touch) {
   hero.addEventListener('pointermove', e => { const r = hero.getBoundingClientRect(); gx = e.clientX - r.left; gy = e.clientY - r.top; last = performance.now(); });
   hero.addEventListener('pointerleave', () => { last = 0; });
@@ -1001,21 +981,22 @@ if (motion) new IntersectionObserver(([e]) => { const was = heroOn; heroOn = e.i
 if (motion) requestAnimationFrame(lens);
 hero.addEventListener('click', e => { if (e.target.closest('.panel, .top') || !near || nearD > 34) return; copyOne(near.dataset.n, 'svg'); });
 
-/* поиск в герое подсвечивает иконки в поле и ведёт в каталог */
+/* hero search lights up matches in the field and leads to the catalog */
 const hq = $('hq'), hgo = $('hgo');
-const heroMatch = (i, t, alt) => i.n.includes(t) || i.t.some(x => x.includes(t)) || alt.some(a => i.n.includes(a)) || (famTitle[i.f] + ' ' + famNote[i.f]).toLowerCase().includes(t);
+const nameMatch = (i, t) => i.n.includes(t) || i.t.some(x => x.includes(t));
+const heroMatch = (i, t, byName) => nameMatch(i, t) || !byName && (famTitle[i.f] + ' ' + famNote[i.f]).toLowerCase().includes(t);
 hq.addEventListener('input', () => {
-  const t = hq.value.trim().toLowerCase(), alt = t ? syn(t) : [];
+  const t = hq.value.trim().toLowerCase(), byName = !!t && DATA.icons.some(i => nameMatch(i, t));
   field.classList.toggle('q', !!t);
-  nodes.forEach(el => el.classList.toggle('hit', !!t && heroMatch(by[el.dataset.n], t, alt)));
-  const k = t ? DATA.icons.filter(i => heroMatch(i, t, alt)).length : order.length;
-  hgo.textContent = !t ? `Все ${order.length}` : k ? `Показать ${k}` : 'Ничего';
+  nodes.forEach(el => el.classList.toggle('hit', !!t && heroMatch(by[el.dataset.n], t, byName)));
+  const k = t ? DATA.icons.filter(i => heroMatch(i, t, byName)).length : order.length;
+  hgo.textContent = !t ? `All ${order.length}` : k ? `Show ${k}` : 'No match';
 });
 const toCatalog = () => { q.value = hq.value; filter(true); $('catalog').scrollIntoView({ behavior: motion ? 'smooth' : 'auto' }); };
 hgo.onclick = toCatalog;
 hq.addEventListener('keydown', e => { if (e.key === 'Enter') { e.preventDefault(); toCatalog(); } if (e.key === 'Escape' && hq.value) { hq.value = ''; hq.dispatchEvent(new Event('input')); } });
 
-/* ── ремесло: одна иконка крупно, смена — скан по сетке ── */
+/* ── craft: one icon up close, swapped with a scan across the grid ── */
 const plate = $('plate'), pin = $('pin'), pIco = $('p-ico');
 $('p-grid').innerHTML = gridLines(false) + '<rect class="hl" id="phl" width="1" height="1"/><path class="cross" id="pcross"/>';
 const SPEC = ['folder', 'bell', 'heart', 'cloud', 'mail', 'microphone', 'ai-spark', 'settings', 'chat', 'camera', 'search', 'home'].filter(n => by[n]);
@@ -1059,21 +1040,21 @@ plate.onkeydown = e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefa
 $('pl-copy').onclick = () => copyOne(plN, 'svg');
 $('pl-open').onclick = () => openCard(plN);
 
-/* ── в деле: окно из Kiory, само показывает обе темы ── */
+/* ── in use: a window made of Kiory that shows both themes by itself ── */
 const win = $('win'), used = new Set();
 const I = n => { used.add(n); return svg(by[n].b); };
-$('w-side').innerHTML = `<div class="w-brand">${DATA.logo}</div>` + [['home', 'Главная'], ['search', 'Поиск'], ['folder', 'Файлы', 1], ['bell', 'Уведомления', 0, 3], ['chat', 'Сообщения'], null, ['ai-spark', 'Ассистент'], ['settings', 'Настройки']]
+$('w-side').innerHTML = `<div class="w-brand">${DATA.logo}</div>` + [['home', 'Home'], ['search', 'Search'], ['folder', 'Files', 1], ['bell', 'Notifications', 0, 3], ['chat', 'Messages'], null, ['ai-spark', 'Assistant'], ['settings', 'Settings']]
   .map(x => x ? `<div class="w-it${x[2] ? ' on' : ''}">${I(x[0])}${x[1]}${x[3] ? `<span class="b">${x[3]}</span>` : ''}</div>` : '<div class="w-sep"></div>').join('');
-$('w-bar').innerHTML = ['back', 'forward'].map(n => `<span class="w-ib">${I(n)}</span>`).join('') + '<span class="w-crumb"><span>Мастерская / </span>Kiory</span><span class="w-sp"></span>'
+$('w-bar').innerHTML = ['back', 'forward'].map(n => `<span class="w-ib">${I(n)}</span>`).join('') + '<span class="w-crumb"><span>Atelier / </span>Kiory</span><span class="w-sp"></span>'
   + ['grid', 'list', 'share'].map((n, k) => `<span class="w-ib${k === 1 ? ' on' : ''}" data-w="${n}">${I(n)}</span>`).join('')
-  + `<span class="w-mode"><button data-t="night" aria-pressed="true">${I('moon')}Ночь</button><button data-t="paper" aria-pressed="false">${I('sun')}Бумага</button></span>`;
-const WROWS = [['folder', 'Эталоны', '14 файлов'], ['image-file', 'Обложка — ночь', '1,2 МБ'], ['code-file', 'build.py', '12 КБ'], ['audio-file', 'Ночной гербарий', '3:42'], ['file-text', 'CHANGELOG.md', '2 КБ'], ['archive', 'kiory-8.1.0.zip', '1,4 МБ'], ['folder', 'Черновики', '6 файлов']];
+  + `<span class="w-mode"><button data-t="night" aria-pressed="true">${I('moon')}Night</button><button data-t="paper" aria-pressed="false">${I('sun')}Paper</button></span>`;
+const WROWS = [['folder', 'References', '14 files'], ['image-file', 'Cover — night', '1.2 MB'], ['code-file', 'build.py', '12 KB'], ['audio-file', 'Night Herbarium', '3:42'], ['file-text', 'CHANGELOG.md', '2 KB'], ['archive', 'kiory-8.2.0.zip', '1.4 MB'], ['folder', 'Drafts', '6 files']];
 $('w-rows').innerHTML = WROWS.map(r => `<div class="w-row">${I(r[0])}<span>${r[1]}</span><span class="m">${r[2]}</span>${I('more-h')}</div>`).join('');
 $('w-wave').innerHTML = '<i></i>'.repeat(42);
 $('w-ctl').innerHTML = I('shuffle') + I('previous') + `<span class="play">${I('pause')}</span>` + I('next') + I('repeat');
-$('w-toast').innerHTML = I('check-circle') + '<span><b>folder</b> — SVG в буфере</span>';
+$('w-toast').innerHTML = I('check-circle') + '<span><b>folder</b> copied as SVG</span>';
 $('w-cur').innerHTML = I('cursor');
-$('w-count').textContent = `${used.size} иконок Kiory в этом окне`;
+$('w-count').textContent = `${used.size} Kiory icons in this window`;
 const setScene = t => { win.dataset.t = t; win.querySelectorAll('.w-mode button').forEach(b => b.setAttribute('aria-pressed', b.dataset.t === t)); };
 let wTook = false;
 win.querySelector('.w-mode').onclick = e => { const b = e.target.closest('[data-t]'); if (b) { wTook = true; setScene(b.dataset.t); } };
@@ -1098,18 +1079,18 @@ new IntersectionObserver(([e]) => {
 }, { threshold: .3 }).observe(win);
 pick(3);
 
-/* ── свет над сеткой каталога ── */
+/* ── light over the catalog grid ── */
 if (!touch) main.addEventListener('pointermove', e => { const g = e.target.closest('.grid'); if (!g) return;
   const r = g.getBoundingClientRect(); g.style.setProperty('--mx', (e.clientX - r.left) + 'px'); g.style.setProperty('--my', (e.clientY - r.top) + 'px'); });
 
-/* ── заголовки разделов поднимаются, когда до них доходит прокрутка ── */
+/* ── section titles rise as scrolling reaches them ── */
 if (motion && 'IntersectionObserver' in window) {
   main.classList.add('veil');
   const io = new IntersectionObserver(es => es.forEach(e => { if (e.isIntersecting) { e.target.classList.add('seen'); io.unobserve(e.target); } }), { rootMargin: '0px 0px -12% 0px' });
   main.querySelectorAll('.fam').forEach(f => io.observe(f));
 }
 
-/* ── прогресс и текущий раздел ── */
+/* ── progress and the current section ── */
 let curFam;
 const fink = Object.assign(document.createElement('i'), { className: 'fink' }); $('fams').append(fink);
 function placeInk(a) {
@@ -1135,35 +1116,35 @@ function markFam() {
 }
 addEventListener('scroll', markFam, { passive: true });
 
-/* ── подключение ── */
+/* ── install ── */
 const CDN = `https://cdn.jsdelivr.net/gh/${REPO}@main/dist`;
 const esc = s => s.replace(/&/g, '&amp;').replace(/</g, '&lt;');
 const USE = [
-  ['Пакет', 'bun · pnpm', 'Пакет ставится прямо из GitHub: SVG, спрайт, CSS, модуль JS с типами и компонент для React. npm 12 по умолчанию не берёт пакеты из GitHub — добавьте <code>--allow-git=all</code>.',
+  ['Package', 'bun · pnpm', 'The package installs straight from GitHub: SVGs, the sprite, CSS, a typed JS module and a React component. npm 12 skips GitHub packages by default; add <code>--allow-git=all</code>.',
     [`bun add github:${REPO}`, `pnpm add github:${REPO}`]],
-  ['React', 'компонент', 'Компонент берёт цвет текста, размер задаётся через <code>size</code>. Имена подсказывает TypeScript.',
-    [`import { KioryIcon } from 'kiory/react';\n\n<KioryIcon name="search" size={20} />\n<KioryIcon name="heart" title="В избранное" />`]],
-  ['CSS', 'классы', 'Без сборки и JavaScript: одна таблица стилей, иконка — элемент с двумя классами. Размер задаёт <code>font-size</code>, цвет — <code>color</code>.',
-    [`<link rel="stylesheet" href="${CDN}/kiory.css">`, `<i class="ki ki-search"></i>\n<button><i class="ki ki-heart"></i> Нравится</button>`]],
-  ['JS', 'модуль', 'Тела иконок и функция <code>svg()</code> — для своих компонентов, Vue, Svelte или серверного рендера.',
+  ['React', 'component', 'The component takes the text colour; set the size with <code>size</code>. TypeScript suggests the names.',
+    [`import { KioryIcon } from 'kiory/react';\n\n<KioryIcon name="search" size={20} />\n<KioryIcon name="heart" title="Add to favourites" />`]],
+  ['CSS', 'classes', 'No build step and no JavaScript: one stylesheet, and an icon is an element with two classes. <code>font-size</code> sets the size, <code>color</code> the colour.',
+    [`<link rel="stylesheet" href="${CDN}/kiory.css">`, `<i class="ki ki-search"></i>\n<button><i class="ki ki-heart"></i> Like</button>`]],
+  ['JS', 'module', 'Icon bodies and an <code>svg()</code> helper for your own components, Vue, Svelte or server rendering.',
     [`import { svg, names } from 'kiory';\n\nbutton.innerHTML = svg('search', { size: 20 });`]],
-  ['Спрайт', '&lt;use&gt;', 'Один файл со всеми символами — удобно на сайтах без сборщика.',
+  ['Sprite', '&lt;use&gt;', 'One file with every symbol, handy on sites without a bundler.',
     [`<svg width="24" height="24" aria-hidden="true">\n  <use href="kiory.sprite.svg#kiory-search"/>\n</svg>`]],
-  ['Figma', 'SVG', 'Кликните по иконке в каталоге и вставьте в Figma — она придёт вектором. Для целого набора скачайте ZIP и перетащите файлы на холст.', []],
+  ['Figma', 'SVG', 'Click an icon in the catalog and paste it into Figma; it arrives as a vector. For a whole set, download the ZIP and drop the files onto the canvas.', []],
 ];
 $('use-tabs').innerHTML = USE.map(([t, s], i) => `<button role="tab" aria-selected="${!i}" data-u="${i}">${t}<span>${s}</span></button>`).join('');
 function showUse(i, anim) {
   const [, , p, snips] = USE[i];
-  $('use-pane').innerHTML = `<p>${p}</p>` + snips.map(s => `<div class="snip"><pre>${esc(s)}</pre><button aria-label="Скопировать код">${svg(by.copy.b)}</button></div>`).join('');
+  $('use-pane').innerHTML = `<p>${p}</p>` + snips.map(s => `<div class="snip"><pre>${esc(s)}</pre><button aria-label="Copy code">${svg(by.copy.b)}</button></div>`).join('');
   if (anim && motion) { $('use-pane').classList.remove('pane-anim'); void $('use-pane').offsetWidth; $('use-pane').classList.add('pane-anim'); }
 }
 $('use-tabs').onclick = e => { const b = e.target.closest('[data-u]'); if (!b) return;
   $('use-tabs').querySelectorAll('button').forEach(x => x.setAttribute('aria-selected', x === b)); showUse(+b.dataset.u, true); };
 $('use-pane').onclick = async e => { const b = e.target.closest('.snip button'); if (!b) return;
-  if (await clip(b.previousElementSibling.textContent)) { b.innerHTML = svg(by.check.b); toast('Код в буфере'); setTimeout(() => b.innerHTML = svg(by.copy.b), 1400); } };
+  if (await clip(b.previousElementSibling.textContent)) { b.innerHTML = svg(by.check.b); toast('Code copied'); setTimeout(() => b.innerHTML = svg(by.copy.b), 1400); } };
 showUse(0);
 
-/* ── старт ── */
+/* ── start ── */
 filter(false);
 const fromHash = decodeURIComponent(location.hash.slice(1));
 if (by[fromHash]) setTimeout(() => { tiles[fromHash].scrollIntoView({ block: 'center', behavior: 'instant' }); openCard(fromHash); }, 300);

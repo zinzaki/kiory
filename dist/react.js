@@ -1,4 +1,4 @@
-// <KioryIcon name="search" size={20} /> — берёт цвет текста
+// <KioryIcon name="search" size={20} />: takes the text colour
 import { createElement } from 'react';
 import { icons } from './kiory.js';
 export function KioryIcon({ name, size = 24, title, ...rest }) {

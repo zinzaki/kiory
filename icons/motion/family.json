@@ -1,6 +1,6 @@
 {
-  "title": "Ход",
-  "note": "Анимация, эффекты, 3D и шейдеры",
+  "title": "Motion",
+  "note": "Animation, effects, 3D and shaders",
   "order": [
     "keyframe",
     "keyframe-plus",

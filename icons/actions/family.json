@@ -1,6 +1,6 @@
 {
-  "title": "Жест",
-  "note": "Действия и буфер обмена",
+  "title": "Gesture",
+  "note": "Actions and clipboard",
   "order": [
     "add",
     "remove",

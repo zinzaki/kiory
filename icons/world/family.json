@@ -1,6 +1,6 @@
 {
-  "title": "Мир",
-  "note": "Время, места, погода, деньги и вещи",
+  "title": "World",
+  "note": "Time, places, weather, money and objects",
   "order": [
     "calendar",
     "calendar-check",

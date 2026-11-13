@@ -1,7 +1,7 @@
 {
   "name": "Kiory",
-  "version": "8.1.0",
-  "released": "2026-11-13",
+  "version": "8.2.0",
+  "released": "2026-11-14",
   "repository": "zinzaki/kiory",
   "families": [
     "navigation",
