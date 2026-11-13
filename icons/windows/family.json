@@ -1,6 +1,6 @@
 {
-  "title": "Рама",
-  "note": "Окна, панели, тайлинг и рабочий стол Ryoku",
+  "title": "Frame",
+  "note": "Windows, panels, tiling and the Ryoku desktop",
   "order": [
     "window",
     "windows",

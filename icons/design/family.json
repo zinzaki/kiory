@@ -1,6 +1,6 @@
 {
-  "title": "Холст",
-  "note": "Холст, вектор, токены и интерфейс",
+  "title": "Canvas",
+  "note": "Canvas, vectors, tokens and interface",
   "order": [
     "cursor",
     "hand",

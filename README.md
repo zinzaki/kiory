@@ -1,60 +1,54 @@
 <p align="center"><picture>
-<source media="(prefers-color-scheme: light)" srcset="docs/previews/cover-light.png">
-<img src="docs/previews/cover-dark.png" alt="Kiory — 726 иконок на сетке 24 × 24" width="100%">
+<source media="(prefers-color-scheme: light)" srcset="docs/cover-light.png">
+<img src="docs/cover-dark.png" alt="Kiory — 725 soft icons on a 24 × 24 grid" width="100%">
 </picture></p>
 
 <p align="center">
-<a href="https://zinzaki.github.io/kiory/"><b>Каталог</b></a> ·
-<a href="#подключение">Подключение</a> ·
-<a href="CHANGELOG.md">Изменения</a> ·
-<a href="#лицензия">Лицензия</a>
-</p>
-
-<p align="center">
-<img alt="726 иконок" src="https://img.shields.io/badge/иконок-726-f4f4f2?style=flat-square&labelColor=000000">
-<img alt="сетка 24×24" src="https://img.shields.io/badge/сетка-24×24-f4f4f2?style=flat-square&labelColor=000000">
-<img alt="версия" src="https://img.shields.io/badge/версия-8.0.0-f4f4f2?style=flat-square&labelColor=000000">
-<img alt="лицензия" src="https://img.shields.io/badge/лицензия-PolyForm_SB-f4f4f2?style=flat-square&labelColor=000000">
+<a href="https://zinzaki.github.io/kiory/"><b>Catalog</b></a> ·
+<a href="#install">Install</a> ·
+<a href="CHANGELOG.md">Changelog</a> ·
+<a href="#license">License</a>
 </p>
 
 # Kiory
 
-Мягкие интерфейсные иконки на точной сетке 24 × 24 из мастерской YHK. Шестнадцать разделов —
-от навигации, файлов и окон до дизайна, 3D, кода, Linux и ИИ. Одна толщина линии во всех иконках,
-залитые контуры, цвет берётся из текста.
+Soft interface icons on a precise 24 × 24 grid, from the YHK Atelier. 725 icons in sixteen
+sections, from navigation, files and windows to design, 3D, code, Linux and AI. One line weight
+across the whole pack, filled outlines, and the colour comes from the text.
 
-| Раздел | Что внутри | Раздел | Что внутри |
+| Section | Inside | Section | Inside |
 | --- | --- | --- | --- |
-| Путь | навигация и стрелки | Холст | вектор, токены, интерфейс |
-| Жест | действия и буфер обмена | Ход | анимация, эффекты, 3D |
-| Рама | окна, панели, тайлинг | Письмо | типографика и Markdown |
-| Архив | файлы, папки, диски | Разум | ИИ, агенты и LLM |
-| Механизм | система, железо, сеть | Верстак | код, Git, CI, DevOps |
-| Замок | безопасность и ключи | Схема | данные, графики, ноды |
-| Голос | люди, почта, боты | Звук | медиа, запись, синтез |
-| Знак | статусы и реакции | Мир | время, места, погода, вещи |
+| Path | navigation and arrows | Canvas | vectors, tokens, interface |
+| Gesture | actions and clipboard | Motion | animation, effects, 3D |
+| Frame | windows, panels, tiling | Script | typography and Markdown |
+| Archive | files, folders, drives | Mind | AI, agents and LLMs |
+| Mechanism | system, hardware, network | Workbench | code, Git, CI, DevOps |
+| Lock | security and keys | Schema | data, charts, node graphs |
+| Voice | people, mail, bots | Sound | media, recording, synthesis |
+| Sign | status and reactions | World | time, places, weather, objects |
 
-## Каталог
+## Catalog
 
-**[zinzaki.github.io/kiory](https://zinzaki.github.io/kiory/)** — или откройте `index.html` из
-репозитория, он работает без сервера.
+**[zinzaki.github.io/kiory](https://zinzaki.github.io/kiory/)**, or open `index.html` from the
+repository: it works without a server.
 
-- клик копирует иконку — SVG, JSX, CSS-класс или имя, на выбор;
-- `Ctrl`/`⌘` + клик собирает набор, `Shift` + клик — диапазон; набор копируется разом или скачивается ZIP;
-- поиск — просто начните печатать, понимает и русские слова;
-- карточка иконки: все размеры, PNG до 512 px, data URI, ссылка на иконку;
-- «Скачать всё» — весь пак архивом.
+- hover the icon field on the first screen: the lens magnifies and names every icon, a click copies it;
+- a click in the catalog copies the icon as SVG, JSX, a CSS class or its name;
+- `Ctrl`/`⌘` + click builds a set, `Shift` + click adds a range; copy the set at once or download a ZIP;
+- search from anywhere on the page, just start typing;
+- the icon card has every size, PNG up to 512 px, a data URI and a link to the icon;
+- "Download all" gets the whole pack as a ZIP.
 
-## Подключение
+## Install
 
-### Пакет
+### Package
 
 ```sh
 bun add github:zinzaki/kiory
 pnpm add github:zinzaki/kiory
 ```
 
-npm 12 по умолчанию не ставит пакеты из GitHub — нужен флаг `--allow-git=all`.
+npm 12 skips packages from GitHub by default; pass `--allow-git=all`.
 
 ```jsx
 import { KioryIcon } from 'kiory/react';
@@ -68,9 +62,9 @@ import { svg, names } from 'kiory';
 button.innerHTML = svg('search', { size: 20 });
 ```
 
-TypeScript подсказывает имена иконок.
+TypeScript suggests the icon names.
 
-### CSS без сборки
+### CSS without a build step
 
 ```html
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/zinzaki/kiory@main/dist/kiory.css">
@@ -78,41 +72,42 @@ TypeScript подсказывает имена иконок.
 <i class="ki ki-search"></i>
 ```
 
-Размер задаёт `font-size`, цвет — `color`.
+`font-size` sets the size, `color` sets the colour.
 
-### SVG и спрайт
+### SVG and sprite
 
-Отдельные файлы лежат в [`dist/svg/`](dist/svg). Спрайт со всеми иконками:
+Individual files live in [`dist/svg/`](dist/svg). The sprite holds every icon:
 
 ```html
 <svg width="24" height="24" aria-hidden="true"><use href="kiory.sprite.svg#kiory-search"/></svg>
 ```
 
-### Что внутри `dist/`
+### What is in `dist/`
 
-| Файл | Для чего |
+| File | For |
 | --- | --- |
-| `svg/*.svg` | отдельные иконки |
-| `kiory.sprite.svg` | все иконки символами `kiory-<имя>` |
-| `kiory.css` | классы `.ki .ki-<имя>` |
-| `kiory.js`, `kiory.d.ts` | тела иконок, `svg()`, список имён, типы |
-| `react.js`, `react.d.ts` | компонент `KioryIcon` |
-| `kiory.json` | имя, раздел, теги, даты появления и обновления, тело |
+| `svg/*.svg` | individual icons |
+| `kiory.sprite.svg` | every icon as a `kiory-<name>` symbol |
+| `kiory.css` | `.ki .ki-<name>` classes |
+| `kiory.js`, `kiory.d.ts` | icon bodies, `svg()`, the name list, types |
+| `react.js`, `react.d.ts` | the `KioryIcon` component |
+| `kiory.json` | name, section, tags, added and updated dates, body |
 
-Базовый размер — 24 px, рабочий — 20 px. Плотные иконки (`qr-code`, `cpu`, `fingerprint`,
-`face-id`) лучше не уменьшать до 16 px.
+The base size is 24 px, the working size 20 px. Dense icons (`qr-code`, `cpu`, `fingerprint`,
+`face-id`) are better kept above 16 px.
 
-Как добавить или заменить иконку — в [CONTRIBUTING.md](CONTRIBUTING.md).
+To add or replace an icon, see [CONTRIBUTING.md](CONTRIBUTING.md).
 
-## Лицензия
+## License
 
-[PolyForm Small Business 1.0.0](LICENSE). Коротко (юридически действует только текст лицензии):
+[PolyForm Small Business 1.0.0](LICENSE). In short (only the license text is legally binding):
 
-- **бесплатно** для частных лиц, некоммерческих и учебных проектов, а также компаний, где меньше
-  100 человек и выручка за прошлый год меньше ~1 млн USD;
-- **крупным компаниям** нужна коммерческая лицензия — напишите автору через
+- **free** for individuals, non-profit and educational projects, and companies with fewer than
+  100 people and under roughly USD 1 million in revenue last year;
+- **larger companies** need a commercial license; reach the author through
   [GitHub](https://github.com/zinzaki);
-- передавая иконки дальше, сохраняйте текст лицензии и строку `Required Notice`.
+- when you pass the icons on, keep the license text and the `Required Notice` line.
 
-Шрифты каталога — Geist и Geist Mono (Vercel), лицензия SIL OFL ([`fonts/`](fonts)).
-Фотографии ветвей и лепестков в [`art/`](art) — только оформление каталога и README, в пак иконок они не входят.
+The catalog uses Geist and Geist Mono by Vercel, licensed under the SIL OFL ([`fonts/`](fonts)).
+Photographs of branches and petals in [`art/`](art) are only for the catalog and this README;
+they are not part of the icon pack.

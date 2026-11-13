@@ -216,7 +216,6 @@ export type KioryName =
   | "pkg-install"
   | "pkg-remove"
   | "pkg-upgrade"
-  | "pkg-aur"
   | "repo-sync"
   | "flatpak-box"
   | "dotfiles"

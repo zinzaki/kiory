@@ -1,6 +1,6 @@
 {
-  "title": "Разум",
-  "note": "ИИ, агенты и LLM",
+  "title": "Mind",
+  "note": "AI, agents and LLMs",
   "order": [
     "ai-spark",
     "ai-agent",

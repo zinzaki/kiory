@@ -1,6 +1,6 @@
 {
-  "title": "Звук",
-  "note": "Медиаплеер, запись, синтез и гейминг",
+  "title": "Sound",
+  "note": "Media player, recording, synthesis and gaming",
   "order": [
     "play",
     "pause",

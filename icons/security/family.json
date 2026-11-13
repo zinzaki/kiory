@@ -1,6 +1,6 @@
 {
-  "title": "Замок",
-  "note": "Безопасность, ключи, шифрование и права",
+  "title": "Lock",
+  "note": "Security, keys, encryption and permissions",
   "order": [
     "incognito",
     "two-factor",
