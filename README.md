@@ -1,4 +1,7 @@
-<p align="center"><img src="docs/previews/cover.png" alt="Kiory — 726 иконок на сетке 24 × 24" width="100%"></p>
+<p align="center"><picture>
+<source media="(prefers-color-scheme: light)" srcset="docs/previews/cover-light.png">
+<img src="docs/previews/cover-dark.png" alt="Kiory — 726 иконок на сетке 24 × 24" width="100%">
+</picture></p>
 
 <p align="center">
 <a href="https://zinzaki.github.io/kiory/"><b>Каталог</b></a> ·
@@ -101,3 +104,4 @@ TypeScript подсказывает имена иконок.
 - передавая иконки дальше, сохраняйте текст лицензии и строку `Required Notice`.
 
 Шрифты каталога — Geologica и JetBrains Mono, лицензия SIL OFL ([`fonts/`](fonts)).
+Фотографии ветвей и лепестков в [`art/`](art) — только оформление каталога и README, в пак иконок они не входят.

@@ -16,6 +16,7 @@
 """
 from __future__ import annotations
 
+import base64
 import datetime as dt
 import hashlib
 import json
@@ -258,19 +259,51 @@ COVER = ["search", "home", "folder", "bell", "heart", "chat", "settings", "mail"
          "microphone", "camera", "cloud", "edit", "ai-spark", "webhook", "mention", "face-id"]
 
 
-def cover(icons) -> str:
-    w, h, fg, bg = 1600, 640, "#f4f4f2", "#000000"
+COVER_THEMES = {
+    # ночь — гербарий: ветвь у края сетки, сетка стоит на воде; день — лист мастерской: тень ветви на сетке
+    "dark": {"fg": "#f4f4f2", "bg": "#000000", "line": "#2a2a2a",
+             "under": [("night-water.jpg", 520, 400, 1100, 330, 1, True)],
+             "over": [("night-branch.png", 470, 10, 440, None, 1, False)]},
+    "light": {"fg": "#000000", "bg": "#ffffff", "line": "#e2e2df",
+              "under": [],
+              "over": [("paper-shadow.png", 900, 150, 760, None, .45, False),
+                       ("paper-branch.png", 480, 20, 400, None, 1, False)]},
+}
+
+
+def art_image(name: str, x: float, y: float, w: float, h: float | None, opacity: float, fade: bool) -> str:
+    path = ROOT / "art/readme" / name
+    if not path.exists():
+        return ""
+    data = path.read_bytes()
+    if h is None:  # размер PNG из заголовка, без сторонних библиотек
+        pw, ph = int.from_bytes(data[16:20], "big"), int.from_bytes(data[20:24], "big")
+        h = w * ph / pw
+    mime = "image/png" if name.endswith(".png") else "image/jpeg"
+    mask = f' mask="url(#fade-{name[:-4]})"' if fade else ""
+    defs = (f'<defs><linearGradient id="g-{name[:-4]}" x1="0" x2="1"><stop offset="0" stop-color="#fff" stop-opacity="0"/>'
+            f'<stop offset=".45" stop-color="#fff"/></linearGradient><mask id="fade-{name[:-4]}"><rect x="{x}" y="{y}" width="{w}" '
+            f'height="{h}" fill="url(#g-{name[:-4]})"/></mask></defs>') if fade else ""
+    return (defs + f'<image x="{x}" y="{y}" width="{w}" height="{h:.1f}" opacity="{opacity}"{mask} preserveAspectRatio="none" '
+            f'href="data:{mime};base64,{base64.b64encode(data).decode()}"/>')
+
+
+def cover(icons, theme: str = "dark") -> str:
+    t = COVER_THEMES[theme]
+    w, h, fg, bg = 1600, 640, t["fg"], t["bg"]
     logo = (ROOT / "brand/kiory.svg").read_text()
     vb = [float(v) for v in re.search(r'viewBox="([^"]+)"', logo)[1].split()]
     inner = re.sub(r"^.*?<svg[^>]*>|</svg>\s*$", "", logo, flags=re.S).replace("currentColor", fg)
     s = 560 / vb[2]
     out = [f'<svg xmlns="http://www.w3.org/2000/svg" width="{w}" height="{h}" viewBox="0 0 {w} {h}">',
-           f'<rect width="100%" height="100%" fill="{bg}"/>',
-           f'<g transform="translate(96 {(h - vb[3] * s) / 2:.1f}) scale({s:.4f})" fill="{fg}">{inner}</g>']
+           f'<rect width="100%" height="100%" fill="{bg}"/>']
+    out += [art_image(*a) for a in t["under"]]
+    out.append(f'<g transform="translate(96 {(h - vb[3] * s) / 2:.1f}) scale({s:.4f})" fill="{fg}">{inner}</g>')
     for i, n in enumerate([c for c in COVER if c in icons][:16]):
         cx, cy = 840 + (i % 4) * 172, 52 + (i // 4) * 134
-        out.append(f'<rect x="{cx}.5" y="{cy}.5" width="171" height="133" fill="{bg}" stroke="#2a2a2a"/>')
+        out.append(f'<rect x="{cx}.5" y="{cy}.5" width="171" height="133" fill="none" stroke="{t["line"]}"/>')
         out.append(f'<g transform="translate({cx + 62} {cy + 43}) scale(2)">' + icons[n]["body"].replace("currentColor", fg) + "</g>")
+    out += [art_image(*a) for a in t["over"]]
     out.append("</svg>")
     return "".join(out)
 
@@ -289,15 +322,17 @@ def previews(families, icons, order) -> None:
     d = ROOT / "docs/previews"
     d.mkdir(parents=True, exist_ok=True)
     # перерисовываем только когда поменялись иконки: PNG от разных версий librsvg отличаются байтами
+    art = sorted((p.name, hashlib.sha1(p.read_bytes()).hexdigest()) for p in (ROOT / "art/readme").glob("*"))
     key = hashlib.sha1(json.dumps([families, [(n, icons[n]["body"]) for n in order],
-                                   Path(__file__).read_text()]).encode()).hexdigest()
+                                   Path(__file__).read_text(), art]).encode()).hexdigest()
     stamp_file = d / ".source"
-    if stamp_file.exists() and stamp_file.read_text().strip() == key and (d / "cover.png").exists():
+    if stamp_file.exists() and stamp_file.read_text().strip() == key and (d / "cover-dark.png").exists():
         return
     stamp_file.write_text(key + "\n")
     for old in d.glob("*.png"):
         old.unlink()
-    render(cover(icons), d / "cover.png")
+    render(cover(icons, "dark"), d / "cover-dark.png")
+    render(cover(icons, "light"), d / "cover-light.png")
     render(sheet(icons, order, 22, 56, 24, "#f4f4f2", "#000000"), d / "all-dark.png")
     render(sheet(icons, order, 22, 56, 24, "#000000", "#ffffff"), d / "all-light.png")
     for f in families:
