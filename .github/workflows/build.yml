@@ -42,7 +42,8 @@ jobs:
         if: github.event_name != 'pull_request'
         run: |
           mkdir _site
-          cp -r index.html dist fonts LICENSE _site/
+          cp -r index.html dist fonts art LICENSE _site/
+          rm -rf _site/art/readme
       - uses: actions/configure-pages@v5
         if: github.event_name != 'pull_request'
       - uses: actions/upload-pages-artifact@v3
