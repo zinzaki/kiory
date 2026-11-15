@@ -1,5 +1,21 @@
 # Changelog
 
+## Unreleased
+
+729 icons: four added, eight refined.
+
+- Added `save`, `save-as`, `accessibility` and `keyboard-shortcuts`.
+- Refined point, spot and sun lights, the three SQL join diagrams, `chat-mute` and `qr-code`.
+  The outer join now includes the intersection instead of leaving it empty.
+- Search accepts multiple words, either order, spaces and hyphens. Sets survive reloads.
+  Enter opens icon details; the dialog holds keyboard focus and restores it when closed.
+  Shift-selection handles a filtered-out anchor. Icon links work within an open catalog.
+- JS attributes and React titles are escaped; unknown icon names fail clearly. SVG import
+  rejects unsupported CSS and invalid fill rules, and respects inherited `fill="none"`.
+- Downloaded ZIPs include the complete license alongside their notice.
+- Added render-based geometry checks, native-size sheets in both themes, regression tests
+  and browser checks on pull requests.
+
 ## 8.2.0 — 2026-11-14
 
 725 icons: one removed, 35 redrawn or replaced.

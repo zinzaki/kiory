@@ -21,13 +21,41 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: "3.12"
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+          cache: npm
+      - name: Install check tools
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y -qq librsvg2-bin >/dev/null
+          python -m pip install Pillow
+          npm ci
+          npx playwright install --with-deps chromium
       - name: Check
         run: python scripts/build.py --check
       - name: Build
-        if: github.event_name != 'pull_request'
+        run: python scripts/build.py
+      - name: Import and export regressions
+        run: npm test
+      - name: Render every icon
+        run: python scripts/qa.py
+      - name: Catalog interactions
         run: |
-          sudo apt-get install -y -qq librsvg2-bin >/dev/null
-          python scripts/build.py
+          python -m http.server 8766 --bind 127.0.0.1 >/tmp/kiory-http.log 2>&1 &
+          server_pid=$!
+          trap 'kill "$server_pid"' EXIT
+          for attempt in {1..30}; do
+            if curl --silent --fail http://127.0.0.1:8766/ >/dev/null; then break; fi
+            sleep 1
+          done
+          npm run test:browser
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: quality-review
+          path: qa-output/
+          retention-days: 14
       - name: Commit the rebuild
         if: github.event_name != 'pull_request'
         run: |
