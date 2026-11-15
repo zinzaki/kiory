@@ -24,6 +24,8 @@
     "copy-check",
     "paste",
     "duplicate",
+    "save",
+    "save-as",
     "download",
     "upload",
     "import",

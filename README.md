@@ -1,6 +1,6 @@
 <p align="center"><picture>
 <source media="(prefers-color-scheme: light)" srcset="docs/cover-light.png">
-<img src="docs/cover-dark.png" alt="Kiory — 725 soft icons on a 24 × 24 grid" width="100%">
+<img src="docs/cover-dark.png" alt="Kiory — 729 soft icons on a 24 × 24 grid" width="100%">
 </picture></p>
 
 <p align="center">
@@ -12,7 +12,7 @@
 
 # Kiory
 
-Soft interface icons on a precise 24 × 24 grid, from the YHK Atelier. 725 icons in sixteen
+Soft interface icons on a precise 24 × 24 grid, from the YHK Atelier. 729 icons in sixteen
 sections, from navigation, files and windows to design, 3D, code, Linux and AI. One line weight
 across the whole pack, filled outlines, and the colour comes from the text.
 
@@ -35,7 +35,9 @@ repository: it works without a server.
 - hover the icon field on the first screen: the lens magnifies and names every icon, a click copies it;
 - a click in the catalog copies the icon as SVG, JSX, a CSS class or its name;
 - `Ctrl`/`⌘` + click builds a set, `Shift` + click adds a range; copy the set at once or download a ZIP;
-- search from anywhere on the page, just start typing;
+- search from anywhere on the page, just start typing; `arrow left`, `left arrow` and `arrow-left` work alike;
+- the selected set survives a reload; clear it with the × button;
+- use arrow keys to browse, Space to select, Enter for details and Escape to close;
 - the icon card has every size, PNG up to 512 px, a data URI and a link to the icon;
 - "Download all" gets the whole pack as a ZIP.
 
@@ -97,6 +99,8 @@ The base size is 24 px, the working size 20 px. Dense icons (`qr-code`, `cpu`, `
 `face-id`) are better kept above 16 px.
 
 To add or replace an icon, see [CONTRIBUTING.md](CONTRIBUTING.md).
+
+Quality checks and the visual review criteria are in [docs/QUALITY.md](docs/QUALITY.md).
 
 ## License
 

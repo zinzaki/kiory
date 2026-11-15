@@ -605,7 +605,7 @@ footer a{color:var(--text);text-decoration:none;border-bottom:1px solid var(--li
 <div class="toast" id="toast" role="status" aria-live="polite"><span data-i="check-circle"></span><span id="toast-t"></span></div>
 
 <div class="scrim" id="scrim"></div>
-<aside class="card" id="card" aria-label="Icon" aria-hidden="true" inert>
+<aside class="card" id="card" role="dialog" aria-modal="true" aria-labelledby="c-name" aria-hidden="true" inert>
   <div class="card-top"><div><h3 id="c-name"></h3><div class="f" id="c-fam"></div></div>
     <button class="ib" id="c-close" aria-label="Close"><span data-i="close"></span></button></div>
   <div class="stage" id="c-stage"></div>
@@ -679,16 +679,20 @@ $('fresh').onclick = () => { onlyFresh = !onlyFresh; $('fresh').setAttribute('ar
 
 /* ── search ── */
 const q = $('q'), count = $('count'), empty = $('empty');
+const words = value => value.toLowerCase().split(/[\s_-]+/).filter(Boolean);
+const searchable = Object.fromEntries(DATA.icons.map(i => [i.n, [i.n, ...i.t].join(' ').toLowerCase().replace(/[-_]/g, ' ')]));
+const nameMatch = (i, t) => words(t).every(w => searchable[i.n].includes(w));
+const heroMatch = (i, t, byName) => nameMatch(i, t) || !byName && words(t).every(w => (famTitle[i.f] + ' ' + famNote[i.f]).toLowerCase().includes(w));
 function filter(animate) {
   const t = q.value.trim().toLowerCase();
   // a section note only counts when no icon name or tag matches the query
-  const byName = t && DATA.icons.some(i => i.n.includes(t) || i.t.some(x => x.includes(t)));
+  const byName = t && DATA.icons.some(i => nameMatch(i, t));
   let shown = 0, k = 0;
   main.querySelectorAll('.fam').forEach(sec => {
-    let s = 0; const ft = (famTitle[sec.dataset.f] + ' ' + famNote[sec.dataset.f]).toLowerCase();
+    let s = 0;
     sec.querySelectorAll('.t').forEach(el => {
       const i = by[el.dataset.n], n = i.n;
-      const hit = !t || n.includes(t) || i.t.some(x => x.includes(t)) || (!byName && ft.includes(t));
+      const hit = !t || heroMatch(i, t, byName);
       const show = hit && (!onlyFresh || isNew(i) || isUpd(i));
       const was = !el.hidden;
       el.hidden = !show;
@@ -773,6 +777,7 @@ const sel = new Set();
 let picking = false, lastPick = null, cur = null;
 function setSel(n, on) { on ? sel.add(n) : sel.delete(n); tiles[n].classList.toggle('sel', on); tiles[n].querySelector('.pick').setAttribute('aria-pressed', on); }
 function paintTray() {
+  try { localStorage.setItem('kiory-set', JSON.stringify([...sel])); } catch (e) {}
   const k = sel.size; $('tray').classList.toggle('on', k > 0);
   if (!k) return;
   const el = $('tray-k'); el.textContent = icons(k); el.classList.remove('bump'); void el.offsetWidth; el.classList.add('bump');
@@ -780,7 +785,12 @@ function paintTray() {
 }
 const paintCardPick = () => { if (cur) $('c-pick').lastChild.textContent = sel.has(cur) ? 'Remove from set' : 'Add to set'; };
 const toggle = n => { setSel(n, !sel.has(n)); paintTray(); paintCardPick(); };
-const clearSel = () => { [...sel].forEach(n => setSel(n, false)); paintTray(); paintCardPick(); };
+const clearSel = () => { [...sel].forEach(n => setSel(n, false)); lastPick = null; paintTray(); paintCardPick(); };
+try {
+  const saved = JSON.parse(localStorage.getItem('kiory-set') || '[]');
+  if (Array.isArray(saved)) saved.forEach(n => { if (typeof n === 'string' && Object.hasOwn(tiles, n)) setSel(n, true); });
+} catch (e) {}
+paintTray();
 $('picking').onclick = () => { picking = !picking; $('picking').setAttribute('aria-pressed', picking); main.classList.toggle('picking', picking);
   toast(picking ? 'Set mode: a click adds the icon' : 'A click copies again', 'select-all'); };
 main.addEventListener('click', e => {
@@ -791,7 +801,7 @@ main.addEventListener('click', e => {
   const n = t.dataset.n;
   if (e.target.closest('.more')) return openCard(n);
   if (e.shiftKey && lastPick) { const v = visible(), a = v.indexOf(lastPick), b = v.indexOf(n);
-    v.slice(Math.min(a, b), Math.max(a, b) + 1).forEach(x => setSel(x, true)); paintTray(); return; }
+    (a < 0 ? [n] : v.slice(Math.min(a, b), Math.max(a, b) + 1)).forEach(x => setSel(x, true)); paintTray(); return; }
   if (e.target.closest('.pick') || picking || e.ctrlKey || e.metaKey) { lastPick = n; return toggle(n); }
   if (touch) return openCard(n);
   copyOne(n, fmt, e);
@@ -819,6 +829,7 @@ function zip(names, full) {
   files.push(['kiory/kiory.sprite.svg', `<svg xmlns="http://www.w3.org/2000/svg">${names.map(n => `<symbol id="kiory-${n}" viewBox="0 0 24 24">${by[n].b}</symbol>`).join('')}</svg>\n`]);
   if (!full) files.push(['kiory/kiory.json', JSON.stringify(names.map(n => ({ name: n, family: by[n].f, body: by[n].b })), null, 1) + '\n']);
   files.push(['kiory/NOTICE.txt', `Kiory ${DATA.version} — ${GH}\nRequired Notice: Copyright 2026 Zinzaki (https://github.com/zinzaki)\nLicense: PolyForm Small Business 1.0.0 — https://polyformproject.org/licenses/small-business/1.0.0\n`]);
+  files.push(['kiory/LICENSE', DATA.license]);
   const parts = [], central = []; let off = 0;
   const d = new Date(), time = (d.getHours() << 11) | (d.getMinutes() << 5) | (d.getSeconds() >> 1), date = ((d.getFullYear() - 1980) << 9) | ((d.getMonth() + 1) << 5) | d.getDate();
   const put = (view, list) => list.forEach(([o, v, s]) => s === 4 ? view.setUint32(o, v, true) : view.setUint16(o, v, true));
@@ -850,8 +861,16 @@ function png(n, size) {
 const gridLines = anim => { let g = ''; const pl = anim ? 'pathLength="1" ' : '';
   for (let i = 0; i <= 24; i++) g += `<path class="cell" ${pl}style="--i:${Math.abs(12 - i)}" d="M${i} 0V24M0 ${i}H24"/>`;
   return g + `<circle class="key" ${pl}cx="12" cy="12" r="10"/><rect class="key" ${pl}x="3" y="3" width="18" height="18" rx="2"/><rect class="key" ${pl}x="2" y="4" width="20" height="16" rx="2"/><rect class="key" ${pl}x="4" y="2" width="16" height="20" rx="2"/>`; };
+let cardOpener, backgroundState = [], previousOverflow;
 function openCard(n, swap) {
   const first = !cur; cur = n; const i = by[n];
+  if (first) {
+    cardOpener = document.activeElement;
+    previousOverflow = document.body.style.overflow;
+    document.body.style.overflow = 'hidden';
+    backgroundState = [...document.body.children].filter(el => !['card', 'scrim', 'toast'].includes(el.id) && el.tagName !== 'SCRIPT').map(el => [el, el.inert]);
+    backgroundState.forEach(([el]) => { el.inert = true; });
+  }
   $('c-name').textContent = n;
   $('c-fam').innerHTML = `${famTitle[i.f]} <span>· ${famNote[i.f]}</span>` + (isNew(i) ? '<b>NEW</b>' : isUpd(i) ? '<b>UPD</b>' : '');
   const stage = $('c-stage');
@@ -865,9 +884,13 @@ function openCard(n, swap) {
   history.replaceState(null, '', '#' + n);
   if (first) $('c-svg').focus({ preventScroll: true });
 }
-function closeCard() { if (!cur) return; const n = cur; cur = null;
+function closeCard(clearHash = true) { if (!cur) return; const n = cur; cur = null;
   $('card').classList.remove('on'); $('scrim').classList.remove('on'); $('card').setAttribute('aria-hidden', 'true'); $('card').inert = true;
-  history.replaceState(null, '', location.pathname + location.search); tiles[n]?.querySelector('.hit').focus({ preventScroll: true }); }
+  backgroundState.forEach(([el, inert]) => { el.inert = inert; }); backgroundState = [];
+  document.body.style.overflow = previousOverflow;
+  if (clearHash) history.replaceState(null, '', location.pathname + location.search);
+  const opener = cardOpener?.isConnected && cardOpener !== document.body && cardOpener.getClientRects().length ? cardOpener : !tiles[n]?.hidden ? tiles[n]?.querySelector('.hit') : q;
+  opener?.focus({ preventScroll: true }); }
 $('c-close').onclick = closeCard; $('scrim').onclick = closeCard;
 $('c-svg').onclick = () => copyOne(cur, 'svg');
 document.querySelectorAll('[data-cf]').forEach(b => b.onclick = () => copyOne(cur, b.dataset.cf));
@@ -882,6 +905,13 @@ $('c-prev').onclick = () => step(-1); $('c-next').onclick = () => step(1);
 /* ── keyboard: type from anywhere, arrows move through the grid ── */
 addEventListener('keydown', e => {
   const typing = e.target.closest?.('input, textarea, [contenteditable]');
+  if (cur && e.key === 'Tab') {
+    const focusable = [...$('card').querySelectorAll('button:not([disabled]), a[href], input, [tabindex="0"]')].filter(el => el.getClientRects().length);
+    const first = focusable[0], last = focusable.at(-1);
+    if (e.shiftKey && document.activeElement === first) { e.preventDefault(); last.focus(); }
+    else if (!e.shiftKey && document.activeElement === last) { e.preventDefault(); first.focus(); }
+    return;
+  }
   if (e.key === 'Escape') {
     if (cur) return closeCard();
     if (q.value) { q.value = ''; filter(true); q.blur(); return; }
@@ -895,13 +925,14 @@ addEventListener('keydown', e => {
     return;
   }
   const t = document.activeElement?.closest?.('.t');
+  if (t && e.key === 'Enter' && document.activeElement.classList.contains('hit')) { e.preventDefault(); openCard(t.dataset.n); return; }
   if (t && ['ArrowLeft', 'ArrowRight', 'ArrowUp', 'ArrowDown'].includes(e.key)) { e.preventDefault(); moveFocus(t, e.key); return; }
   if (t && e.key === ' ') { e.preventDefault(); lastPick = t.dataset.n; toggle(t.dataset.n); return; }
   if (e.key.length === 1 && e.key !== ' ' || e.key === 'Backspace') {
     e.preventDefault();
     const box = scrollY < innerHeight * .6 ? $('hq') : q;
     box.value = e.key === 'Backspace' ? box.value.slice(0, -1) : box.value + e.key;
-    box.focus({ preventScroll: true }); box.setSelectionRange(box.value.length, box.value.length);
+    box.focus({ preventScroll: true });
     box.dispatchEvent(new Event('input'));
   }
 });
@@ -983,8 +1014,6 @@ hero.addEventListener('click', e => { if (e.target.closest('.panel, .top') || !n
 
 /* hero search lights up matches in the field and leads to the catalog */
 const hq = $('hq'), hgo = $('hgo');
-const nameMatch = (i, t) => i.n.includes(t) || i.t.some(x => x.includes(t));
-const heroMatch = (i, t, byName) => nameMatch(i, t) || !byName && (famTitle[i.f] + ' ' + famNote[i.f]).toLowerCase().includes(t);
 hq.addEventListener('input', () => {
   const t = hq.value.trim().toLowerCase(), byName = !!t && DATA.icons.some(i => nameMatch(i, t));
   field.classList.toggle('q', !!t);
@@ -1146,8 +1175,16 @@ showUse(0);
 
 /* ── start ── */
 filter(false);
-const fromHash = decodeURIComponent(location.hash.slice(1));
-if (by[fromHash]) setTimeout(() => { tiles[fromHash].scrollIntoView({ block: 'center', behavior: 'instant' }); openCard(fromHash); }, 300);
+function followHash() {
+  let name;
+  try { name = decodeURIComponent(location.hash.slice(1)); } catch (e) { return; }
+  if (Object.hasOwn(by, name)) {
+    if (!cur && !tiles[name].hidden) tiles[name].scrollIntoView({ block: 'center', behavior: 'instant' });
+    openCard(name);
+  } else if (cur) closeCard(false);
+}
+addEventListener('hashchange', followHash);
+followHash();
 </script>
 </body>
 </html>

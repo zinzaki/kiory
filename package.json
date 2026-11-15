@@ -41,5 +41,17 @@
     "react",
     "css",
     "kiory"
-  ]
+  ],
+  "scripts": {
+    "build": "python3 scripts/build.py",
+    "check": "python3 scripts/build.py --check",
+    "test": "python3 -m unittest discover -s tests -p \"*_test.py\" && node --test tests/*.test.mjs",
+    "test:browser": "node tests/browser.mjs",
+    "qa": "python3 scripts/qa.py"
+  },
+  "devDependencies": {
+    "playwright": "1.65.0",
+    "react": "19.3.1",
+    "react-dom": "19.3.1"
+  }
 }

@@ -68,7 +68,7 @@ def read_icon(p: Path) -> tuple[str, str] | None:
         return None
     paths: list[tuple[str, str]] = []
 
-    def walk(el: ET.Element, rule: str | None) -> None:
+    def walk(el: ET.Element, rule: str | None, fill: str = "black") -> None:
         tag = el.tag.replace(NS, "")
         if tag in ("title", "desc", "metadata"):
             return
@@ -79,6 +79,8 @@ def read_icon(p: Path) -> tuple[str, str] | None:
         if tag not in ("svg", "g", "path"):
             errors.append(f"{rel}: <{tag}> is not supported; convert shapes to outlines (Outline stroke, Flatten)")
             return
+        if el.get("style") or el.get("class"):
+            errors.append(f"{rel}: CSS styles/classes are not supported; export explicit SVG attributes")
         if el.get("transform"):
             errors.append(f"{rel}: transform on <{tag}>; flatten before exporting")
         if el.get("stroke") not in (None, "none"):
@@ -86,12 +88,15 @@ def read_icon(p: Path) -> tuple[str, str] | None:
         if el.get("clip-path") or el.get("mask") or el.get("opacity") or el.get("fill-opacity"):
             errors.append(f"{rel}: masks and opacity are not supported")
         rule = el.get("fill-rule") or el.get("clip-rule") or rule
-        if tag == "path" and el.get("fill") != "none":
+        if rule not in (None, "nonzero", "evenodd"):
+            errors.append(f"{rel}: invalid fill-rule {rule!r}; use nonzero or evenodd")
+        fill = el.get("fill", fill)
+        if tag == "path" and fill != "none":
             d = " ".join((el.get("d") or "").split())
             if d:
                 paths.append((rule or "nonzero", d))
         for ch in el:
-            walk(ch, rule)
+            walk(ch, rule, fill)
 
     walk(root, None)
     if not paths:
@@ -183,11 +188,15 @@ def write(cfg: dict, families: list[dict], icons: dict[str, dict]) -> list[str]:
         f"export const version = {json.dumps(cfg['version'])};\n"
         f"export const icons = {{\n{js_icons}\n}};\n"
         "export const names = Object.keys(icons);\n"
+        "const escapeXML = value => String(value).replace(/[&<>\"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '\"': '&quot;' }[c]));\n"
         "export function svg(name, { size = 24, ...attrs } = {}) {\n"
+        "  if (!Object.hasOwn(icons, name)) throw new Error(`Kiory: no icon named \"${name}\"`);\n"
         "  const body = icons[name];\n"
-        "  if (!body) throw new Error(`Kiory: no icon named \"${name}\"`);\n"
-        "  const a = Object.entries(attrs).map(([k, v]) => ` ${k}=\"${v}\"`).join('');\n"
-        "  return `<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"${size}\" height=\"${size}\" viewBox=\"0 0 24 24\" fill=\"none\"${a}>${body}</svg>`;\n"
+        "  const a = Object.entries({ xmlns: 'http://www.w3.org/2000/svg', width: size, height: size, viewBox: '0 0 24 24', fill: 'none', ...attrs }).map(([k, v]) => {\n"
+        "    if (!/^[a-zA-Z_][a-zA-Z0-9_.:-]*$/.test(k) || /^on/i.test(k)) throw new Error(`Kiory: invalid SVG attribute \"${k}\"`);\n"
+        "    return ` ${k}=\"${escapeXML(v)}\"`;\n"
+        "  }).join('');\n"
+        "  return `<svg${a}>${body}</svg>`;\n"
         "}\n"
         "export default icons;\n")
     union = "\n  | ".join(json.dumps(n) for n in order)
@@ -203,7 +212,9 @@ def write(cfg: dict, families: list[dict], icons: dict[str, dict]) -> list[str]:
         "import { createElement } from 'react';\n"
         "import { icons } from './kiory.js';\n"
         "export function KioryIcon({ name, size = 24, title, ...rest }) {\n"
-        "  const body = (title ? `<title>${title}</title>` : '') + (icons[name] || '');\n"
+        "  if (!Object.hasOwn(icons, name)) throw new Error(`Kiory: no icon named \"${name}\"`);\n"
+        "  const label = title ? String(title).replace(/[&<>]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;' }[c])) : '';\n"
+        "  const body = (label ? `<title>${label}</title>` : '') + icons[name];\n"
         "  return createElement('svg', { xmlns: 'http://www.w3.org/2000/svg', width: size, height: size, viewBox: '0 0 24 24', fill: 'none',\n"
         "    role: title ? 'img' : undefined, 'aria-hidden': title ? undefined : true, ...rest, dangerouslySetInnerHTML: { __html: body } });\n"
         "}\n"
@@ -227,6 +238,7 @@ def write(cfg: dict, families: list[dict], icons: dict[str, dict]) -> list[str]:
                    "t": [t for t in icons[n]["tags"] if t not in n.split("-")],
                    "a": icons[n]["added"], "u": icons[n]["updated"]} for n in order],
         "logo": (ROOT / "brand/kiory.svg").read_text(),
+        "license": (ROOT / "LICENSE").read_text(),
     }
     tpl = (ROOT / "scripts/gallery.html").read_text()
     html = tpl.replace("/*__DATA__*/null", json.dumps(data, ensure_ascii=False)).replace("__COUNT__", str(len(order)))
